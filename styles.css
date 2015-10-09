@@ -1,0 +1,46 @@
+/* CSS Document */
+
+@font-face {
+	font-family: 'poet';
+	src:url("DX시인과나.ttf");
+}
+
+body 
+{ 	
+	font-family: 'poet';
+	font-size: 16px;
+
+	
+	background-color: #1C1C1C;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: top;
+
+	text-align: justify;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-right: 10%;
+    margin-left: 10%;
+    color: white;
+}
+
+p {
+	text-indent: 20px;
+	margin-bottom: 20px;
+}
+
+#scroll-control
+{
+	animation: moveDown 0.6s ease-in-out 0.2s backwards;
+}
+
+@keyframes moveDown{
+	0% { 
+		transform: translateY(-40px); 
+		opacity: 0;
+	}
+	100% { 
+		transform: translateY(0px);  
+		opacity: 1;
+	}
+}
