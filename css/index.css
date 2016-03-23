@@ -1,0 +1,26 @@
+body {
+	background: #000;
+	overflow: scroll;
+	margin: 0;
+
+	/*make it unable to select elements*/
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;      
+}
+
+#game_container {
+	background: #000;
+	width: 640px;
+	height: 480px;
+
+	position: absolute;
+	margin: auto;
+
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
