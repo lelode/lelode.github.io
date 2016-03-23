@@ -52,6 +52,7 @@ function processIntro() {
 }
 
 window.onload= function(){
+	initBGM();
 	Intro();
 }
 
