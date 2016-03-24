@@ -56,7 +56,6 @@ function processIntro() {
 window.onload= function(){
 	//initBGM();
 	Intro();
-	Context.create("canvas");
 }
 
 function Intro() {
