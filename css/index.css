@@ -21,15 +21,6 @@ body {
 	top: 0; right: 0; bottom: 0; left: 0;
 }
 
-@media (max-width: 767px) {
-	#game_container {
-		margin-top: 30px;
-		margin-right: 0px;
-		margin-bottom: auto;;
-		margin-left: 0px;
-	}
-}
-
 #game {
 	width: 100%;
 	max-width: 635px;
