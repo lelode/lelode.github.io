@@ -9,7 +9,7 @@ var bgmIntro;
 
 function initBGM(){
 	bgmIntro = new Audio();
-	bgmIntro.src = "sounds/BGM/01_OnceUponATime.mp3"
+	bgmIntro.src = "sounds/BGM/01_OnceUponATime.ogg"
 	bgmIntro.loop = true;
 	bgmIntro.play();
 }

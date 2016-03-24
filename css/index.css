@@ -1,6 +1,6 @@
 body {
 	background: #000;
-	overflow: scroll;
+	overflow: hidden;
 	margin: 0;
 
 	/*make it unable to select elements*/
@@ -8,11 +8,11 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	-o-user-select: none;
-	user-select: none;      
+	user-select: none;
 }
 
 #game_container {
-	background: #000;
+	background: #fff;
 	width: 640px;
 	height: 480px;
 
