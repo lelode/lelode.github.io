@@ -25,12 +25,14 @@ body {
 
 @media (max-width: 767px) {
 	#game_container {
-		top: 30px;
+		margin-top: 30px;
+		margin-right: 0px;
+		margin-bottom: auto;;
+		margin-left: 0px;
 	}
 }
 
 #game {
-	width: 100%;
 	max-width: 635px;
 	height: 480px;
 
