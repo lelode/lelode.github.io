@@ -33,7 +33,7 @@ body {
 #game {
 	width: 100%;
 	max-width: 635px;
-	min-height: 480px;
+	max-height: 480px;
 
 	padding: 0;
 
