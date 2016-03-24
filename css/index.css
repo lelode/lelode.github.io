@@ -14,8 +14,7 @@ body {
 #game_container {
 	background: #fff;
 
-	width: 100%;
-	max-width: 635px;
+	width: 635px;
 	height: 480px;
 
 	position: absolute;
@@ -28,8 +27,8 @@ body {
 }
 
 #game {
-
-	width: 635px;
+	width: 100%;
+	max-width: 635px;
 	height: 480px;
 
 	position: absolute;
