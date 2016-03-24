@@ -3,6 +3,7 @@ body {
 	overflow: hidden;
 	margin: 0;
 
+
 	/*make it unable to select elements*/
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -19,7 +20,7 @@ body {
 
 	position: absolute;
 	margin: auto;
-
+	
 	top: 0; right: 0; bottom: 0; left: 0;
 }
 
