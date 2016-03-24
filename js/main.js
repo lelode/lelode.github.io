@@ -3,6 +3,8 @@ var canvas = document.getElementById("game");
 var ctx;
 var introIdx = 0;
 
+var canvasWidth = 635, canvasHeight = 480;
+
 var introImages = new Array();
 var testImg = new Image();
 testImg.src = "img/intro/1.png";
@@ -71,14 +73,16 @@ function Intro() {
 
 	ctxImage = introImage.getContext("2d");
 	ctxScript = introScriptCanvas.getContext("2d");
-	document.getElementById("game_container").appendChild(introImage);
-	document.getElementById("game_container").appendChild(introScriptCanvas);
+	//document.getElementById("game_container").appendChild(introImage);
+	//document.getElementById("game_container").appendChild(introScriptCanvas);
 
-	//ctx.fillStyle = "red";
-	//ctx.fillRect(0,0, 110,110);
+	ctx.fillStyle = "white";
+	ctx.fillRect(0,0, canvasWidth,canvasHeight);
 	//ctx.drawImage(testImg,10,10);
 	ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 110);
+	ctx.fillStyle = "black";
 	ctx.fillText("테스트 메시지", 100, 140);
+	//ctx.clearRect(0, 0);
 	//ctx.restore();
 
 	/*

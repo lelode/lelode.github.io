@@ -3,7 +3,6 @@ body {
 	overflow: hidden;
 	margin: 0;
 
-
 	/*make it unable to select elements*/
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -14,13 +13,11 @@ body {
 
 #game_container {
 	background: #fff;
-	width: 100%;
-	max-width: 635px;
+	width: 635px;
 	height: 480px;
 
 	position: absolute;
 	margin: auto;
-	
 	top: 0; right: 0; bottom: 0; left: 0;
 }
 
@@ -34,9 +31,16 @@ body {
 }
 
 #game {
+	width: 100%;
 	max-width: 635px;
-	height: 480px;
+	min-height: 480px;
+
+	padding: 0;
+
+	margin: auto;
 
 	overflow: hidden;
 	position: absolute;
+
+	top:0 ; right: 0; bottom: 0; left: 0;
 }
