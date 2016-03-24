@@ -13,31 +13,21 @@ body {
 
 #game_container {
 	background: #fff;
-
-	width: 100%;
-	max-width: 635px;
+	width: 635px;
+	height: 100%;
 	max-height: 480px;
 
 	position: absolute;
 	margin: auto;
 
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	top: 0; right: 0; bottom: 0; left: 0;
 }
 
 #game {
-	width: 100%;
-	max-width: 635px;
+	width: 635px;
+	height: 100%;
 	max-height: 480px;
 
-	position: relative;
-	margin: auto;
-
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-
+	overflow: hidden;
+	position: absolute;
 }
