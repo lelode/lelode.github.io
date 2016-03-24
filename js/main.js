@@ -1,10 +1,12 @@
-var introImage, ctxImage, ctxScript;
-var canvas = document.getElementById("game_container");
+var introImage, introScriptCanvas, ctxImage, ctxScript;
+var canvas = document.getElementById("game");
+var ctx;
 var introIdx = 0;
 
 var introImages = new Array();
+var testImg = new Image();
+testImg.src = "img/intro/1.png";
 
-var testString;
 var bgmIntro;
 
 function initBGM(){
@@ -37,7 +39,7 @@ function initImages () {
 	introImages[10].src = "img/intro/10.png";
 }
 
-canvas.addEventListener("click", processIntro);
+//canvas.addEventListener("click", processIntro);
 window.addEventListener("load", initImages);
 
 function processIntro() {
@@ -52,8 +54,9 @@ function processIntro() {
 }
 
 window.onload= function(){
-	initBGM();
+	//initBGM();
 	Intro();
+	Context.create("canvas");
 }
 
 function Intro() {
@@ -65,27 +68,31 @@ function Intro() {
 	introScriptCanvas.width = 470;
 	introScriptCanvas.height = 110;
 
+	ctx = canvas.getContext("2d");
+
 	ctxImage = introImage.getContext("2d");
 	ctxScript = introScriptCanvas.getContext("2d");
 	document.getElementById("game_container").appendChild(introImage);
 	document.getElementById("game_container").appendChild(introScriptCanvas);
 
-	introImage.style.position = "absolute";
+	//ctx.fillStyle = "red";
+	//ctx.fillRect(0,0, 400,600);
+	ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 75);
+	//ctx.restore();
+
+	/*
+	introImage.style.position = "relative";
 	introImage.style.top = "65px";
 	introImage.style.left = "115px";
 
-	introScriptCanvas.style.position = "absolute";
+	introScriptCanvas.style.position = "relative";
 	introScriptCanvas.style.top = "325px";
 	introScriptCanvas.style.left = "115px";
 
 	ctxScript.fillStyle = "white";
 	ctxScript.font = "25px Arial";
-
-	var loop = function() {
-		draw();
-	}
-
-	showIntroImg();
+	*/
+	//showIntroImg();
 }
 
 function showIntroScript(){
