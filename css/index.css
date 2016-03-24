@@ -13,7 +13,8 @@ body {
 
 #game_container {
 	background: #fff;
-	width: 640px;
+	width: 100%;
+	max-width: 635px;
 	height: 480px;
 
 	position: absolute;
