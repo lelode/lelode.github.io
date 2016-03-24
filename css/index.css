@@ -14,8 +14,9 @@ body {
 #game_container {
 	background: #fff;
 
-	width: 635px;
-	height: 480px;
+	width: 100%;
+	max-width: 635px;
+	max-height: 480px;
 
 	position: absolute;
 	margin: auto;
@@ -29,9 +30,9 @@ body {
 #game {
 	width: 100%;
 	max-width: 635px;
-	height: 480px;
+	max-height: 480px;
 
-	position: absolute;
+	position: relative;
 	margin: auto;
 
 	top: 0;

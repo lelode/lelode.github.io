@@ -75,8 +75,10 @@ function Intro() {
 	document.getElementById("game_container").appendChild(introScriptCanvas);
 
 	//ctx.fillStyle = "red";
-	//ctx.fillRect(0,0, 400,600);
-	ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 75);
+	//ctx.fillRect(0,0, 110,110);
+	//ctx.drawImage(testImg,10,10);
+	ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 110);
+	ctx.fillText("테스트 메시지", 100, 140);
 	//ctx.restore();
 
 	/*
