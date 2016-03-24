@@ -22,12 +22,7 @@ body {
 }
 
 #game {
-	width: 100%;
-	max-width: 635px;
-	max-height: 480px;
-
 	padding: 0;
-
 	margin: auto;
 
 	overflow: hidden;

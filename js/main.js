@@ -78,10 +78,10 @@ function Intro() {
 
 	ctx.fillStyle = "white";
 	ctx.fillRect(0,0, canvasWidth,canvasHeight);
-	//ctx.drawImage(testImg,10,10);
-	ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 110);
+	ctx.drawImage(testImg,100,70);
+	//ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 110);
 	ctx.fillStyle = "black";
-	ctx.fillText("테스트 메시지", 100, 140);
+	ctx.fillText("테스트 메시지", 100, 300);
 	//ctx.clearRect(0, 0);
 	//ctx.restore();
 
