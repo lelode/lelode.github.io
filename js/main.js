@@ -34,6 +34,9 @@ var bgmIntro;
 window.onload= function(){
 	//initBGM();
 
+	$(document).trigger('initAudio');
+	//$.mbAudio.play('backgroundSprite','intro');
+
 	canvas = document.getElementById("game");
 	ctx = canvas.getContext("2d");
 
@@ -161,9 +164,6 @@ var printIntroScript = function (scriptString, line){
 	},150);
 }
 
-var bgmHandle = document.getElementById("bgmHandle");
-bgmHandle.src = "sounds/BGM/01_OnceUponATime.ogg";
-bgmHandle.play();
 
 function initBGM(){
 	bgmIntro = new Audio();
