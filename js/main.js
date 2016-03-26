@@ -1,14 +1,12 @@
 var canvas = document.getElementById("game");
-var canvas1, canvas2;
-var ctx1, ctx2;
-var ctx;
-var canvasWidth = 635, canvasHeight = 480;
+var ctxIntroImg, ctxIntroScript;
 
+var canvasWidth = 635, canvasHeight = 480;
 var introScriptX = 120, introScriptY = 300;
+var introImgX = 125, introImgY = 60;
 
 var curStage = -1;
 var introImages = {};
-var introScripts = {};
 
 introImages[0] = new Image();
 introImages[0].src = "img/intro/0.png";
@@ -33,24 +31,95 @@ introImages[9].src = "img/intro/9.png";
 introImages[10] = new Image();
 introImages[10].src = "img/intro/10.png";
 
-introScripts[1] = "먼 옛날, 두 종족이 지구를 지배하고 있었다.";
-
 var bgmIntro;
+/*
+introScriptScreen = {
+	x: 120,
+	y: 300,
+	_x: 120,
+	_y: 300,
+	width: 40,
+	height: 40,
+	ctx: canvas.getContext("2d"),
+	scriptStringSplit: "",
+	curString: "",
+	sly: 0,
+
+	type: function(scriptString, line) {
+		this._x = this.x;
+		this._y = this.y + (line * this.height);
+
+		this.scriptStringSplit = scriptString.split("");
+
+		var timer = setInterval(function () {
+			if (this.scriptStringSplit.length > 0) {
+				//console.log(scriptStringSplit.length);
+				this.curString = this.scriptStringSplit.shift();
+
+				ctx.save();
+				ctx.fillStyle = "white";
+				ctx.font = "30px 굴림";
+				ctx.fillText(curString, this._x, this._y);
+				ctx.restore();
+				this.sly++;
+
+				if (curString !== " "){
+					this._x += 30;
+					$.mbAudio.play('effectSprite',"typeWriting");
+				}
+				else{
+					this._x += 10;
+				}
+			}
+			else {
+				clearInterval(timer);
+			}
+		},100);
+	},
+}
 
 introImgScreen = {
 	x: 125,
 	y:  60,
+	width:398,
+	height: 214,
+	idx: 1,
+	op: 0.1,
+	img: new Image(),
+	ctx: canvas.getContext("2d"),
+
+	setImg: function() {
+		this.img.src = "img/intro/" + this.idx + ".png";
+	},
 
 	draw: function() {
+		ctx.globalAlpha = this.op;
+		ctx.drawImage(this.img, this.x, this.y);
 
+		if (this.op < 1) {
+			this.op += this.op * 0.1;
+		}
+	},
+
+	next: function() {
+		ctx.save();
+		ctx.fillStyle = "black";
+		ctx.fillRect(this.x, this.y, this.width, this.height);
+		ctx.restore();
+		this.idx++;
+		this.op = 0.1;
+		this.setImg();
 	}
 }
+*/
 
 window.onload= function(){
 	//initBGM();
 
 	$(document).trigger('initAudio');
 
+	ctxIntroImg = canvas.getContext("2d");
+	ctxIntroScript = canvas.getContext("2d");
 	ctx = canvas.getContext("2d");
 
 	main();
@@ -70,14 +139,14 @@ function processStage(){
 
 function main() {
 
-	ctx1 = canvas.getContext("2d");
-
-	ctx1.fillStyle = "black";
-	ctx1.fillRect(0, 0, canvasWidth, canvasHeight);
-
-	ctx2 = canvas.getContext("2d");
-
-	ctx2.drawImage(introImages[1], 100, 100);
+	/*
+	introImgScreen.setImg();
+	var timer = setInterval(function () {
+		introImgScreen.draw();
+	},100);
+	*/
+	timeoutSlideshow();
+	timeoutTypewrite();
 
 	//title();
 	//intro();
@@ -108,11 +177,6 @@ function title() {
 
 function intro() {;
 	var idx = 0;
-	//ctx.fillStyle = "white";
-	//ctx.fillRect(0,0, canvasWidth,canvasHeight);
-	//ctx.drawImage(img,100,70);
-	//ctx.drawImage(testImg, 0, 0, 398, 211, 45, 20, 210, 110);
-	//ctx.clearRect(0, 0);
 
 	// Erase screen
 	ctx.save();
@@ -130,33 +194,68 @@ function intro() {;
 
 //window.addEventListener("load", initImages);
 
-function processIntro(idx) {
+function clearIntroImg() {
+	ctxIntroImg.save();
+	ctxIntroImg.fillStyle = "black";
+	ctxIntroImg.fillRect(introImgX, introImgY, 400, 400);
+	ctxIntroImg.restore();
+}
 
+function processIntro(idx) {
 	var op = 0.1;
 	var curImg = introImages[idx];
 
 	var timer = setInterval(function () {
 		DrawIntroImg(op, idx);
-
-		introScript(idx, function() {
-			ctx.save();
-			ctx.fillStyle = "black";
-			ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-			ctx.restore();
-
-			idx++;
-		});
+		if (op < 1) {
+			op += op * 0.1;
+		}
+		else clearInterval(timer);
 	}, 100);
 }
 
 function DrawIntroImg (op, idx){
-	ctx.save();
-	ctx.globalAlpha = op;
-	ctx.drawImage(introImages[idx], introImgX, introImgY);
-	if (op < 1) {
-		op += op * 0.1;
-	}
-	ctx.restore();
+	ctxIntroImg.save();
+	ctxIntroImg.globalAlpha = op;
+	ctxIntroImg.drawImage(introImages[idx], introImgX, introImgY);
+	ctxIntroImg.restore();
+}
+
+function timeoutSlideshow(){
+	processIntro(1);
+	setTimeout(function() {
+		clearIntroImg();
+	},9000);
+
+	setTimeout(function() {
+		processIntro(2);
+	},12000);
+}
+
+function timeoutTypewrite(){
+	printIntroScript("먼 옛날,", 1);
+	setTimeout(function() {
+		printIntroScript("지상 위엔 두 종족이 살고 있었다.", 2);
+	}, 2000);
+
+	setTimeout(function() {
+		printIntroScript("바로 인간과 괴물이었다.", 3);
+	}, 6000);
+
+	setTimeout(function() {
+		clearIntroScript();
+	}, 9000);
+
+	setTimeout(function() {
+		printIntroScript("그러던 어느 날,", 1);
+	}, 12000);
+	setTimeout(function() {
+		printIntroScript("두 종족 사이에 전쟁이 벌어졌다.", 2);
+	}, 15000);
+
+	setTimeout(function() {
+		clearIntroScript();
+	}, 19000);
 }
 
 function introScript(idx, callback){
@@ -200,6 +299,13 @@ function introScript(idx, callback){
 	}
 }
 
+function clearIntroScript(){
+	ctxIntroScript.save();
+	ctxIntroScript.fillStyle = "black";
+	ctxIntroScript.fillRect(introScriptX, introScriptY, 600, 400);
+	ctxIntroScript.restore();
+}
+
 var printIntroScript = function (scriptString, line){
 	var x = introScriptX;
 	var y = introScriptY + (line * 40);
@@ -213,11 +319,11 @@ var printIntroScript = function (scriptString, line){
 			//console.log(scriptStringSplit.length);
 			curString = scriptStringSplit.shift();
 
-			ctx.save();
-			ctx.fillStyle = "white";
-			ctx.font = "30px 굴림";
-			ctx.fillText(curString, x, y);
-			ctx.restore();
+			ctxIntroScript.save();
+			ctxIntroScript.fillStyle = "white";
+			ctxIntroScript.font = "30px 굴림";
+			ctxIntroScript.fillText(curString, x, y);
+			ctxIntroScript.restore();
 			sly++;
 
 			if (curString !== " "){
@@ -232,21 +338,4 @@ var printIntroScript = function (scriptString, line){
 			clearInterval(timer);
 		}
 	},100);
-}
-
-
-function initBGM(){
-	bgmIntro = new Audio();
-	bgmIntro.src = "sounds/BGM/01_OnceUponATime.ogg";
-	bgmIntro.loop = true;
-	bgmIntro.play();
-}
-
-function sleep(milliseconds) {
-	var start = new Date().getTime();
-	for (var i = 0; i < 1e7; i++) {
-		if ((new Date().getTime() - start) > milliseconds){
-			break;
-		}
-	}
 }

@@ -1,5 +1,5 @@
 body {
-	background: #fff;
+	background: #000;
 	overflow: hidden;
 	margin: 0;
 
@@ -31,7 +31,6 @@ body {
 	
 	padding: 0;
 	margin: auto;
-
 	overflow: hidden;
 	position: absolute;
 
