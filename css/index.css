@@ -13,17 +13,20 @@ body {
 
 #game_container {
 	background: #fff;
-	width: 635px;
-	height: 480px;
-
+	
+	width: 100%;
+	max-width: 635px;
+	
+	overflow:hidden;
 	position: absolute;
 	margin: auto;
+
 	top: 0; right: 0; bottom: 0; left: 0;
 }
 
 #game {
 	width: 100%;
-	max-width: 600px;
+	max-width: 635px;
 	
 	padding: 0;
 	margin: auto;

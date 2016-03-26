@@ -1,11 +1,17 @@
-var canvas, ctx;
+var canvas = document.getElementById("game");
+var canvas1, canvas2;
+var ctx1, ctx2;
+var ctx;
 var canvasWidth = 635, canvasHeight = 480;
-var introImgX = 100, introImgY = 60;
-var introScriptX = 100, introScriptY = 300;
 
+var introScriptX = 120, introScriptY = 300;
+
+var curStage = -1;
 var introImages = {};
 var introScripts = {};
 
+introImages[0] = new Image();
+introImages[0].src = "img/intro/0.png";
 introImages[1] = new Image();
 introImages[1].src = "img/intro/1.png";
 introImages[2] = new Image();
@@ -31,22 +37,84 @@ introScripts[1] = "먼 옛날, 두 종족이 지구를 지배하고 있었다.";
 
 var bgmIntro;
 
+introImgScreen = {
+	x: 125,
+	y:  60,
+
+	draw: function() {
+
+	}
+}
+
 window.onload= function(){
 	//initBGM();
 
 	$(document).trigger('initAudio');
-	//$.mbAudio.play('backgroundSprite','intro');
 
-	canvas = document.getElementById("game");
 	ctx = canvas.getContext("2d");
 
 	main();
 }
 
+canvas.addEventListener("click", processStage);
+
+function processStage(){
+	switch (curStage) {
+		case 0:
+			curStage++;
+			intro();
+			break;
+		default: break;
+	}
+}
+
 function main() {
-	intro();
+
+	canvas1 = document.createElement("canvas");
+	canvas1.width = canvasWidth;
+	canvas1.height = canvasHeight;
+	ctx1 = canvas1.getContext("2d");
+	document.getElementById("game_container").appendChild(canvas1);
+
+	ctx1.fillStyle = "black";
+	ctx1.fillRect(0, 0, canvasWidth, canvasHeight);
+
+
+	canvas2 = document.createElement("canvas");
+	canvas2.width = 100;
+	canvas2.height = 100;
+	ctx2 = canvas1.getContext("2d");
+	document.body.appendChild(canvas2);
+
+	ctx1.fillStyle = "red";
+	ctx1.fillRect(100, 100, 100, 100);
+
+
+	//title();
+	//intro();
 	// venture();
 	// battle();
+}
+
+function title() {
+	ctx.fillStyle = "black";
+	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+	setTimeout(function() {
+		ctx.drawImage(introImages[0], 0, 0);
+		$.mbAudio.play('effectSprite',"title");
+	}, 3000);
+
+	setTimeout(function() {
+		$.mbAudio.pause('effectSprite', audioIsReady);
+
+		ctx.save();
+		ctx.fillStyle = "gray";
+		ctx.font = "20px Lucida Console";
+		ctx.fillText("[TOUCH OR CLICK]", 230, 350);
+		ctx.restore();
+		curStage = 0;
+	}, 6000);
 }
 
 function intro() {;
@@ -63,45 +131,58 @@ function intro() {;
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.restore();
 
+	$.mbAudio.play('backgroundSprite',"intro");
+
 	idx++;
 	processIntro(idx);
 }
 
 
-//canvas.addEventListener("click", processIntro);
+
 //window.addEventListener("load", initImages);
 
 function processIntro(idx) {
 
 	var op = 0.1;
 	var curImg = introImages[idx];
-	// fade image in
-	var timerImg = setInterval(function () {
-		if (op >= 1) {
-			clearInterval(timerImg);
-		}
 
-		ctx.save();
-		ctx.globalAlpha = op;
-		ctx.drawImage(curImg, introImgX, introImgY);
-		op += op * 0.1;
-		ctx.restore();
+	var timer = setInterval(function () {
+		DrawIntroImg(op, idx);
+
+		introScript(idx, function() {
+			ctx.save();
+			ctx.fillStyle = "black";
+			ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+			ctx.restore();
+
+			idx++;
+		});
 	}, 100);
-
-	introScript(idx);
 }
 
-function introScript(idx){
+function DrawIntroImg (op, idx){
+	ctx.save();
+	ctx.globalAlpha = op;
+	ctx.drawImage(introImages[idx], introImgX, introImgY);
+	if (op < 1) {
+		op += op * 0.1;
+	}
+	ctx.restore();
+}
+
+function introScript(idx, callback){
 	switch (idx){
 		case 1:
 			printIntroScript("먼 옛날,", 1);
 			setTimeout(function() {
-			printIntroScript("지구 위엔 두 종족이 살고 있었다.", 2);
+			printIntroScript("지상 위엔 두 종족이 살고 있었다.", 2);
 			}, 2000);
 			setTimeout(function() {
 				printIntroScript("바로 인간과 괴물이었다.", 3);
 			}, 6000);
-
+			setTimeout(function() {
+				callback();
+			},9000);
 			break;
 		case 2:
 			//ctxScript.fillText("그러던 어느 날, 두 종족 사이에 전쟁이", 0, 20);
@@ -126,9 +207,8 @@ function introScript(idx){
 			//ctxScript.fillText("전설에 의하면, 에봇 산에 한번 오르면", 0, 20);
 			//ctxScript.fillText("다시는 돌아오지 못한다고 한다.", 0, 60);
 			break;
-		default: break;
+		default:
 	}
-
 }
 
 var printIntroScript = function (scriptString, line){
@@ -153,6 +233,7 @@ var printIntroScript = function (scriptString, line){
 
 			if (curString !== " "){
 				x += 30;
+				$.mbAudio.play('effectSprite',"typeWriting");
 			}
 			else{
 				x += 10;
@@ -161,7 +242,7 @@ var printIntroScript = function (scriptString, line){
 		else {
 			clearInterval(timer);
 		}
-	},150);
+	},100);
 }
 
 

@@ -14,11 +14,12 @@
 
             effectSprite: {
                 id: "effectSprite",
-                ogg: "sounds/SFX/typeWriting.ogg",
-                mp3: "sounds/SFX/typeWriting.mp3",
+                ogg: "sounds/SFX/sfx.ogg",
+                mp3: "sounds/SFX/sfx.mp3",
                 //example of sprite
                 sprite:{
-                    typeWriting: {id: "typeWriting", start: 0, end: 1.3, loop: false},
+                    title: {id: "title", start: 0, end: 3, loop: false},
+                    typeWriting: {id: "typeWriting", start: 5, end: 7, loop: false},
                     //great : {id: "great", start: 5, end: 8, loop: false},
                     //divine: {id: "divine", start: 10, end: 11.6, loop: false},
                     //wow   : {id: "wow", start: 15, end: 20, loop: false},
@@ -33,23 +34,21 @@
 
 
         function audioIsReady(){
-
             setTimeout(function(){
-                $('#buttons').fadeIn();
-                $("#loading").hide();
+                 //$('#buttons').fadeIn();
+                 //$("#loading").hide();
 
+                /*
             if(isStandAlone || !isDevice)
-                $.mbAudio.play('backgroundSprite',"intro");
-
+                //$.mbAudio.play('backgroundSprite',"intro");
+*/
             },3000);
 
         }
 
         $(document).on("initAudio", function () {
-
             //otherwise sound is initialized on the first tap loosing time and UX
              $.mbAudio.pause('effectSprite', audioIsReady);
-
-            $('#start').hide();
-            $("#loading").show();
+             //$('#start').hide();
+             //$("#loading").show();
         });
