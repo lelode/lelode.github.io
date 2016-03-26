@@ -70,21 +70,12 @@ function processStage(){
 
 function main() {
 
-	canvas1 = document.createElement("canvas");
-	canvas1.width = canvasWidth;
-	canvas1.height = canvasHeight;
-	ctx1 = canvas1.getContext("2d");
-	document.getElementById("game_container").appendChild(canvas1);
+	ctx1 = canvas.getContext("2d");
 
 	ctx1.fillStyle = "black";
 	ctx1.fillRect(0, 0, canvasWidth, canvasHeight);
 
-
-	canvas2 = document.createElement("canvas");
-	canvas2.width = 100;
-	canvas2.height = 100;
-	ctx2 = canvas1.getContext("2d");
-	document.body.appendChild(canvas2);
+	ctx2 = canvas.getContext("2d");
 
 	ctx2.drawImage(introImages[1], 100, 100);
 
