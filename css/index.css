@@ -12,10 +12,11 @@ body {
 }
 
 #game_container {
-	background: #fff;
+	background: red;
 	
 	width: 100%;
 	max-width: 635px;
+	max-height: 480px;
 	
 	overflow:hidden;
 	position: absolute;

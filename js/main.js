@@ -86,9 +86,7 @@ function main() {
 	ctx2 = canvas1.getContext("2d");
 	document.body.appendChild(canvas2);
 
-	ctx1.fillStyle = "red";
-	ctx1.fillRect(100, 100, 100, 100);
-
+	ctx2.drawImage(introImages[1], 100, 100);
 
 	//title();
 	//intro();
