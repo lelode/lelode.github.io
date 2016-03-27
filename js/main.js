@@ -19,8 +19,12 @@ window.onload= function(){
 		introImages[i] = new Image();
 		introImages[i].src = "img/intro/" + i + ".png";
 	}
-	createjs.Sound.registerSound("sounds/BGM/01_OnceUponATime.ogg", "intro");
 
+	createjs.Sound.alternateExtensions = ["ogg"];
+	createjs.Sound.registerSound("sounds/BGM/01_OnceUponATime.mp3", "intro");
+	createjs.Sound.registerSound("sounds/SFX/title.mp3", "title");
+	createjs.Sound.registerSound("sounds/SFX/typeWriting.mp3", "typeWriting")
+	createjs.Sound.registerSound("sounds/SFX/awakening.mp3", "awakening")
 
 	ctxIntroImg = canvas.getContext("2d");
 	ctxIntroScript = canvas.getContext("2d");
@@ -42,21 +46,16 @@ function processStage(){
 }
 
 function main() {
-
 	title();
-	//intro();
 	// venture();
 	// battle();
 }
 
 function title() {
-	ctx.fillStyle = "black";
-	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
 	setTimeout(function() {
 		ctx.drawImage(introImages[0], 0, 0);
-		//$.mbAudio.play('effectSprite',"title");
-	}, 3000);
+		createjs.Sound.play("title");
+	}, 5000);
 
 	setTimeout(function() {
 		//$.mbAudio.pause('effectSprite', audioIsReady);
@@ -67,7 +66,7 @@ function title() {
 		ctx.fillText("[TOUCH OR CLICK]", 230, 350);
 		ctx.restore();
 		curStage = 0;
-	}, 6000);
+	}, 8000);
 }
 
 function intro() {;
@@ -117,13 +116,17 @@ function scrollImg(idx, speed) {
 			sy += 2;
 		}
 		else clearInterval(timer);
-	}, 15);
+	}, speed);
+}
+
+function clearCanvas() {
+	ctx.save();
+	ctx.fillStyle = "black";
+	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+	ctx.restore();
 }
 
 function timeoutSlideshow() {
-
-	//$.mbAudio.play('backgroundSprite',"intro");
-
 	// 1
 	processIntro(1);
 	printIntroScript("먼 옛날,", 1);
@@ -134,7 +137,7 @@ function timeoutSlideshow() {
 		printIntroScript("바로 인간과 괴물이었다.", 3);
 	}, 6 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+		clearCanvas();
 	}, 9 * k);
 	// 2
 	setTimeout(function () {
@@ -145,103 +148,145 @@ function timeoutSlideshow() {
 		printIntroScript("두 종족 사이에 전쟁이 벌어졌다.", 2);
 	}, 12 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 15 * k);
+		clearCanvas();
+	}, 16 * k);
 
 	// 3
 	setTimeout(function () {
 		processIntro(3);
 		printIntroScript("기나긴 싸움 끝에", 1);
-	}, 16 * k);
+	}, 17 * k);
 	setTimeout(function() {
 		printIntroScript("승기를 잡은 것은 인간들이었다.", 2);
-	}, 18 * k);
+	}, 20 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 21 * k);
+		clearCanvas();
+	}, 24 * k);
 
 	// 4
 	setTimeout(function () {
 		processIntro(4);
 		printIntroScript("인간들은 마법 주문을 사용하여", 1);
-	}, 22 * k);
-	setTimeout(function () {
-		printIntroScript("괴물들을 지하세계에 봉인하였다.", 2);
 	}, 25 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+		printIntroScript("괴물들을 지하세계에 봉인하였다.", 2);
 	}, 28 * k);
+	setTimeout(function () {
+		clearCanvas();
+	}, 33 * k);
 
 	// 5
 	setTimeout(function () {
 		printIntroScript("그 후로부터 오랜 시간이 지났다", 1);
-	}, 30 * k);
+	}, 34.5 * k);
 	setTimeout(function () {
 		printIntroScript("...", 1, k, 550);
-	}, 31.5 * k);
+	}, 36 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 35 * k);
+		clearCanvas();
+	}, 41 * k);
 
 	// 6
 	setTimeout(function () {
 		processIntro(6);
-		printIntroScript("에봇 산", 1, 100, 260);
-	}, 36 * k);
+	}, 42 * k);
+	setTimeout(function() {
+		printIntroScript("에봇 산", 1, 100, 270);
+	}, 43 * k);
+
 	setTimeout(function () {
-		printIntroScript("201X년", 2, 100, 240);
-	}, 37 * k);
+		printIntroScript("201X년", 2, 100, 250);
+	}, 44 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 40 * k);
+		clearCanvas();
+	}, 49 * k);
 
 	// 7
 	setTimeout(function () {
 		processIntro(7);
 		printIntroScript("전설에 의하면,", 1);
-	}, 41 * k);
+	}, 50 * k);
 	setTimeout(function () {
 		printIntroScript("에봇 산에 한번 오르면", 2);
-	}, 43 * k);
+	}, 52 * k);
 	setTimeout(function () {
 		printIntroScript("다시는 돌아오지 못한다고 한다.", 3);
-	}, 45 * k);
+	}, 54 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 48 * k);
+		clearCanvas();
+	}, 59 * k);
 
 	// 8
 	setTimeout(function () {
 		processIntro(8);
-	}, 48 * k);
+	}, 61 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 51 * k);
+		clearCanvas();
+	}, 64 * k);
 
 	// 9
 	setTimeout(function() {
 		processIntro(9);
-	}, 52 * k);
+	}, 65 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 55 * k);
+		clearCanvas();
+	}, 68 * k);
 
 	// 10
 	setTimeout(function () {
 		processIntro(10);
-	}, 56 * k);
+	}, 69 * k);
 	setTimeout(function () {
-		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-	}, 59 * k);
+		clearCanvas();
+	}, 72 * k);
 
 	// 11
 	setTimeout(function () {
 		processIntro(11);
-	}, 60 * k);
+	}, 73 * k);
 	setTimeout(function() {
 		scrollImg(11);
-	}, 63 * k)
+	}, 76 * k);
 
+	// fade
+	setTimeout(function() {
+		whiteFade();
+	}, 86 * k);
+	setTimeout(function() {
+		Unfinished();
+	}, 91 * k);
+}
+
+function Unfinished() {
+	ctx.save();
+	ctx.globalAlpha = 1;
+	ctx.fillStyle = "black";
+	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+	ctx.fillStyle = "white";
+	ctx.font = "30px soyanon8";
+	ctx.fillText("TO BE CONTINUE", 190, 230);
+	ctx.restore();
+	createjs.Sound.play("title");
+}
+
+
+function whiteFade(){
+	var op = 0.1;
+	createjs.Sound.play("awakening");
+
+	var timer = setInterval(function () {
+		ctxIntroImg.save();
+		ctxIntroImg.globalAlpha = op;
+		ctxIntroImg.fillStyle = "white";
+		ctxIntroImg.fillRect(introImgX, introImgY, introImgWidth, introImgHeight);
+
+		ctxIntroImg.restore();
+
+		if (op < 0.5) {
+			op += op * 0.1;
+		}
+		else clearInterval(timer);
+	}, 200);
 }
 
 var printIntroScript = function (scriptString, line, speed, x){
@@ -267,11 +312,11 @@ var printIntroScript = function (scriptString, line, speed, x){
 
 			if (curString == "."){
 				x += 10;
-				//$.mbAudio.play('effectSprite',"typeWriting");
+				createjs.Sound.play("typeWriting");
 			}
 			else if (curString !== " "){
 				x += 30;
-				//$.mbAudio.play('effectSprite',"typeWriting");
+				createjs.Sound.play("typeWriting");
 			}
 			else{
 				x += 10;
