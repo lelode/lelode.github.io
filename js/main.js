@@ -10,48 +10,26 @@ var k = 1000;
 var curStage = -1;
 var introImages = {};
 
-for (var j = 0; j < 12; j++ ){
-	introImages[j] = new Image();
-	introImages[j].src = "img/intro/" + j + ".png";
-}
 
-/*
-introImages[0] = new Image();
-introImages[0].src = "img/intro/0.png";
-introImages[1] = new Image();
-introImages[1].src = "img/intro/1.png";
-introImages[2] = new Image();
-introImages[2].src = "img/intro/2.png";
-introImages[3] = new Image();
-introImages[3].src = "img/intro/3.png";
-introImages[4] = new Image();
-introImages[4].src = "img/intro/4.png";
-introImages[5] = new Image();
-introImages[5].src = "img/intro/5.png";
-introImages[6] = new Image();
-introImages[6].src = "img/intro/6.png";
-introImages[7] = new Image();
-introImages[7].src = "img/intro/7.png";
-introImages[8] = new Image();
-introImages[8].src = "img/intro/8.png";
-introImages[9] = new Image();
-introImages[9].src = "img/intro/9.png";
-introImages[10] = new Image();
-introImages[10].src = "img/intro/10.png";
-introImages[11] = new Image();
-introImages[11].src = "img/intro/10.png";
-*/
+
 
 window.onload= function(){
-	//initBGM();
+	// intro image init
+	for (var i=0; i<12; i++) {
+		introImages[i] = new Image();
+		introImages[i].src = "img/intro/" + i + ".png";
+	}
 
-	$(document).trigger('initAudio');
+
+	createjs.Sound.registerSound("sounds/BGM/01_OnceUponATime.ogg", "intro");
+
+	//$(document).trigger('initAudio');
 
 	ctxIntroImg = canvas.getContext("2d");
 	ctxIntroScript = canvas.getContext("2d");
 	ctx = canvas.getContext("2d");
 
-	main();
+ 	main();
 }
 
 canvas.addEventListener("click", processStage);
@@ -67,14 +45,6 @@ function processStage(){
 }
 
 function main() {
-
-	/*
-	introImgScreen.setImg();
-	var timer = setInterval(function () {
-		introImgScreen.draw();
-	},100);
-	*/
-
 	timeoutSlideshow();
 
 	//$.mbAudio.play('backgroundSprite',"intro");
@@ -121,13 +91,6 @@ function intro() {;
 
 //window.addEventListener("load", initImages);
 
-function clearIntroImg() {
-	ctxIntroImg.save();
-	ctxIntroImg.fillStyle = "black";
-	ctxIntroImg.fillRect(introImgX, introImgY, 400, 400);
-	ctxIntroImg.restore();
-}
-
 
 function processIntro(idx) {
 	var op = 0.1;
@@ -135,7 +98,7 @@ function processIntro(idx) {
 
 	var timer = setInterval(function () {
 		ctxIntroImg.save();
-		ctxIntroImg.globalAlpha = op;
+		ctxIntroScript.globalAlpha = op;
 		ctxIntroImg.drawImage(curImg, 0, 0, introImgWidth, introImgHeight,
 			introImgX, introImgY, introImgWidth, introImgHeight);
 		ctxIntroImg.restore();
@@ -167,7 +130,9 @@ function scrollImg(idx, speed) {
 
 function timeoutSlideshow() {
 
-	$.mbAudio.play('backgroundSprite',"intro");
+	//$.mbAudio.play('backgroundSprite',"intro");
+	createjs.Sound.play("intro");
+
 	// 1
 	processIntro(1);
 	printIntroScript("먼 옛날,", 1);
@@ -180,7 +145,6 @@ function timeoutSlideshow() {
 	setTimeout(function () {
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 	}, 9 * k);
-
 	// 2
 	setTimeout(function () {
 		processIntro(2);
@@ -300,12 +264,12 @@ var printIntroScript = function (scriptString, line, speed, x){
 
 	var timer = setInterval(function () {
 		if (scriptStringSplit.length > 0) {
-			//console.log(scriptStringSplit.length);
 			curString = scriptStringSplit.shift();
 
 			ctxIntroScript.save();
+			ctxIntroScript.globalAlpha = 1;
 			ctxIntroScript.fillStyle = "white";
-			ctxIntroScript.font = "30px 굴림";
+			ctxIntroScript.font = "25px soyanon8";
 			ctxIntroScript.fillText(curString, x, y);
 			ctxIntroScript.restore();
 			sly++;

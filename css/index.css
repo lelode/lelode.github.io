@@ -8,7 +8,6 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	-o-user-select: none;
-	user-select: none;
 }
 
 #game_container {
@@ -35,4 +34,10 @@ body {
 	position: absolute;
 
 	top:0 ; right: 0; bottom: 0; left: 0;
+}
+
+
+@font-face {
+	font-family: "soyanon8";
+	src: url("../font/soyanon8.ttf") format('truetype');
 }
