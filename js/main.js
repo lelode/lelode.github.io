@@ -19,11 +19,8 @@ window.onload= function(){
 		introImages[i] = new Image();
 		introImages[i].src = "img/intro/" + i + ".png";
 	}
-
-
 	createjs.Sound.registerSound("sounds/BGM/01_OnceUponATime.ogg", "intro");
 
-	//$(document).trigger('initAudio');
 
 	ctxIntroImg = canvas.getContext("2d");
 	ctxIntroScript = canvas.getContext("2d");
@@ -45,10 +42,8 @@ function processStage(){
 }
 
 function main() {
-	timeoutSlideshow();
 
-	//$.mbAudio.play('backgroundSprite',"intro");
-	// title();
+	title();
 	//intro();
 	// venture();
 	// battle();
@@ -60,11 +55,11 @@ function title() {
 
 	setTimeout(function() {
 		ctx.drawImage(introImages[0], 0, 0);
-		$.mbAudio.play('effectSprite',"title");
+		//$.mbAudio.play('effectSprite',"title");
 	}, 3000);
 
 	setTimeout(function() {
-		$.mbAudio.pause('effectSprite', audioIsReady);
+		//$.mbAudio.pause('effectSprite', audioIsReady);
 
 		ctx.save();
 		ctx.fillStyle = "gray";
@@ -76,17 +71,13 @@ function title() {
 }
 
 function intro() {;
-	var idx = 0;
-
 	// Erase screen
 	ctx.save();
 	ctx.fillStyle = "black";
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.restore();
 
-
-	idx++;
-	processIntro(idx);
+	timeoutSlideshow();
 }
 
 //window.addEventListener("load", initImages);
@@ -195,10 +186,10 @@ function timeoutSlideshow() {
 	// 6
 	setTimeout(function () {
 		processIntro(6);
-		printIntroScript("에봇 산", 1, 100, 250);
+		printIntroScript("에봇 산", 1, 100, 260);
 	}, 36 * k);
 	setTimeout(function () {
-		printIntroScript("201X년", 2, 100, 230);
+		printIntroScript("201X년", 2, 100, 240);
 	}, 37 * k);
 	setTimeout(function () {
 		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -276,11 +267,11 @@ var printIntroScript = function (scriptString, line, speed, x){
 
 			if (curString == "."){
 				x += 10;
-				$.mbAudio.play('effectSprite',"typeWriting");
+				//$.mbAudio.play('effectSprite',"typeWriting");
 			}
 			else if (curString !== " "){
 				x += 30;
-				$.mbAudio.play('effectSprite',"typeWriting");
+				//$.mbAudio.play('effectSprite',"typeWriting");
 			}
 			else{
 				x += 10;
