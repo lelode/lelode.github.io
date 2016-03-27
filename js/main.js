@@ -77,6 +77,7 @@ function intro() {;
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.restore();
 
+	createjs.Sound.play("intro");
 	timeoutSlideshow();
 }
 
@@ -122,7 +123,6 @@ function scrollImg(idx, speed) {
 function timeoutSlideshow() {
 
 	//$.mbAudio.play('backgroundSprite',"intro");
-	createjs.Sound.play("intro");
 
 	// 1
 	processIntro(1);
