@@ -3,11 +3,19 @@ var ctxIntroImg, ctxIntroScript;
 
 var canvasWidth = 635, canvasHeight = 480;
 var introScriptX = 120, introScriptY = 300;
+var introImgWidth = 398, introImgHeight = 214;
 var introImgX = 125, introImgY = 60;
 
+var k = 1000;
 var curStage = -1;
 var introImages = {};
 
+for (var j = 0; j < 12; j++ ){
+	introImages[j] = new Image();
+	introImages[j].src = "img/intro/" + j + ".png";
+}
+
+/*
 introImages[0] = new Image();
 introImages[0].src = "img/intro/0.png";
 introImages[1] = new Image();
@@ -30,87 +38,8 @@ introImages[9] = new Image();
 introImages[9].src = "img/intro/9.png";
 introImages[10] = new Image();
 introImages[10].src = "img/intro/10.png";
-
-var bgmIntro;
-/*
-introScriptScreen = {
-	x: 120,
-	y: 300,
-	_x: 120,
-	_y: 300,
-	width: 40,
-	height: 40,
-	ctx: canvas.getContext("2d"),
-	scriptStringSplit: "",
-	curString: "",
-	sly: 0,
-
-	type: function(scriptString, line) {
-		this._x = this.x;
-		this._y = this.y + (line * this.height);
-
-		this.scriptStringSplit = scriptString.split("");
-
-		var timer = setInterval(function () {
-			if (this.scriptStringSplit.length > 0) {
-				//console.log(scriptStringSplit.length);
-				this.curString = this.scriptStringSplit.shift();
-
-				ctx.save();
-				ctx.fillStyle = "white";
-				ctx.font = "30px 굴림";
-				ctx.fillText(curString, this._x, this._y);
-				ctx.restore();
-				this.sly++;
-
-				if (curString !== " "){
-					this._x += 30;
-					$.mbAudio.play('effectSprite',"typeWriting");
-				}
-				else{
-					this._x += 10;
-				}
-			}
-			else {
-				clearInterval(timer);
-			}
-		},100);
-	},
-}
-
-introImgScreen = {
-	x: 125,
-	y:  60,
-	width:398,
-	height: 214,
-	idx: 1,
-	op: 0.1,
-	img: new Image(),
-	ctx: canvas.getContext("2d"),
-
-	setImg: function() {
-		this.img.src = "img/intro/" + this.idx + ".png";
-	},
-
-	draw: function() {
-		ctx.globalAlpha = this.op;
-		ctx.drawImage(this.img, this.x, this.y);
-
-		if (this.op < 1) {
-			this.op += this.op * 0.1;
-		}
-	},
-
-	next: function() {
-		ctx.save();
-		ctx.fillStyle = "black";
-		ctx.fillRect(this.x, this.y, this.width, this.height);
-		ctx.restore();
-		this.idx++;
-		this.op = 0.1;
-		this.setImg();
-	}
-}
+introImages[11] = new Image();
+introImages[11].src = "img/intro/10.png";
 */
 
 window.onload= function(){
@@ -145,10 +74,11 @@ function main() {
 		introImgScreen.draw();
 	},100);
 	*/
-	timeoutSlideshow();
-	timeoutTypewrite();
 
-	//title();
+	timeoutSlideshow();
+
+	//$.mbAudio.play('backgroundSprite',"intro");
+	// title();
 	//intro();
 	// venture();
 	// battle();
@@ -184,13 +114,10 @@ function intro() {;
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.restore();
 
-	$.mbAudio.play('backgroundSprite',"intro");
 
 	idx++;
 	processIntro(idx);
 }
-
-
 
 //window.addEventListener("load", initImages);
 
@@ -201,12 +128,18 @@ function clearIntroImg() {
 	ctxIntroImg.restore();
 }
 
+
 function processIntro(idx) {
 	var op = 0.1;
 	var curImg = introImages[idx];
 
 	var timer = setInterval(function () {
-		DrawIntroImg(op, idx);
+		ctxIntroImg.save();
+		ctxIntroImg.globalAlpha = op;
+		ctxIntroImg.drawImage(curImg, 0, 0, introImgWidth, introImgHeight,
+			introImgX, introImgY, introImgWidth, introImgHeight);
+		ctxIntroImg.restore();
+
 		if (op < 1) {
 			op += op * 0.1;
 		}
@@ -214,100 +147,151 @@ function processIntro(idx) {
 	}, 100);
 }
 
-function DrawIntroImg (op, idx){
-	ctxIntroImg.save();
-	ctxIntroImg.globalAlpha = op;
-	ctxIntroImg.drawImage(introImages[idx], introImgX, introImgY);
-	ctxIntroImg.restore();
+function scrollImg(idx, speed) {
+	if (typeof(speed)==='undefined') speed = 15;
+	var sy = 0;
+	var curImg = introImages[idx];
+
+	var timer = setInterval(function () {
+		ctxIntroImg.save();
+		ctxIntroImg.drawImage(curImg, 0, sy, introImgWidth, introImgHeight,
+			introImgX, introImgY, introImgWidth, introImgHeight);
+		ctxIntroImg.restore();
+
+		if (sy < 677 - introImgHeight) {
+			sy += 2;
+		}
+		else clearInterval(timer);
+	}, 15);
 }
 
-function timeoutSlideshow(){
+function timeoutSlideshow() {
+
+	$.mbAudio.play('backgroundSprite',"intro");
+	// 1
 	processIntro(1);
-	setTimeout(function() {
-		clearIntroImg();
-	},9000);
-
-	setTimeout(function() {
-		processIntro(2);
-	},12000);
-}
-
-function timeoutTypewrite(){
 	printIntroScript("먼 옛날,", 1);
-	setTimeout(function() {
+	setTimeout(function () {
 		printIntroScript("지상 위엔 두 종족이 살고 있었다.", 2);
-	}, 2000);
-
-	setTimeout(function() {
+	}, 2 * k);
+	setTimeout(function () {
 		printIntroScript("바로 인간과 괴물이었다.", 3);
-	}, 6000);
+	}, 6 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 9 * k);
 
-	setTimeout(function() {
-		clearIntroScript();
-	}, 9000);
-
-	setTimeout(function() {
+	// 2
+	setTimeout(function () {
+		processIntro(2);
 		printIntroScript("그러던 어느 날,", 1);
-	}, 12000);
-	setTimeout(function() {
+	}, 10 * k);
+	setTimeout(function () {
 		printIntroScript("두 종족 사이에 전쟁이 벌어졌다.", 2);
-	}, 15000);
+	}, 12 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 15 * k);
 
+	// 3
+	setTimeout(function () {
+		processIntro(3);
+		printIntroScript("기나긴 싸움 끝에", 1);
+	}, 16 * k);
 	setTimeout(function() {
-		clearIntroScript();
-	}, 19000);
+		printIntroScript("승기를 잡은 것은 인간들이었다.", 2);
+	}, 18 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 21 * k);
+
+	// 4
+	setTimeout(function () {
+		processIntro(4);
+		printIntroScript("인간들은 마법 주문을 사용하여", 1);
+	}, 22 * k);
+	setTimeout(function () {
+		printIntroScript("괴물들을 지하세계에 봉인하였다.", 2);
+	}, 25 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 28 * k);
+
+	// 5
+	setTimeout(function () {
+		printIntroScript("그 후로부터 오랜 시간이 지났다", 1);
+	}, 30 * k);
+	setTimeout(function () {
+		printIntroScript("...", 1, k, 550);
+	}, 31.5 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 35 * k);
+
+	// 6
+	setTimeout(function () {
+		processIntro(6);
+		printIntroScript("에봇 산", 1, 100, 250);
+	}, 36 * k);
+	setTimeout(function () {
+		printIntroScript("201X년", 2, 100, 230);
+	}, 37 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 40 * k);
+
+	// 7
+	setTimeout(function () {
+		processIntro(7);
+		printIntroScript("전설에 의하면,", 1);
+	}, 41 * k);
+	setTimeout(function () {
+		printIntroScript("에봇 산에 한번 오르면", 2);
+	}, 43 * k);
+	setTimeout(function () {
+		printIntroScript("다시는 돌아오지 못한다고 한다.", 3);
+	}, 45 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 48 * k);
+
+	// 8
+	setTimeout(function () {
+		processIntro(8);
+	}, 48 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 51 * k);
+
+	// 9
+	setTimeout(function() {
+		processIntro(9);
+	}, 52 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 55 * k);
+
+	// 10
+	setTimeout(function () {
+		processIntro(10);
+	}, 56 * k);
+	setTimeout(function () {
+		ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+	}, 59 * k);
+
+	// 11
+	setTimeout(function () {
+		processIntro(11);
+	}, 60 * k);
+	setTimeout(function() {
+		scrollImg(11);
+	}, 63 * k)
+
 }
 
-function introScript(idx, callback){
-	switch (idx){
-		case 1:
-			printIntroScript("먼 옛날,", 1);
-			setTimeout(function() {
-			printIntroScript("지상 위엔 두 종족이 살고 있었다.", 2);
-			}, 2000);
-			setTimeout(function() {
-				printIntroScript("바로 인간과 괴물이었다.", 3);
-			}, 6000);
-			setTimeout(function() {
-				callback();
-			},9000);
-			break;
-		case 2:
-			//ctxScript.fillText("그러던 어느 날, 두 종족 사이에 전쟁이", 0, 20);
-			//ctxScript.fillText("벌어졌다.", 0, 60);
-			break;
-		case 3:
-			//ctxScript.fillText("기나긴 싸움 끝에 승기를 잡은 것은", 0, 20);
-			//ctxScript.fillText("인간들이었다.", 0, 60);
-			break;
-		case 4:
-			//ctxScript.fillText("인간들은 마법 주문을 사용하여", 0, 20);
-			//ctxScript.fillText("괴물들을 지하세계에 봉인하였다.", 0, 60);
-			break;
-		case 5:
-			//ctxScript.fillText("그리고 그 후로부터 오랜 시간이 흘렀다...", 0, 20);
-			break;
-		case 6:
-			//ctxScript.fillText("에봇 산", 170, 20);
-			//ctxScript.fillText("201X년", 170, 60);
-			break;
-		case 7:
-			//ctxScript.fillText("전설에 의하면, 에봇 산에 한번 오르면", 0, 20);
-			//ctxScript.fillText("다시는 돌아오지 못한다고 한다.", 0, 60);
-			break;
-		default:
-	}
-}
-
-function clearIntroScript(){
-	ctxIntroScript.save();
-	ctxIntroScript.fillStyle = "black";
-	ctxIntroScript.fillRect(introScriptX, introScriptY, 600, 400);
-	ctxIntroScript.restore();
-}
-
-var printIntroScript = function (scriptString, line){
-	var x = introScriptX;
+var printIntroScript = function (scriptString, line, speed, x){
+	if (typeof(speed)==='undefined') speed = 100;
+	if (typeof(x)==='undefined') x = introScriptX;
 	var y = introScriptY + (line * 40);
 
 	var scriptStringSplit = scriptString.split("");
@@ -326,7 +310,11 @@ var printIntroScript = function (scriptString, line){
 			ctxIntroScript.restore();
 			sly++;
 
-			if (curString !== " "){
+			if (curString == "."){
+				x += 10;
+				$.mbAudio.play('effectSprite',"typeWriting");
+			}
+			else if (curString !== " "){
 				x += 30;
 				$.mbAudio.play('effectSprite',"typeWriting");
 			}
@@ -337,5 +325,5 @@ var printIntroScript = function (scriptString, line){
 		else {
 			clearInterval(timer);
 		}
-	},100);
+	},speed);
 }

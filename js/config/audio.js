@@ -5,7 +5,7 @@
                 ogg: "sounds/BGM/01_OnceUponATime.ogg",
                 mp3: "sounds/BGM/01_OnceUponATime.mp3",
                 sprite:{
-                    intro : {id: "intro", start: 0, end: 60, loop: false},
+                    intro : {id: "intro", start: 0, end: 90, loop: false},
                     floweyNormal: {id: "floweyNormal", start: 60, end: 77.470, loop: true}
                 }
             },
