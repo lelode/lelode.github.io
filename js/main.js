@@ -1,5 +1,5 @@
 var canvas = document.getElementById("game");
-var ctxIntroImg, ctxIntroScript;
+var ctxintroImg, ctxIntroScript;
 
 var canvasWidth = 635, canvasHeight = 480;
 var introScriptX = 120, introScriptY = 300;
@@ -9,70 +9,115 @@ var introImgX = 125, introImgY = 60;
 var k = 1000;
 var curStage = -1;
 var introImages = {};
+var assetNum = 4;
 
-
-
+var soundLoaded = false;
+var imgLoaded = false;
 
 window.onload= function(){
-	// intro image init
-	for (var i=0; i<12; i++) {
-		introImages[i] = new Image();
-		introImages[i].src = "img/intro/" + i + ".png";
-	}
+
+	/*
+	var bgmPath = "./sounds/BGM/";
+	var sfxPath = "./sounds/SFX/";
+	var bgm = [
+		{src:"01_OnceUponATime.mp3", id:"intro"}
+	];
+
+	var sfx = [
+		{src:"title.mp3", id:"title"},
+		{src:"typeWriting.mp3", id:"typeWriting"},
+		{src:"awakening.mp3", id:"awakening"}
+	];
+
+
+	createjs.Sound.registerSound(bgm, bgmPath);
+	//createjs.Sound.registerSound(sfx, sfxPath);
+	*/
+
+	ctxintroImg = canvas.getContext("2d");
+	ctxIntroScript = canvas.getContext("2d");
+	ctx = canvas.getContext("2d");
+
+	ctx.save();
+	ctx.fillStyle = "#fff";
+	ctx.font = "30px Lucida Console";
+	ctx.fillText("LOADING...", 230, 300);
+	ctx.restore();
 
 	createjs.Sound.alternateExtensions = ["ogg"];
+	createjs.Sound.on("fileload", handleLoad);
+
 	createjs.Sound.registerSound("sounds/BGM/01_OnceUponATime.mp3", "intro");
 	createjs.Sound.registerSound("sounds/SFX/title.mp3", "title");
 	createjs.Sound.registerSound("sounds/SFX/typeWriting.mp3", "typeWriting")
 	createjs.Sound.registerSound("sounds/SFX/awakening.mp3", "awakening")
 
-	ctxIntroImg = canvas.getContext("2d");
-	ctxIntroScript = canvas.getContext("2d");
-	ctx = canvas.getContext("2d");
+	for (var i = 0; i< 12 ; i++) {
+		introImages[i] = new Image();
+		introImages[i].src = "img/intro/" + i + ".png";
+		console.log("loading " + i + "th img");
 
- 	main();
+
+		if ( i == 11 ){
+			imgLoaded = true;
+			console.log("introImages.length: " + introImages.length);
+			console.log("img load complete");
+		}
+
+		if (imgLoaded && soundLoaded && curStage < 0) {
+			console.log("img initer start title");
+			title();
+		}
+	}
+
+	function handleLoad(event) {
+		assetNum--;
+		if ( assetNum <= 0 ){
+			soundLoaded = true;
+			console.log("sound load complete");
+		}
+
+
+		if (imgLoaded && soundLoaded && curStage < 0){
+			console.log("sound initer start title");
+			title();
+		}
+	}
 }
 
 canvas.addEventListener("click", processStage);
 
 function processStage(){
 	switch (curStage) {
-		case 0:
-			curStage++;
+		case 1:
+			curStage = 2;
 			intro();
 			break;
 		default: break;
 	}
 }
 
-function main() {
-	title();
-	// venture();
-	// battle();
-}
-
 function title() {
+	curStage = 0;
 	setTimeout(function() {
 		ctx.drawImage(introImages[0], 0, 0);
 		createjs.Sound.play("title");
 	}, 5000);
 
 	setTimeout(function() {
-		//$.mbAudio.pause('effectSprite', audioIsReady);
-
 		ctx.save();
 		ctx.fillStyle = "gray";
 		ctx.font = "20px Lucida Console";
 		ctx.fillText("[TOUCH OR CLICK]", 230, 350);
 		ctx.restore();
-		curStage = 0;
+		curStage = 1;
 	}, 8000);
 }
 
 function intro() {;
 	// Erase screen
 	ctx.save();
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "#000";
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.restore();
 
@@ -88,11 +133,11 @@ function processIntro(idx) {
 	var curImg = introImages[idx];
 
 	var timer = setInterval(function () {
-		ctxIntroImg.save();
+		ctxIntroScript.save();
 		ctxIntroScript.globalAlpha = op;
-		ctxIntroImg.drawImage(curImg, 0, 0, introImgWidth, introImgHeight,
+		ctxintroImg.drawImage(curImg, 0, 0, introImgWidth, introImgHeight,
 			introImgX, introImgY, introImgWidth, introImgHeight);
-		ctxIntroImg.restore();
+		ctxintroImg.restore();
 
 		if (op < 1) {
 			op += op * 0.1;
@@ -107,10 +152,10 @@ function scrollImg(idx, speed) {
 	var curImg = introImages[idx];
 
 	var timer = setInterval(function () {
-		ctxIntroImg.save();
-		ctxIntroImg.drawImage(curImg, 0, sy, introImgWidth, introImgHeight,
+		ctxintroImg.save();
+		ctxintroImg.drawImage(curImg, 0, sy, introImgWidth, introImgHeight,
 			introImgX, introImgY, introImgWidth, introImgHeight);
-		ctxIntroImg.restore();
+		ctxintroImg.restore();
 
 		if (sy < 677 - introImgHeight) {
 			sy += 2;
@@ -120,10 +165,15 @@ function scrollImg(idx, speed) {
 }
 
 function clearCanvas() {
+
+	/*
 	ctx.save();
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "#000";
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	ctx.restore();
+	*/
+
+	ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
 function timeoutSlideshow() {
@@ -260,9 +310,9 @@ function timeoutSlideshow() {
 function Unfinished() {
 	ctx.save();
 	ctx.globalAlpha = 1;
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "#000";
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-	ctx.fillStyle = "white";
+	ctx.fillStyle = "#fff";
 	ctx.font = "30px soyanon8";
 	ctx.fillText("TO BE CONTINUE", 190, 230);
 	ctx.restore();
@@ -275,12 +325,13 @@ function whiteFade(){
 	createjs.Sound.play("awakening");
 
 	var timer = setInterval(function () {
-		ctxIntroImg.save();
-		ctxIntroImg.globalAlpha = op;
-		ctxIntroImg.fillStyle = "white";
-		ctxIntroImg.fillRect(introImgX, introImgY, introImgWidth, introImgHeight);
 
-		ctxIntroImg.restore();
+		ctxintroImg.save();
+		ctxintroImg.globalAlpha = op;
+		ctxintroImg.fillStyle = "#fff";
+		ctxintroImg.fillRect(introImgX, introImgY, introImgWidth, introImgHeight);
+
+		ctxintroImg.restore();
 
 		if (op < 0.5) {
 			op += op * 0.1;
@@ -289,9 +340,9 @@ function whiteFade(){
 	}, 200);
 }
 
-var printIntroScript = function (scriptString, line, speed, x){
-	if (typeof(speed)==='undefined') speed = 100;
-	if (typeof(x)==='undefined') x = introScriptX;
+var printIntroScript = function (scriptString, line, speed, x) {
+	if (typeof(speed) === 'undefined') speed = 100;
+	if (typeof(x) === 'undefined') x = introScriptX;
 	var y = introScriptY + (line * 40);
 
 	var scriptStringSplit = scriptString.split("");
@@ -304,26 +355,26 @@ var printIntroScript = function (scriptString, line, speed, x){
 
 			ctxIntroScript.save();
 			ctxIntroScript.globalAlpha = 1;
-			ctxIntroScript.fillStyle = "white";
+			ctxIntroScript.fillStyle = "#fff";
 			ctxIntroScript.font = "25px soyanon8";
 			ctxIntroScript.fillText(curString, x, y);
 			ctxIntroScript.restore();
 			sly++;
 
-			if (curString == "."){
+			if (curString == ".") {
 				x += 10;
 				createjs.Sound.play("typeWriting");
 			}
-			else if (curString !== " "){
+			else if (curString !== " ") {
 				x += 30;
 				createjs.Sound.play("typeWriting");
 			}
-			else{
+			else {
 				x += 10;
 			}
 		}
 		else {
 			clearInterval(timer);
 		}
-	},speed);
+	}, speed);
 }
