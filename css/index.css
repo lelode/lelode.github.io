@@ -12,7 +12,9 @@ body {
 
 #game_container {
 	background: #000;
-	
+	color: #000;
+
+	font-family: "tbyt";
 	width: 100%;
 	max-width: 635px;
 	max-height: 480px;
@@ -39,7 +41,7 @@ body {
 
 #loading {
 	font-size: 30px;
-	font-family: "soyanon8";
+	font-family: "tbytB";
 	text-align: center;
 	position: relative; 
 	vertical-align: middle;
@@ -49,6 +51,11 @@ body {
 
 
 @font-face {
-	font-family: "soyanon8";
-	src: url("../font/soyanon8.ttf") format('truetype');
+	font-family: "tbytB";
+	src: url("../font/tbytB.ttf") format('truetype');
+}
+
+@font-face {
+	font-family: "tbyt";
+	src: url("../font/tbyt.ttf") format('truetype');
 }
