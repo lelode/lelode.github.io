@@ -1,5 +1,6 @@
 body {
 	background: #000;
+	font-family: "persuasionBRK";
 	overflow: hidden;
 	margin: 0;
 
@@ -49,6 +50,10 @@ body {
 	color: #000;
 }
 
+@font-face {
+	font-family: "persuasionBRK";
+	src: url("../font/PersuasionBRK.ttf") format('truetype');
+}
 
 @font-face {
 	font-family: "tbytB";
