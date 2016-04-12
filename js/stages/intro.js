@@ -108,23 +108,18 @@ function IntroSlider() {
 
 		var timer = setInterval(function () {
 			if (pause){
-				if (curStringIdx >= stringNum){
-					clearInterval(timer);
-					lineChange = false;
-				}
-				else pauseCounter++;
-
-				if (lineChange){
-					lineChange = false;
-					scriptStringSplit = scriptString[curStringIdx].split("");
-					_y += 35;
-					_x = self.xScript;
-				}
-
-				if (pauseCounter > pauseInterval) {
+				if (curStringIdx >= stringNum) clearInterval(timer);
+				else if (pauseCounter > pauseInterval) {
+					if (lineChange){
+						lineChange = false;
+						scriptStringSplit = scriptString[curStringIdx].split("");
+						_y += 35;
+						_x = self.xScript;
+					}
 					pause = false;
 					pauseCounter = 0;
 				}
+				else pauseCounter++;
 			}
 
 			else {

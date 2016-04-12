@@ -86,8 +86,8 @@ function initIngameImages(){
 	addAsset("speechBubble", "img/sprites/speechBubble.png");
 	addAsset("frisk", "img/sprites/frisk.png");
 	addAsset("friskSoul", "img/sprites/friskSoul.png");
-	addAsset("flowey_venture", "img/sprites/flowey_venture.png");
-	addAsset("flowey_talk", "img/sprites/flowey_talk.png");
+	addAsset("flowey_overworld", "img/sprites/flowey_overworld.png");
+	addAsset("flowey_portrait", "img/sprites/flowey_portrait.png");
 	addAsset("heartBeatEffect", "img/sprites/heartBeat.png");
 }
 

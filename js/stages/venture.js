@@ -1,31 +1,249 @@
-var backgroundImg = {
-    x: 0, y: 0,
-    draw: function(){ ctx.drawImage(images.ruin, this.x, this.y) }
-};
 
-var talkBox = {
-    width: 580,
-    height: 154,
-    x: 30, y: 10,
-    scriptX: 30 + 150,
-    scriptY: 10 + 50,
-    talkboxOn: false,
+function BackgroundImage(){
+    var self = this;
+    self.x = 0; self.y = 0;
+    self.draw = function(){ ctx.drawImage(images.ruin, self.x, self.y) };
+}
 
-    drawTalkBox: function(){
+function VentureManager(){
+    var self = this;
+
+    self.floweyOverworld = new FloweyOverworldAnim();
+    self.floweyTalk = new TalkingFlowey();
+    self.frisk = new Frisk();
+    self.bgImg = new BackgroundImage();
+
+    self.friskTurnAround = function(){
+        var counter = 0;
+
+        var timer = setInterval(function(){
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            self.bgImg.draw();
+            self.floweyOverworld.playAnim("excited");
+            self.frisk.turn(counter);
+            if (counter < 4) counter++;
+            else clearInterval(timer);
+        }, 300);
+    };
+
+    self.friskGetUp = function(){
+        var angle = 1.5;
+        var _x = self.frisk.x;
+        var _y = self.frisk.y;
+        var counter = 0;
+        var counter2 = 0;
+
+        var timer = setInterval(function(){
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            self.bgImg.draw();
+            self.frisk.getUp(angle, _x, _y);
+            self.floweyOverworld.excited(counter2);
+            counter++;
+
+            if (angle > 0){
+                if (angle < 1.2 && counter % 3 == 0 && counter2 < 3) counter2++;
+                angle -= 0.1;
+                _x -= 3.3;
+                _y -= 1.5;
+            }
+            else clearInterval(timer);
+        }, 40);
+    };
+
+    self.adjustOrigin = function(){
+        var diff = 60;
+        var timer = setInterval(function() {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            self.bgImg.draw();
+            self.floweyOverworld.playAnim("excited");
+            self.frisk.playAnim("front");
+
+            if (self.bgImg.y < diff) {
+                self.bgImg.y += 1;
+                self.floweyOverworld.y += 1;
+                self.frisk.y += 1;
+            }
+            else clearInterval(timer);
+        }, 10);
+
+        self.floweyTalk.floweyOverworld.y += diff;
+    }
+}
+
+function FloweyOverworldTalk(){
+    var self = this;
+
+    self.x = 300;
+    self.y = 145;
+    self.size = 48;
+
+    self.frameCounter = 1;
+    self.frameIdx = 0;
+    self.speakingRate = 5;
+    self.emotion = 0;
+
+    self.setEmotion = function(word) {
+        switch (word){
+            case "smile": self.emotion = 0; break;
+            case "calm": self.emotion = 1; break;
+            default: console.log("FloweyOverworldTalk/setEmotion method wrong argument"); break;
+        }
+    };
+
+    self.talk = function(){
+        if (self.frameCounter % self.speakingRate == 0) {
+            if (self.emotion == 0) self.frameIdx = (self.frameIdx == 1) ? 0 : 1;
+            else if (self.emotion == 1) self.frameIdx = (self.frameIdx == 2) ? 3: 2;
+            self.frameCounter = 1;
+        }
+        else self.frameCounter++;
+        ctx.save();
+        ctx.drawImage(images.flowey_overworld,
+            self.frameIdx * self.size, 0,
+            self.size, self.size,
+            self.x, self.y, self.size, self.size);
+        ctx.restore();
+    };
+}
+
+function FloweyOverworldAnim(){
+    var self = this;
+
+    self.x = 300;
+    self.y = 145;
+    self.size = 48;
+    self.frameNum = 4;
+
+    self.excited = function(counter){
+        if (counter >= 0 && counter < 4){
+            ctx.save();
+            ctx.drawImage(images.flowey_overworld,
+                counter * self.size, 3 * self.size,
+                self.size, self.size, self.x, self.y, self.size, self.size);
+            ctx.restore();
+        }
+    };
+    self.playAnim = function(word) {
+        var row, col;
+        var dir = 1;
+        var speed = 100;
+        var stopAnim = false;
+
+        switch (word){
+            case "sprout": row = 1; break;
+            case "glare": row = 2; stopAnim = true; break;
+            case "lookup": row = 2; break;
+            case "lookdown": row = 2; dir = -1; break;
+            case "excited": row = 3; stopAnim = true; break;
+            default: console.log("FloweyOverworldAnim/playAnim() incorrect emote argument"); break;
+        }
+
+        if (dir > 0) col = 0;
+        else col = self.frameNum;  // if dir is negative num, play anim backwords
+
+        if (stopAnim) {
+            ctx.save();
+            ctx.drawImage(images.flowey_overworld,
+                col * self.size, row * self.size,
+                self.size, self.size, self.x, self.y, self.size, self.size);
+            ctx.restore();
+        }
+        else {
+            var timer = setInterval(function(){
+                ctx.save();
+                ctx.drawImage(images.flowey_overworld,
+                    col * self.size, row * self.size,
+                    self.size, self.size,
+                    self.x, self.y, self.size, self.size);
+                ctx.restore();
+                if (dir > 0 && col < self.frameNum -1 ) col++;
+                else if (dir < 0 && col > 0) col--;
+                else clearInterval(timer);
+            }, speed);
+        }
+    };
+}
+
+function FloweyProtrait(xVal, yVal) {
+    var self = this;
+    self.x = xVal;
+    self.y = yVal;
+    self.width = 90;
+    self.height = 90;
+    self.emotion = 0;
+    self.speakingRate = 5;
+    self.frameCounter = 1;
+    self.frameIdx = 0;
+
+    self.setEmotion = function(word){
+        var idx;
+        switch (word){
+            case "smile": idx = 0; break;
+            case "calm": idx = 1; break;
+            default: console.log("floweyTalk/setEmotion wrong emote value"); idx = 1; break;
+        }
+        self.emotion = idx;
+    };
+
+    self.draw = function(word){
+        if (word) self.setEmotion(word);
+        ctx.drawImage(images.flowey_portrait,
+            0, self.emotion * self.height,
+            self.width, self.height,
+            self.x, self.y, self.width, self.height);
+    };
+
+    self.talk = function(){
+        if (self.frameCounter % self.speakingRate == 0) {
+            self.frameIdx = (self.frameIdx == 1) ? 0 : 1;
+            self.frameCounter = 1;
+        }
+        else self.frameCounter++;
+
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        ctx.drawImage(images.flowey_portrait,
+            self.frameIdx * self.width, self.emotion * self.height,
+            self.width, self.height,
+            self.x, self.y, self.width, self.height
+        );
+        ctx.restore();
+    };
+}
+
+function TalkingFlowey() {
+    var self = this;
+
+    self.width = 580;
+    self.height = 154;
+    self.x = 30;
+    self.y = 10;
+    self.xScript = self.x + 150;
+    self.yScript = self.y + 50;
+    self.talkboxOn = false;
+
+    self.floweyPortrait = new FloweyProtrait(self.x + 30, self.y + 25);
+    self.floweyOverworld = new FloweyOverworldTalk();
+
+    self.setEmotion = function(word){
+        self.floweyPortrait.setEmotion(word);
+        self.floweyOverworld.setEmotion(word);
+    };
+
+    self.drawBox = function(){
         ctx.fillStyle = "#fff";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillRect(self.x, self.y, self.width, self.height);
         ctx.fillStyle = "#000";
-        ctx.fillRect(this.x+5, this.y+5, this.width-10, this.height-10);
-    },
+        ctx.fillRect(self.x+5, self.y+5, self.width-10, self.height-10);
+    };
 
-    floweyTalk: function(){
+    self.talk = function(){
         ableUserInput = false;
+        var _x = self.xScript;
+        var _y = self.yScript;
         var scriptString = {};
         var compareWord = {};
         var stringNum = 0;
-        var _scriptX = this.scriptX, _scriptY = this.scriptY;
-        var _x = _scriptX;
-        var _y = _scriptY;
         var scriptArea = 420;
         var curStringIdx = 0;
 
@@ -45,24 +263,21 @@ var talkBox = {
         var stringIdxChange = true;
 
         // if conversation box is already drawn, don't draw it again
-        if (this.talkboxOn) {
-            ctx.clearRect(this.scriptX, this.scriptY-20, scriptArea, 110);
-        }
+        if (self.talkboxOn) ctx.clearRect( self.xScript, self.yScript-20, scriptArea, 110);
         else {
-            this.drawTalkBox();
-            this.talkboxOn = true;
+            self.drawBox();
+            self.talkboxOn = true;
+            self.floweyPortrait.draw();
         }
 
         var timer = setInterval(function(){
             // pauses for about (talkspeed times 8) secs when there's comma or line changes
             if (pause){
-                if (curStringIdx == stringNum) { // if all 3 lines printed, end repeat
+                if (curStringIdx >= stringNum) { // if all 3 lines printed, end repeat
                     clearInterval(timer);
                     ableUserInput = true;
                 }
-                else pauseCounter++;
-
-                if (pauseCounter > pauseInterval){
+                else if (pauseCounter > pauseInterval){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line
                         stringIdxChange = false;
@@ -76,32 +291,32 @@ var talkBox = {
                     pause = false;
                     pauseCounter = 0;
                 }
+                else pauseCounter++;
             }
+
             else {
                 var char = scriptStringSplit.shift();
                 ctx.save();
                 ctx.fillStyle = "#fff";
 
-                // print color with yellow
-                if (compareWord[0]) {
+                if (compareWord[0]) { // print color with yellow
                     for (var i = 0; i < compareWord.length; i++){
-                        if (char == compareWord[i])
-                            ctx.fillStyle = "#ffff00";
+                        if (char == compareWord[i]) ctx.fillStyle = "#ffff00";
                     }
                 }
 
                 // change line if sentence gets long
-                if (_x > ( _scriptX + scriptArea-80)){
+                if (_x > ( self.xScript + scriptArea-80)){
                     _y += 35;
-                    _x = _scriptX + 25;
+                    _x = self.xScript + 25;
                     nlFlag = true;
                 }
 
                 ctx.font = "25px tbyt";
                 ctx.fillText(char, _x, _y);
                 ctx.restore();
-                floweyVenture.playAnim("talk");
-                floweyTalk.talkInBox(); // face in box moves
+                self.floweyPortrait.talk();
+                self.floweyOverworld.talk();
 
                 if (char == ",") pause = true;
                 else if (char == "." || (char == " " && !nlFlag)) _x += 10;
@@ -115,232 +330,32 @@ var talkBox = {
                     stringIdxChange = true;
                     pause = true;
                     _y += 35;
-                    _x = _scriptX;
+                    _x = self.xScript;
                 }
             }
         }, 55);
     }
-};
+}
 
-var floweyTalk = {
-    xBox: 30 + 30,
-    yBox: 10 + 25,
-    xBattle: 275, yBattle: 100,
-    width: 90,    height: 90,
-    currentEmotion: 0,
-    speakingRate: 5,
-    frameCounter: 1,
-    frameIdx: 0,
+function Soul(){
+    var self = this;
+    self.x = 310;
+    self.y = 300;
 
-    setEmotion: function(emote){
-        var idx;
-        switch (emote){
-            case "smile": idx = 0; break;
-            case "calm": idx = 1; break;
-            default: console.log("floweyTalk/setEmotion wrong emote value"); idx = 1; break;
-        }
-        this.currentEmotion = idx;
-    },
-
-    drawFace: function(emote){
-        var idx;
-        switch(emote){
-            case "smile": idx = 0; break;
-        }
-        ctx.drawImage(images.flowey_talk,
-            0, idx, this.width, this.height,
-            this.xBattle, this.yBattle, this.width, this.height
-        );
-    },
-
-    talkInBattle: function(){
-        if (this.frameCounter % this.speakingRate == 0) {
-            this.frameIdx = (this.frameIdx == 1) ? 0 : 1;
-            this.frameCounter = 1;
-        }
-        else this.frameCounter++;
-
+    self.draw = function(_x, _y){
+        if (_x === undefined) _x = self.x;
+        if (_y === undefined) _y = self.y;
         ctx.save();
-        ctx.globalAlpha = 0.5;
-        ctx.drawImage(images.flowey_talk,
-            this.frameIdx * this.width, this.currentEmotion * this.height,
-            this.width, this.height,
-            this.xBattle, this.yBattle, this.width, this.height
-        );
+        ctx.drawImage(images.friskSoul, _x, _y);
         ctx.restore();
-    },
+    };
 
-    talkInBox: function() {
-        if (this.frameCounter % this.speakingRate == 0) {
-            this.frameIdx = (this.frameIdx == 1) ? 0 : 1;
-            this.frameCounter = 1;
-        }
-        else this.frameCounter++;
-
-        ctx.save();
-        ctx.drawImage(images.flowey_talk,
-            this.frameIdx * this.width, this.currentEmotion * this.height,
-            this.width, this.height,
-            this.xBox, this.yBox, this.width, this.height
-        );
-        ctx.restore();
-    }
-};
-
-var floweyVenture = {
-    x: 300, y: 145,
-    width: 48, height: 48,
-    frameNum: 4,
-    currentEmotion: 0,
-    speakingRate: 5,
-    frameCounter: 1,
-    frameIdx: 0,
-
-    playAnim: function(emote) {
-        var row, col;
-        var _x = this.x, _y = this.y;
-        var _width = this.width, _height = this.height;
-        var dir = 1;
-        var _frameCounter = null;
-        var speed = 100;
-        var stopAnim = false;
-
-        switch (emote){
-            case "talk": row = 0; stopAnim = true; _frameCounter = this.frameCounter; break;
-            case "sprout": row = 1; break;
-            case "glare": row = 2; stopAnim = true; break;
-            case "lookup": row = 2; break;
-            case "lookdown": row = 2; dir = -1; break;
-            case "excited": row = 3; stopAnim = true; break;
-            default: console.log("floweyVenture/playAnim() incorrect emote argument"); break;
-        }
-
-        if (dir > 0) col = 0;
-        else col = this.frameNum;  // if dir is negative num, play anim backwords
-
-        if (stopAnim) {
-            if (_frameCounter) { // for talking animation
-                if (_frameCounter % this.speakingRate == 0) {
-                    if (this.currentEmotion == 0) this.frameIdx = (this.frameIdx == 1) ? 0 : 1;
-                    else if (this.currentEmotion == 1) this.frameIdx = (this.frameIdx == 2) ? 3: 2;
-                    this.frameCounter = 1;
-                }
-                else this.frameCounter++;
-                col = this.frameIdx;
-            }
-
-            ctx.save();
-            ctx.drawImage(images.flowey_venture,
-                col * _width, row * _height,
-                _width, _height,
-                _x, _y, _width, _height);
-            ctx.restore();
-        }
-        else {
-            var timer = setInterval(function(){
-                ctx.save();
-                ctx.drawImage(images.flowey_venture,
-                    col * _width, row * _height,
-                    _width, _height,
-                    _x, _y, _width, _height);
-
-                ctx.restore();
-                if (dir > 0 && col < 3) col++;
-                else if (dir < 0 && col > 0) col--;
-                else clearInterval(timer);
-            }, speed);
-        }
-    },
-
-    excited: function(counter){
-        if (counter >= 0 && counter < 4){
-            ctx.save();
-            ctx.drawImage(images.flowey_venture,
-                counter * this.width, 3 * this.height,
-                this.width, this.height,
-                this.x, this.y,
-                this.width, this.height);
-            ctx.restore();
-        }
-    }
-};
-
-var frisk = {
-    x: 303, y: 195,
-    xSoul: null, ySoul: null,
-    xSoulTarget: 310, ySoulTarget: 300,
-    width: 40, height: 62,
-    spriteFrame: 0,
-
-    playAnim: function(emote){
-        var angle;
-        var col;
-        switch (emote){
-            case "lyingdown": col = 0; angle = 1.5; break;
-            case "front": col = 0; break;
-            case "back": col = 4; break;
-            default: console.log("frisk/playAnim() incorrect emote argument"); break;
-        }
-
-        ctx.save();
-        if (angle){
-            ctx.translate(this.x, this.y);  // moves the origin
-            ctx.translate(this.width+10, this.height/3);
-            ctx.rotate(1.5);
-            ctx.drawImage(images.frisk,
-                col * this.width, 0,
-                this.width, this.height,
-                0, 0, this.width, this.height);
-        }
-        else {
-            ctx.drawImage(images.frisk,
-            col * this.width, 0,
-            this.width, this.height,
-            this.x, this.y, this.width, this.height);
-        }
-
-        ctx.restore();
-    },
-
-    drawSoul: function(){
-        this.xSoul = this.xSoulTarget;
-        this.ySoul = this.ySoulTarget;
-
-        ctx.save();
-        ctx.drawImage(images.friskSoul, this.xSoul, this.ySoul);
-        ctx.restore();
-    },
-
-    movesSoul: function(){
-        createjs.Sound.play("battleStart");
-        var _x = this.xSoul;
-        var _y = this.ySoul;
-        var xT = this.xSoulTarget;
-        var yT = this.ySoulTarget;
-
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-        var timer = setInterval(function(){
-            ctx.clearRect(_x, _y, images.friskSoul.width, images.friskSoul.height);
-            ctx.drawImage(images.friskSoul, _x, _y);
-
-            if ( _x < xT || _y < yT ){
-                if ( _x < 310) _x++;
-                if (_y < 300) _y += 2;
-            }
-            else clearInterval(timer);
-        }, 50);
-    },
-
-    heartBeat: function(){
+    self.heartBeat = function(){
         createjs.Sound.play("heartBeat");
-        var _x = this.xSoulTarget;
-        var _y = this.ySoulTarget;
-        var _xe = _x;
-        var _ye = _y;
+        var _xe = self.x;
+        var _ye = self.y;
         var effWidth = images.friskSoul.width;
         var effHeight = images.friskSoul.height;
-
         var op = 0.9;
 
         var timer = setInterval(function(){
@@ -360,11 +375,11 @@ var frisk = {
                     op -= 0.2;
                     ctx.drawImage(images.friskSoul,
                         0, 0, images.friskSoul.width, images.friskSoul.height,
-                        _x-5, _y-5, images.friskSoul.width+10, images.friskSoul.height+10);
+                        self.x-5, self.y-5, images.friskSoul.width+10, images.friskSoul.height+10);
                 }
                 else if (op < 0.5){
                     op -= 0.1;
-                    ctx.drawImage(images.friskSoul, _x, _y);
+                    ctx.drawImage(images.friskSoul, self.x, self.y);
                 }
                 ctx.restore();
             }
@@ -372,164 +387,158 @@ var frisk = {
                 clearInterval(timer);
                 ctx.save();
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-                ctx.drawImage(images.friskSoul, _x, _y);
+                ctx.drawImage(images.friskSoul, self.x, self.y);
                 ctx.restore();
             }
         },50);
-    },
+    };
+}
 
-    beep: function(){
-        frisk.playAnim("back");
-        this.xSoul = this.x+5;
-        this.ySoul = this.y+30;
-        ctx.drawImage(images.friskSoul, this.xSoul, this.ySoul);
+function Frisk(){
+    var self = this;
+
+    self.x = 303;
+    self.y = 195;
+    self.width = 40;
+    self.height = 62;
+    self.frame = 0;
+
+    self.soul = new Soul();
+
+    self.playAnim = function(word){
+        var angle;
+        var col;
+        switch (word){
+            case "lyingdown": col = 0; angle = 1.5; break;
+            case "front": col = 0; break;
+            case "back": col = 4; break;
+            default: console.log("frisk/playAnim() incorrect emote argument"); break;
+        }
+
+        ctx.save();
+        if (angle){ // moves the origin
+            ctx.translate(self.x, self.y);
+            ctx.translate(self.width+10, self.height/3);
+            ctx.rotate(1.5);
+            ctx.drawImage(images.frisk, col * self.width, 0,
+                self.width, self.height, 0, 0, self.width, self.height);
+        }
+        else {
+            ctx.drawImage(images.frisk, col * self.width, 0,
+                self.width, self.height, self.x, self.y, self.width, self.height);
+        }
+        ctx.restore();
+    };
+
+    self.getUp = function(angle, _x, _y) {
+        ctx.save();
+        ctx.translate(_x, _y);  // moves the origin
+        ctx.translate(self.width+10, self.height/3);
+        ctx.rotate(angle);
+        ctx.drawImage(images.frisk,
+            0, 0, self.width, self.height,
+            0, 0, self.width, self.height
+        );
+        ctx.restore();
+    };
+
+    self.turn = function(counter){
+        if (counter >= 0 && counter < 5){
+            ctx.save();
+            ctx.drawImage(images.frisk,
+                counter * self.width, 0, self.width, self.height,
+                self.x, self.y, self.width, self.height
+            );
+            ctx.restore();
+        }
+    };
+
+    self.movesSoul = function(){
+        createjs.Sound.play("battleStart");
+        var _x = self.x + 5;
+        var _y = self.y + 30;
+
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        var timer = setInterval(function(){
+            ctx.clearRect(_x, _y, images.friskSoul.width, images.friskSoul.height);
+            self.soul.draw(_x, _y);
+            if ( _x < self.soul.x || _y < self.soul.y ){
+                if ( _x < self.soul.x ) _x++;
+                if ( _y < self.soul.y ) _y += 2;
+            }
+            else clearInterval(timer);
+        }, 50);
+    };
+
+    self.beep = function(){
+        self.playAnim("back");
+        var _x = self.x + 5;
+        var _y = self.y + 30;
+        self.soul.draw(_x, _y);
         createjs.Sound.play("beep");
 
         setTimeout(function(){
-            ctx.clearRect(this.x, this.y, this.width, this.height);
-            frisk.playAnim("back");
+            ctx.clearRect(self.x, self.y, self.width, self.height);
+            self.playAnim("back");
         }, 100);
-    },
+    };
+}
+var ventureManager;
 
-    getUp: function(angle, _x, _y) {
-        ctx.save();
-        ctx.translate(_x, _y);  // moves the origin
-        ctx.translate(this.width+10, this.height/3);
-        ctx.rotate(angle);
-        ctx.drawImage(images.frisk,
-            0, 0, this.width, this.height,
-            0, 0, this.width, this.height
-        );
-        ctx.restore();
-    },
-
-    turn: function(counter){
-        if (counter >= 0){
-            ctx.save();
-            ctx.drawImage(images.frisk,
-                counter * this.width, 0, this.width, this.height,
-                this.x, this.y, this.width, this.height
-            )
-            ctx.restore();
-            if (counter >= 4) this.animCounter = 4;
-        }
-    }
-};
-
-// call this after intro
 function venture(){
+    ventureManager = new VentureManager();
 
-    /*
-    backgroundImg.draw();
-    frisk.playAnim("lyingdown");
+    ventureManager.bgImg.draw();
+    ventureManager.frisk.playAnim("lyingdown");
     setTimeout(function(){
-        floweyVenture.playAnim("sprout");
+        ventureManager.floweyOverworld.playAnim("sprout");
         createjs.Sound.play("pop");
      }, 1 * k);
-    setTimeout(function(){ floweyVenture.playAnim("glare") }, 2 * k );
-    setTimeout(function(){ floweyVenture.playAnim("lookup") }, 4 * k);
-    setTimeout(function(){ floweyVenture.playAnim("lookdown") }, 6 * k);
-    setTimeout(function(){ friskGetUp() }, 8 * k);
-    setTimeout(function(){ adjustOrigin() }, 10 * k);
+    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("glare") }, 2 * k );
+    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("lookup") }, 4 * k);
+    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("lookdown") }, 6 * k);
+    setTimeout(function(){ ventureManager.friskGetUp() }, 8 * k);
+    setTimeout(function(){ ventureManager.adjustOrigin() }, 10 * k);
     setTimeout(function(){
-        talkBox.floweyTalk("너, 지상에서 온 인간이구나!");
+        ventureManager.floweyTalk.talk("너, 지상에서 온 인간이구나!");
     }, 11 * k);
     setTimeout(function(){
-        talkBox.talkboxOn = false;
-        friskTurnAround();
+        ventureManager.floweyTalk.talkboxOn = false;
+        ventureManager.friskTurnAround();
     }, 15 * k);
     setTimeout(function(){
         curStage = "venture";
         createjs.Sound.play("flowey");
         floweyScriptVenture();
     }, 18 * k);
-    */
-
 
     // for test
-    adjustOrigin();
-    setTimeout(function(){ battle()}, 1 * k);
+    //ventureManager.adjustOrigin()
+    //setTimeout(function(){ battle()}, 1 * k);
 }
-
 
 function floweyScriptVenture(){
     scriptVentureCtr++;
+
     switch (scriptVentureCtr){
-        case 1: talkBox.floweyTalk("안녕!", "나는 노란 꽃 플라위야.", "만나서 반가워!", "노란", "플라위"); break;
-        case 2: talkBox.floweyTalk("여기는 지하세계야.", "괴물들이 살고 있는 곳이지."); break;
+        case 1: ventureManager.floweyTalk.talk("안녕!", "나는 노란 꽃 플라위야.", "만나서 반가워!", "노란", "플라위"); break;
+        case 2: ventureManager.floweyTalk.talk("여기는 지하세계야.", "괴물들이 살고 있는 곳이지."); break;
         case 3:
-            floweyTalk.setEmotion("calm");
-            floweyVenture.currentEmotion = 1;
-            talkBox.floweyTalk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만..."); break;
-        case 4: talkBox.floweyTalk("여긴 아주 위험한 곳이니까 되도록이면 빨리 이곳에서 나가는 게 좋아."); break;
-        case 5: talkBox.floweyTalk("네가 출구를 찾으러 가기 전에"); break;
-        case 6: talkBox.floweyTalk("아무 것도 모르는 채로 지하세계를 돌아다녔다간 위험한 일을 당할 수도 있으니까"); break;
+            ventureManager.floweyTalk.setEmotion("calm");
+            ventureManager.floweyTalk.talk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만..."); break;
+        case 4: ventureManager.floweyTalk.talk("여긴 아주 위험한 곳이니까 되도록이면 빨리 이곳에서 나가는 게 좋아."); break;
+        case 5: ventureManager.floweyTalk.talk("네가 출구를 찾으러 가기 전에"); break;
+        case 6: ventureManager.floweyTalk.talk("아무 것도 모르는 채로 지하세계를 돌아다녔다간 위험한 일을 당할 수도 있으니까"); break;
         case 7:
-            floweyTalk.setEmotion("smile");
-            floweyVenture.currentEmotion = 0;
-            talkBox.floweyTalk("여기선 어떻게 해야 하는지 내가 알려줄게."); break;
-        case 8: talkBox.floweyTalk("준비됐어?", "시작한다!"); break;
+            ventureManager.floweyTalk.setEmotion("smile");
+            ventureManager.floweyTalk.talk("여기선 어떻게 해야 하는지 내가 알려줄게."); break;
+        case 8: ventureManager.floweyTalk.talk("준비됐어?", "시작한다!"); break;
         case 9:
             ableUserInput = false;
-            talkBox.talkboxOn = false;
+            ventureManager.floweyTalk.talkboxOn = false;
             createjs.Sound.stop();
             battle();
             break;
     }
-}
-
-function friskTurnAround(){
-    var counter = 0;
-
-    var timer = setInterval(function(){
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        backgroundImg.draw();
-        floweyVenture.playAnim("excited");
-        frisk.turn(counter);
-
-        if (counter < 4) counter++;
-        else clearInterval(timer);
-    }, 300);
-}
-
-function friskGetUp() {
-    var angle = 1.5;
-    var x = frisk.x;
-    var y = frisk.y;
-    var counter = 0;
-    var counter2 = 0;
-
-    var timer = setInterval(function(){
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        backgroundImg.draw();
-        frisk.getUp(angle, x, y);
-        floweyVenture.excited(counter2);
-        counter++;
-
-        if (angle > 0){
-            if (angle < 1.2 && counter % 3 == 0 && counter2 < 3){
-                counter2++;
-            }
-            angle -= 0.1;
-            x -= 3.3;
-            y -= 1.5;
-        }
-        else clearInterval(timer);
-    }, 40);
-}
-
-function adjustOrigin(){
-    var timer = setInterval(function() {
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-        backgroundImg.draw();
-        floweyVenture.playAnim("excited");
-        frisk.playAnim("front");
-
-        if (backgroundImg.y < 60) {
-            backgroundImg.y += 1;
-            floweyVenture.y += 1;
-            frisk.y += 1;
-        }
-        else clearInterval(timer);
-    }, 10);
 }

@@ -4,7 +4,7 @@ var scriptVentureCtr = 0;
 window.onload = function(){
 	initCanvas();
 	initIntroImages();
-	//initIngameImages();
+	initIngameImages();
 	initSounds();
 };
 
@@ -58,7 +58,6 @@ function processStage(){
 
 function title() {
 	//venture();
-
 	curStage = "title";
 
 	setTimeout(function() {
