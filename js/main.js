@@ -1,14 +1,11 @@
 var curStage = "loading";
-var scriptVentureCtr;
+var scriptVentureCtr = 0;
 
 window.onload = function(){
 	initCanvas();
 	initIntroImages();
-	initIngameImages();
+	//initIngameImages();
 	initSounds();
-
-	scriptVentureCtr = 0;
-	console.log("onload");
 };
 
 var canvas = document.getElementById("game");

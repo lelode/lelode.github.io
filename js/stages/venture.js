@@ -34,15 +34,14 @@ var talkBox = {
                 stringNum++;
                 scriptString[i] = arguments[i];
             }
-            else { // rest strings are for compare
-                compareWord += arguments[i].split("");
-            }
+            else compareWord += arguments[i].split("");
         }
 
         var scriptStringSplit;
         var nlFlag = false;
         var pause = true;
-        var pauseCounter = 10;
+        var pauseInterval = 10;
+        var pauseCounter = pauseInterval;
         var stringIdxChange = true;
 
         // if conversation box is already drawn, don't draw it again
@@ -61,9 +60,9 @@ var talkBox = {
                     clearInterval(timer);
                     ableUserInput = true;
                 }
-                pauseCounter++;
+                else pauseCounter++;
 
-                if (pauseCounter > 10){
+                if (pauseCounter > pauseInterval){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line
                         stringIdxChange = false;
@@ -132,6 +131,16 @@ var floweyTalk = {
     speakingRate: 5,
     frameCounter: 1,
     frameIdx: 0,
+
+    setEmotion: function(emote){
+        var idx;
+        switch (emote){
+            case "smile": idx = 0; break;
+            case "calm": idx = 1; break;
+            default: console.log("floweyTalk/setEmotion wrong emote value"); idx = 1; break;
+        }
+        this.currentEmotion = idx;
+    },
 
     drawFace: function(emote){
         var idx;
@@ -298,7 +307,6 @@ var frisk = {
         this.ySoul = this.ySoulTarget;
 
         ctx.save();
-        //ctx.clearRect(this.xSoul, this.ySoulTarget, images.friskSoul.width, images.friskSoul.height);
         ctx.drawImage(images.friskSoul, this.xSoul, this.ySoul);
         ctx.restore();
     },
@@ -342,7 +350,7 @@ var frisk = {
             ctx.drawImage(images.heartBeatEffect,
                 0, 0, images.heartBeatEffect.width, images.heartBeatEffect.height,
                 _xe, _ye, effWidth, effHeight);
-
+            ctx.restore();
             if (op > 0) {
                 _xe -= 55; _ye -= 55;
                 effWidth += 110; effHeight += 110;
@@ -367,9 +375,7 @@ var frisk = {
                 ctx.drawImage(images.friskSoul, _x, _y);
                 ctx.restore();
             }
-            ctx.restore();
         },50);
-
     },
 
     beep: function(){
@@ -413,6 +419,7 @@ var frisk = {
 // call this after intro
 function venture(){
 
+    /*
     backgroundImg.draw();
     frisk.playAnim("lyingdown");
     setTimeout(function(){
@@ -436,12 +443,12 @@ function venture(){
         createjs.Sound.play("flowey");
         floweyScriptVenture();
     }, 18 * k);
+    */
 
-    /*
+
     // for test
     adjustOrigin();
-    setTimeout(function(){ encounter()}, 1 * k);
-    */
+    setTimeout(function(){ battle()}, 1 * k);
 }
 
 
@@ -451,14 +458,14 @@ function floweyScriptVenture(){
         case 1: talkBox.floweyTalk("안녕!", "나는 노란 꽃 플라위야.", "만나서 반가워!", "노란", "플라위"); break;
         case 2: talkBox.floweyTalk("여기는 지하세계야.", "괴물들이 살고 있는 곳이지."); break;
         case 3:
-            floweyTalk.currentEmotion = 1;
+            floweyTalk.setEmotion("calm");
             floweyVenture.currentEmotion = 1;
             talkBox.floweyTalk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만..."); break;
         case 4: talkBox.floweyTalk("여긴 아주 위험한 곳이니까 되도록이면 빨리 이곳에서 나가는 게 좋아."); break;
         case 5: talkBox.floweyTalk("네가 출구를 찾으러 가기 전에"); break;
         case 6: talkBox.floweyTalk("아무 것도 모르는 채로 지하세계를 돌아다녔다간 위험한 일을 당할 수도 있으니까"); break;
         case 7:
-            floweyTalk.currentEmotion = 0;
+            floweyTalk.setEmotion("smile");
             floweyVenture.currentEmotion = 0;
             talkBox.floweyTalk("여기선 어떻게 해야 하는지 내가 알려줄게."); break;
         case 8: talkBox.floweyTalk("준비됐어?", "시작한다!"); break;
@@ -466,7 +473,7 @@ function floweyScriptVenture(){
             ableUserInput = false;
             talkBox.talkboxOn = false;
             createjs.Sound.stop();
-            encounter();
+            battle();
             break;
     }
 }

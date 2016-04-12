@@ -1,5 +1,5 @@
 
-function encounter(){
+function battle(){
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     var beatCount = 1;
@@ -33,7 +33,6 @@ function encounter(){
     setTimeout(function(){ floweyScriptBattle() }, 7 * k);
 }
 
-
 var scriptBattleCtr = 0;
 
 function floweyScriptBattle(){
@@ -41,10 +40,13 @@ function floweyScriptBattle(){
     switch (scriptBattleCtr){
         case 1:
             curStage = "battle";
-            var myInstance = createjs.Sound.play("flowey", {loop:-1});
-            battleInterface.floweyTalk("저 하트 모양 보이지?", "저건 바로 네 영혼이야.");
+            //var instance = createjs.Sound.play("flowey", {loop:-1});
+            battleInterface.floweyTalk({s1: "저 하트 모양 보이지?"});
             break;
         case 2:
+            battleInterface.floweyTalk({s1: "저건 바로 네 영혼이야."});
+            break;
+        case 3:
             var op = 0;
             // fade status bar in
             var timer = setInterval(function() {
@@ -54,15 +56,23 @@ function floweyScriptBattle(){
             }, 100);
 
             setTimeout(function() {
-                floweyTalk.currentEmotion = 1;
-                battleInterface.floweyTalk("지금의 네 영혼은 엄청 약해.");
+                battleInterface.floweyTalk({emote: "calm",
+                    s1:"지금의 네 영혼은 엄청 약해.",
+                    s2:"만약 어떤 괴물이 너한테 해코지라도 했다간, ",
+                    s3:"바로 죽어버릴지도 몰라."});
             }, 2*k);
             break;
-        case 3:
-            
+        case 4:
+            battleInterface.floweyTalk({emote: "smile", s1:"하지만 LV를 올리면", s2:"더 강해질 수 있어!"});
+            break;
+        case 5: battleInterface.floweyTalk({
+            pauseInterval: 1.5 * k, s1:"LV가 뭔지는 알지?", s2:"바로 LOVE의 준말이야."}); break;
+        case 6: battleInterface.floweyTalk({s1:"네가 더 강해지고 싶다면,", s2:"LOVE를 많이 모으도록 해."}); break;
+        case 7:
+            battleInterface.floweyTalk({ pauseInterval: 200, s1:"널 위해서 내가 LOVE를", s2:"조금 나눠줄게."});
+
     }
 }
-
 
 var battleInterface = {
     xbox: 210,  ybox: 220,
@@ -72,11 +82,14 @@ var battleInterface = {
     width: 220, height: 180,
     hpMax: 20, hp: 20,
     bubbleOn: false,
+    talkSpeed: 55,
+    pauseInterval: 10,
 
-    drawBattleBox: function(opacity) {
-        if (typeof(opacity) === 'undefined') opacity = 1;
+
+    drawBattleBox: function(op) {
+        if (op === undefined) op = 1;
         ctx.save();
-        ctx.globalAlpha = opacity;
+        ctx.globalAlpha = op;
         ctx.fillStyle = "#fff";
         ctx.fillRect(this.xbox, this.ybox, this.width, this.height);
         ctx.globalAlpha = 1;
@@ -86,8 +99,7 @@ var battleInterface = {
     },
 
     drawStatus: function(op){
-        if (typeof(op) === 'undefined') op = 1;
-        console.log("op: " + op);
+        if (op === undefined) op = 1;
         ctx.save();
         ctx.globalAlpha = op;
         ctx.fillStyle = "#fff";
@@ -111,10 +123,18 @@ var battleInterface = {
         ctx.drawImage(images.speechBubble, this.xBubble, this.yBubble);
     },
 
-    floweyTalk: function(){
+    drawPellets: function(){
+        //ctx.clear within box
+        //
+    },
+
+    drawArrows: function(){
+
+    },
+
+    floweyTalk:function (args){
         ableUserInput = false;
         var scriptString = {};
-        var compareWord = {};
         var stringNum = 0;
         var _xScript = this.xScript, _yScript = this.yScript;
         var _x = _xScript;
@@ -123,22 +143,31 @@ var battleInterface = {
         var curStringIdx = 0;
         var yGap = 20;
 
-        for (var i = 0; i < arguments.length; i++){
-            stringNum++;
-            scriptString[i] = arguments[i];
-        }
+        var pauseInterval;
+        var talkSpeed;
+
+
+        if (args.talkSpeed === undefined) talkSpeed = this.talkSpeed;
+        else talkSpeed = args.talkSpeed;
+        if (args.pauseInterval === undefined) pauseInterval = this.pauseInterval;
+        else pauseInterval = args.pauseInterval / talkSpeed;
+
+        if (args.s1) { scriptString[0] = args.s1; stringNum++; }
+        if (args.s2) { scriptString[1] = args.s2; stringNum++; }
+        if (args.s3) { scriptString[2] = args.s3; stringNum++; }
+        if (args.emote) { floweyTalk.setEmotion(args.emote); }
 
         var scriptStringSplit;
         var nlFlag = false;
         var pause = true;
-        var pauseCounter = 20;
+        var pauseCounter = pauseInterval;
         var stringIdxChange = true;
 
         // if speech bubble is already drawn, just paint area with white
         if (this.bubbleOn) {
             ctx.save();
             ctx.fillStyle = "#fff";
-            ctx.fillRect(this.xScript, this.yScript-20, scriptArea-100, 70);
+            ctx.fillRect(this.xScript, this.yScript-20, scriptArea-70, 90);
             ctx.restore();
         }
         else {
@@ -149,13 +178,13 @@ var battleInterface = {
         var timer = setInterval(function(){
             // pauses for about (talkspeed times 8) secs when there's comma or line changes
             if (pause){
-                if (curStringIdx == stringNum) { // if all 3 lines printed, end repeat
+                if (curStringIdx == stringNum) { // if all lines printed, end repeat
                     clearInterval(timer);
                     ableUserInput = true;
                 }
                 pauseCounter++;
 
-                if (pauseCounter > 10){
+                if (pauseCounter > pauseInterval){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line
                         stringIdxChange = false;
@@ -170,7 +199,7 @@ var battleInterface = {
                 // change line if sentence gets long
                 if (_x > ( _xScript + scriptArea-80)){
                     _y += yGap;
-                    _x = _xScript + 25;
+                    _x = _xScript;
                     nlFlag = true;
                 }
 
@@ -196,6 +225,6 @@ var battleInterface = {
                     _x = _xScript;
                 }
             }
-        }, 55);
+        }, talkSpeed);
     }
 };
