@@ -3,9 +3,11 @@ var scriptVentureCtr = 0;
 
 window.onload = function(){
 	initCanvas();
-	initIntroImages();
+	//initIntroImages();
 	initIngameImages();
 	initSounds();
+
+	createjs.MotionGuidePlugin.install(createjs.Tween);
 };
 
 var canvas = document.getElementById("game");
@@ -24,9 +26,8 @@ function initCanvas(){
 document.addEventListener("touchstart", function(event){
 	if (ableUserInput){
 		if (event.keyCode === 90){ // pressed z key
-			if (curStage == "venture") { // process venture stage
-				floweyScriptVenture();
-			}
+			if (curStage == "venture") floweyScriptVenture();
+			else if (curStage == "battle") floweyScriptBattle();
 		}
 		//if (event.keyCode >= 37 && event.keyCode <= 40) // arrows
 	}
@@ -57,7 +58,10 @@ function processStage(){
 }
 
 function title() {
-	//venture();
+
+	battle();
+
+	/*
 	curStage = "title";
 
 	setTimeout(function() {
@@ -73,4 +77,5 @@ function title() {
 		ctx.restore();
 	 	ableUserInput = true;
 	}, 8000);
+	*/
 }

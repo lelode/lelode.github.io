@@ -306,7 +306,7 @@ function TalkingFlowey() {
                 }
 
                 // change line if sentence gets long
-                if (_x > ( self.xScript + scriptArea-80)){
+                if (_x > ( self.xScript + scriptArea-30)){
                     _y += 35;
                     _x = self.xScript + 25;
                     nlFlag = true;
@@ -318,7 +318,7 @@ function TalkingFlowey() {
                 self.floweyPortrait.talk();
                 self.floweyOverworld.talk();
 
-                if (char == ",") pause = true;
+                if (char == ",") { _x += 10; pause = true; }
                 else if (char == "." || (char == " " && !nlFlag)) _x += 10;
                 else if (char !== " ") {
                     createjs.Sound.play("floweyVoiceCham");
@@ -489,6 +489,7 @@ var ventureManager;
 function venture(){
     ventureManager = new VentureManager();
 
+    /*
     ventureManager.bgImg.draw();
     ventureManager.frisk.playAnim("lyingdown");
     setTimeout(function(){
@@ -512,10 +513,11 @@ function venture(){
         createjs.Sound.play("flowey");
         floweyScriptVenture();
     }, 18 * k);
+    */
 
     // for test
-    //ventureManager.adjustOrigin()
-    //setTimeout(function(){ battle()}, 1 * k);
+    ventureManager.adjustOrigin()
+    setTimeout(function(){ battle()}, 1 * k);
 }
 
 function floweyScriptVenture(){
@@ -526,19 +528,20 @@ function floweyScriptVenture(){
         case 2: ventureManager.floweyTalk.talk("여기는 지하세계야.", "괴물들이 살고 있는 곳이지."); break;
         case 3:
             ventureManager.floweyTalk.setEmotion("calm");
-            ventureManager.floweyTalk.talk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만..."); break;
+            ventureManager.floweyTalk.talk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만"); break;
         case 4: ventureManager.floweyTalk.talk("여긴 아주 위험한 곳이니까 되도록이면 빨리 이곳에서 나가는 게 좋아."); break;
         case 5: ventureManager.floweyTalk.talk("네가 출구를 찾으러 가기 전에"); break;
         case 6: ventureManager.floweyTalk.talk("아무 것도 모르는 채로 지하세계를 돌아다녔다간 위험한 일을 당할 수도 있으니까"); break;
         case 7:
             ventureManager.floweyTalk.setEmotion("smile");
-            ventureManager.floweyTalk.talk("여기선 어떻게 해야 하는지 내가 알려줄게."); break;
-        case 8: ventureManager.floweyTalk.talk("준비됐어?", "시작한다!"); break;
-        case 9:
+            ventureManager.floweyTalk.talk("여기선 어떻게 해야 하는지 내가    알려줄게."); break;
+        case 8:
+            ventureManager.floweyTalk.talk("준비됐어?", "시작한다!");
             ableUserInput = false;
             ventureManager.floweyTalk.talkboxOn = false;
             createjs.Sound.stop();
-            battle();
+            setTimeout(function(){ battle() }, 2.5 * k);
             break;
+        default: break;
     }
 }

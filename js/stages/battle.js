@@ -5,6 +5,7 @@ function battle(){
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
+    /*
     var beatCount = 1;
     var timer1 = setInterval(function(){
         ventureManager.frisk.beep();
@@ -32,16 +33,26 @@ function battle(){
     }, 5 * k);
 
     setTimeout(function(){ floweyScriptBattle() }, 7 * k);
+    */
+
+    // codes for test
+    battleInterface.box.draw();
+    battleInterface.soul.draw();
+    curStage = "battle";
+    scriptBattleCtr = 6;
+    floweyScriptBattle();
 }
 
 var scriptBattleCtr = 0;
 
 function floweyScriptBattle(){
+    ableUserInput = false;
     scriptBattleCtr++;
+    console.log("scriptBattleCtr: "+ scriptBattleCtr);
     switch (scriptBattleCtr){
         case 1:
             curStage = "battle";
-            var instance = createjs.Sound.play("flowey", {loop:-1});
+            //var instance = createjs.Sound.play("flowey", {loop:-1});
             battleInterface.flowey.talk({s1: "저 하트 모양 보이지?"});
             break;
         case 2: battleInterface.flowey.talk({s1: "저건 바로 네 영혼이야."}); break;
@@ -57,7 +68,7 @@ function floweyScriptBattle(){
             setTimeout(function() {
                 battleInterface.flowey.talk({emote: "calm",
                     s1:"지금의 네 영혼은 엄청 약해.",
-                    s2:"만약 어떤 괴물이 너한테 해코지라도 했다간, ",
+                    s2:"만약 어떤 괴물이 너한테 해코지라도 했다간,",
                     s3:"바로 죽어버릴지도 몰라."});
             }, 2 * k);
             break;
@@ -66,6 +77,14 @@ function floweyScriptBattle(){
         case 5: battleInterface.flowey.talk({pauseInterval: 1.5 * k, s1:"LV가 뭔지는 알지?", s2:"바로 LOVE의 준말이야."}); break;
         case 6: battleInterface.flowey.talk({s1:"네가 더 강해지고 싶다면,", s2:"LOVE를 많이 모으도록 해."}); break;
         case 7: battleInterface.flowey.talk({pauseInterval: 200, s1:"널 위해서 내가 LOVE를", s2:"조금 나눠줄게."}); break;
+        case 8: // 7로 바꿔야함
+            setTimeout(function(){
+                battleInterface.drawPellets();
+            }, 500);
+            setTimeout(function () {
+                battleInterface.flowey.talk({s1:"이 하얀 조각들이", s2:"바로 LOVE야."});
+                }, 5 * k);
+            break;
     }
 }
 
@@ -153,12 +172,12 @@ function FloweyBattle(){
     self.y = 70 + 45;
     self.talkSpeed = 55;
     self.pauseInterval = 10;
+    self.delayInterval = 12;
 
     self.floweyPortrait = new FloweyProtrait(275, 100);
     self.speechBubble = new SpeechBubble();
 
     self.talk = function (args){
-        ableUserInput = false;
         var scriptString = {};
         var stringNum = 0;
         var _x = self.x;
@@ -167,37 +186,50 @@ function FloweyBattle(){
         var curStringIdx = 0;
         var yGap = 20;
 
-        var pauseInterval;
-        var talkSpeed;
+        var _talkSpeed;
+        var _pauseInterval;
+        var _delayInterval;
 
-        if (args.talkSpeed === undefined) talkSpeed = self.talkSpeed;
-        else talkSpeed = args.talkSpeed;
-        if (args.pauseInterval === undefined) pauseInterval = self.pauseInterval;
-        else pauseInterval = args.pauseInterval / talkSpeed;
+        if (args.talkSpeed === undefined) _talkSpeed = self.talkSpeed;
+        else _talkSpeed = args.talkSpeed;
+        if (args.pauseInterval === undefined) _pauseInterval = self.pauseInterval;
+        else _pauseInterval = args.pauseInterval / _talkSpeed;
+        if (args.delay === undefined) _delayInterval = self.delayInterval;
+        else _delayInterval = args.delay / _talkSpeed;
 
         if (args.s1) { scriptString[0] = args.s1; stringNum++; }
         if (args.s2) { scriptString[1] = args.s2; stringNum++; }
         if (args.s3) { scriptString[2] = args.s3; stringNum++; }
+        if (args.s4) { scriptString[3] = args.s4; stringNum++; }
         if (args.emote) { self.floweyPortrait.setEmotion(args.emote); }
 
         var scriptStringSplit;
         var nlFlag = false;
         var pause = true;
-        var pauseCounter = pauseInterval;
+        var pauseCounter = _pauseInterval;
         var stringIdxChange = true;
+        var delay = false;
+        var delayCounter = 0;
 
         self.speechBubble.draw();
 
         var timer = setInterval(function(){
-            // pauses for about (talkspeed times 8) secs when there's comma or line changes
-            if (pause){
-                if (curStringIdx == stringNum) { // if all lines printed, end repeat
+            if (delay){ // if print job is done, wait for a moment then able Users Input
+                if (delayCounter > _delayInterval){
                     clearInterval(timer);
+                    delay = false;
                     ableUserInput = true;
+                }
+                else delayCounter++;
+            }
+            // pauses for about (talkspeed times 8) secs when there's comma or line changes
+            else if (pause){
+                if (curStringIdx == stringNum) { // if all lines printed, end repeat
+                    delay = true;
                 }
                 pauseCounter++;
 
-                if (pauseCounter > pauseInterval){
+                if (pauseCounter > _pauseInterval){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line
                         stringIdxChange = false;
@@ -238,7 +270,7 @@ function FloweyBattle(){
                     _x = self.x;
                 }
             }
-        }, talkSpeed);
+        }, _talkSpeed);
     }
 }
 
@@ -250,8 +282,78 @@ function BattleInterface() {
     self.statusBar = new StatusBar();
     self.soul = new Soul();
 
-    self.drawPellets = function(){
-        //ctx.clear within box
-        //
+    self.pellets = new Array();
+
+    self.initPellets = function(){
+        var p1 = new Pellet(self.soul.x - 70, self.soul.y - 5);
+        var p2 = new Pellet(self.soul.x - 30, self.soul.y - 30);
+        var p3 = new Pellet(self.soul.x + 15, self.soul.y - 50);
+        var p4 = new Pellet(self.soul.x + 60, self.soul.y - 30);
+        var p5 = new Pellet(self.soul.x + 90, self.soul.y - 5);
+
+        self.pellets.push(p1,p2,p3,p4,p5);
     };
+
+
+    self.drawPellets = function(){
+        self.initPellets();
+
+        var idx = 0;
+        var timer = setInterval(function(){
+            var p = self.pellets[idx];
+            p.draw();
+            if (self.pellets[idx+1]) idx++;
+            else clearInterval(timer);
+            }, 500);
+
+
+    };
+}
+
+var tweenStage = new createjs.Stage(canvas);
+tweenStage.autoClear = true;
+
+function Pellet(_x, _y){
+    var self = this;
+    self.x = _x;
+    self.y = _y;
+    self.width = 10;
+    self.height = 5;
+    //self.pellet.regX = self.width/2;
+    //self.pellet.regY = self.height/2;
+
+
+    self.draw = function(){
+        console.log("draw pellet");
+
+        var angle = 45;
+        var rotation = (angle * Math.PI) /180;
+
+        var timer = setInterval(function(){
+            ctx.clearRect(self.x-20, self.y-20, self.width+30, self.width+30);
+            ctx.save();
+            ctx.beginPath();
+            ctx.ellipse(self.x, self.y, self.width, self.height,
+            rotation,
+                0, 2 * Math.PI);
+            ctx.fillStyle = "#fff";
+            ctx.fill();
+            ctx.restore();
+
+            angle += 90;
+            rotation = (angle * Math.PI) /180;
+        }, 1000);
+    };
+
+
+    /*
+    self.fallDown = function(){
+        createjs.Tween.get(ball, {override: true})
+            .to({rotation: 360}, 1)
+            .to({rotation: -360, guide: {path:
+                [self.pellet.x, self.pellet.y,
+                self.pellet.x, self.pellet.y+50,
+                self.pellet.x, self.pellet.y+100]}}, 3000, createjs.Ease.quartIn);
+    }
+    */
 }
