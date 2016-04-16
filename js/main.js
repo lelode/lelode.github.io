@@ -3,7 +3,7 @@ var scriptVentureCtr = 0;
 
 window.onload = function(){
 	initCanvas();
-	//initIntroImages();
+	initIntroImages();
 	initIngameImages();
 	initSounds();
 };
@@ -21,15 +21,7 @@ function initCanvas(){
 	ctx.restore();
 }
 
-document.addEventListener("touchstart", function(event){
-	if (ableUserInput){
-		if (event.keyCode === 90){ // pressed z key
-			if (curStage == "venture") floweyScriptVenture();
-			else if (curStage == "battle") floweyScriptBattle();
-		}
-		//if (event.keyCode >= 37 && event.keyCode <= 40) // arrows
-	}
-})
+//document.addEventListener("touchstart", function(event){}})
 
 document.addEventListener("keydown", function(event){
 	if (ableUserInput){
@@ -63,11 +55,9 @@ function processStage(){
 }
 
 function title() {
-
 	//venture();
-	battle();
+	//battle();
 
-	/*
 	curStage = "title";
 
 	setTimeout(function() {
@@ -83,5 +73,4 @@ function title() {
 		ctx.restore();
 	 	ableUserInput = true;
 	}, 8000);
-	*/
 }

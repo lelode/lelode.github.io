@@ -26,6 +26,28 @@ function VentureManager(){
         }, 300);
     };
 
+    self.fadeIn = function(){
+        var op = 1;
+        var timer = setInterval(function(){
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            self.bgImg.draw();
+            ventureManager.bgImg.draw();
+            ventureManager.frisk.playAnim("lyingdown");
+            ctx.save();
+            ctx.globalAlpha = op;
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+            ctx.restore();
+            if (op > 0) op -= 0.1;
+            else{
+                clearInterval(timer);
+                self.bgImg.draw();
+                ventureManager.bgImg.draw();
+                ventureManager.frisk.playAnim("lyingdown");
+            }
+        }, 70);
+
+    };
     self.friskGetUp = function(){
         var angle = 1.5;
         var _x = self.frisk.x;
@@ -49,7 +71,6 @@ function VentureManager(){
             else clearInterval(timer);
         }, 40);
     };
-
     self.adjustOrigin = function(){
         var diff = 60;
         var timer = setInterval(function() {
@@ -496,36 +517,33 @@ var ventureManager;
 
 function venture(){
     ventureManager = new VentureManager();
+    ventureManager.fadeIn();
 
-    /*
-    ventureManager.bgImg.draw();
-    ventureManager.frisk.playAnim("lyingdown");
     setTimeout(function(){
         ventureManager.floweyOverworld.playAnim("sprout");
         createjs.Sound.play("pop");
-     }, 1 * k);
-    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("glare") }, 2 * k );
-    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("lookup") }, 4 * k);
-    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("lookdown") }, 6 * k);
-    setTimeout(function(){ ventureManager.friskGetUp() }, 8 * k);
-    setTimeout(function(){ ventureManager.adjustOrigin() }, 10 * k);
+     }, 5 * k);
+    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("glare") }, 6 * k );
+    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("lookup") }, 8 * k);
+    setTimeout(function(){ ventureManager.floweyOverworld.playAnim("lookdown") }, 10 * k);
+    setTimeout(function(){ ventureManager.friskGetUp() }, 12 * k);
+    setTimeout(function(){ ventureManager.adjustOrigin() }, 14 * k);
     setTimeout(function(){
         ventureManager.floweyTalk.talk("너, 지상에서 온 인간이구나!");
-    }, 11 * k);
+    }, 15 * k);
     setTimeout(function(){
         ventureManager.floweyTalk.talkboxOn = false;
         ventureManager.friskTurnAround();
-    }, 15 * k);
+    }, 19 * k);
     setTimeout(function(){
         curStage = "venture";
         createjs.Sound.play("flowey");
         floweyScriptVenture();
-    }, 18 * k);
-    */
+    }, 22 * k);
 
     // for test
-    ventureManager.adjustOrigin()
-    setTimeout(function(){ battle()}, 1 * k);
+    //ventureManager.adjustOrigin()
+    //setTimeout(function(){ battle()}, 1 * k);
 }
 
 function floweyScriptVenture(){
@@ -547,7 +565,6 @@ function floweyScriptVenture(){
             ventureManager.floweyTalk.talk("준비됐어?", "시작한다!");
             ableUserInput = false;
             ventureManager.floweyTalk.talkboxOn = false;
-            createjs.Sound.stop();
             setTimeout(function(){ battle() }, 2.5 * k);
             break;
         default: break;

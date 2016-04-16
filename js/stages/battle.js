@@ -2,10 +2,9 @@ var battleInterface;
 
 function battle(){
     battleInterface = new BattleInterface();
-
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    createjs.Sound.stop();
 
-    /*
     var beatCount = 1;
     var timer1 = setInterval(function(){
         ventureManager.frisk.beep();
@@ -33,15 +32,15 @@ function battle(){
     }, 5 * k);
 
     setTimeout(function(){ floweyScriptBattle() }, 7 * k);
-    */
 
-    // codes for test
-
+    //for test
+    /*
     battleInterface.box.draw();
     battleInterface.soul.draw();
     curStage = "battle";
-    scriptBattleCtr = 24;
+    scriptBattleCtr = 56;
     floweyScriptBattle();
+    */
 
 }
 
@@ -55,7 +54,7 @@ function floweyScriptBattle(){
     switch (scriptBattleCtr){
         case 1:
             curStage = "battle";
-            //var instance = createjs.Sound.play("flowey", {loop:-1});
+            var instance = createjs.Sound.play("flowey", {loop:-1});
             battleInterface.flowey.talk({s1: "저 하트 모양 보이지?"});
             break;
         case 2: battleInterface.flowey.talk({s1: "저건 바로 네 영혼이야."}); break;
@@ -169,9 +168,9 @@ function floweyScriptBattle(){
             setTimeout(function(){ battleInterface.flowey.talk({s1:"그럼 잘 가!"}) },1.5*k); break;
         case 26: battleInterface.turnPage(); ableUserInput = true; break;
         case 27: case 28: case 29: ableUserInput = true; break;
-        case 30: battleInterface.flowey.talk({delay: 1*k, s1:"..."}); break;
-        case 31: battleInterface.flowey.talk({delay: 1*k, appending:true, emote:"calm", s2:"......"}); break;
-        case 32: battleInterface.flowey.talk({delay: 1*k, appending:true, emote:"doubtful", s3:"......?"}); break;
+        case 30: battleInterface.flowey.talk({delay: 2*k, s1:"..."}); break;
+        case 31: battleInterface.flowey.talk({delay: 2*k, appending:true, emote:"calm", s2:"......"}); break;
+        case 32: battleInterface.flowey.talk({delay: 2*k, appending:true, emote:"doubtful", s3:"......?"}); break;
         case 33: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({emote:"lookFront", s1:"안 끄고 뭐하는 거야?"}) },1.5*k); break;
         case 34: battleInterface.turnPage();
@@ -181,10 +180,84 @@ function floweyScriptBattle(){
                 s1:"...너 설마... "})},1.5*k); break;
         case 36:battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({emote:"unpleasant", pauseInterval: 900,
-                s1:"언더테일을 이 만화로 보려고 하는 거야?", s2:"게임을 직접 해보는 게 아니라?"})},1.5*k); break;
+                s1:"언더테일을 이 만화로 보려고 하는 거야?", s2:"게임을 직접 해보는게 아니라?"})},1.5*k); break;
         case 37: battleInterface.turnPage();
-            battleInterface.flowey.talk({emote:"sad", talkSpeed:100, delay: 1*k, s1:"...난 네가 그러지 않았으면 좋겠어."}); break;
-        default: break;
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"sad", talkSpeed:100, delay: 1*k,
+                s1:"...난 네가 그러지 않았으면 좋겠어."})}, 1.5*k); break;
+        case 38: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"serious",
+                s1:"진짜 언더테일에서는", s2:"네 선택에 따라서", s3:"이야기가 달라져."})}, 1.5*k); break; break;
+        case 39: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"네가 하기에 따라 이 지하세계를 완전히 다른 곳으로 바꿀 수도 있다구."})}, 1.5*k); break;
+        case 40: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", pauseInterval: 1, s1:"바로 네 스스로가 이야기를", s2:"완성하는 존재가 되는 거야!"})}, 1.5*k); break;
+        case 41: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"serious", s1: "하지만 네가 그냥 이 만화로 언더테일을 봐 버리기로 하면,",
+                s2:"너는 이야기에 전혀 관여하지 못해."})}, 1.5*k); break;
+        case 42: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"이 만화는 네가 원하는 바와는 상관없는 방향으로 멋대로 진행이 돼 버릴 거고"})}, 1.5*k); break;
+        case 43:battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"네 언더테일에 대한 경험은", s2:"그렇게 단방향적으로 끝나버리겠지."})}, 1.5*k); break;
+        case 44: battleInterface.turnPage();
+                setTimeout(function(){ battleInterface.flowey.talk({emote:"sad", s1:"너는 그래도 괜찮은 거야?"})}, 1.5*k); break;
+        case 45: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"어차피 도달하게 되는 곳이 같다면, 네가 직접 해보는 것과 그냥 지켜보는 것에 차이가 없다고 생각해?" })}, 1.5*k); break;
+        case 46: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"serious", delay:2 * k,
+                s1:"마지막 순간에 네가 느끼게 될 책임의 무게는 같지 않을걸?"})}, 1.5*k); break;
+        case 47: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm",
+            s1:"그런게 아니라면,", s2:"게임을 직접 해보기로 결정하기 전에 언더테일이 어떤 게임인지 알아두고 싶은 거야?"})}, 1.5*k); break;
+        case 48: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"뭐, 그래.", s2:"대체 언더테일이란게 얼마나 대단한 게임이길래 이리도 야단법석인지" })}, 1.5*k); break;
+        case 49: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"네가 시간을 투자할만한 가치가 있는 게임인지 확인해 보고 싶을 수야 있겠지."})}, 1.5*k); break;
+        case 50: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"플레이를 하게 되면 어느 구간에서 어떻게 하는 게 유리한지 미리 알아두고 싶을 수도 있고"})}, 1.5*k); break;
+        case 51: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({pauseInterval: 1*k,
+                s1:"하지만 말이야.", s2:"네가 나중에라도 이 게임을 직접 해보고 싶은 마음이 조금이라도 있다면..." })}, 1.5*k); break;
+        case 52: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"sad", s1:"지금이라도 이 만화를 꺼줬으면 좋겠어." })}, 1.5*k); break;
+        case 53: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"게임에 대해서 아무것도 모르는 채로 게임을 시작하고 싶지 않은 기분은 이해해."})}, 1.5*k); break;
+        case 54: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"게임이 별로 맘에 들지 않을 수도 있을 거고, 플레이하는 내내 실수도 많이 하게 될테니까" })}, 1.5*k); break;
+        case 55: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"네가 잘못된 선택을 하는 바람에 원하지 않았던 결과가 나오게 된다면"})}, 1.5*k); break;
+        case 56: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"미리 알아보지 않은 바람에 괜히 고생만 하고 시간낭비를 했다는 생각이 들지도 몰라."})}, 1.5*k); break;
+        case 57: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", s1:"하지만 게임의 가장 좋은 점이 뭔지 알아?" })}, 1.5*k); break;
+        case 58: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"smile", s1:"바로 환불이 가능하다는 거야!" })}, 1.5*k); break;
+        case 59: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({ableInput:false, emote:"twisted", pauseInterval: 1*k, s1:"...농담이고."})}, 1.5*k);
+            setTimeout(function(){
+                battleInterface.flowey.talk({emote:"calm", appending:true,
+                s2:"게임의 가장 좋은 점은,", s3:"바로 다시 시작할 수 있다는 거야."})}, 3.5 * k); break;
+        case 60: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"네가 포기하지 않고,", s2:"다시 도전하기로 한다면"})}, 1.5*k); break;
+        case 61: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"더 나은 방법을 찾겠다는", s2:"의지를 다진다면"})}, 1.5*k); break;
+        case 62: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"너는 반드시,", s2:"지난번보다 더 좋은 결과를 이끌어 낼 수 있어."})}, 1.5*k); break;
+        case 63: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"이건 언더테일이 전하는 가장 중요한 메세지고"})}, 1.5*k); break;
+        case 64: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({delay:2*k,
+                    s1:"네가 직접 게임에서 시행착오를 해보지 않으면 그 의미를 깨달을 수 없어."})}, 1.5*k); break;
+        case 65: battleInterface.turnPage();
+            //setTimeout(function(){ battleInterface.flowey.talk({s1:""})}, 1.5*k);
+            break;
+        default:  battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"내가 지금 이 말을 하고 있다는건 어딘가에 문제가 있다는 소리야." })}, 1.5*k); break;
     }
 }
 
@@ -257,7 +330,7 @@ function SpeechBubble(){
 
     self.clear = function(){
         if (self.on){
-            ctx.clearRect(self.x, self.y, images.speechBubble.width, images.speechBubble.height);
+            ctx.clearRect(self.x+5, self.y, images.speechBubble.width, images.speechBubble.height);
             self.on = false;
         }
     };
@@ -368,7 +441,11 @@ function FloweyBattle(){
                 if (char == ",") pause = true;
                 else if (char == "!") _x += 8;
                 else if (char == " " && !nlFlag) _x += 8;
-                else if (char == "." || char !== " " ){
+                else if (char == "."){
+                    _x += 7;
+                    createjs.Sound.play ("floweyVoiceCham");
+                }
+                else if (char !== " " ){
                     _x += 12;
                     createjs.Sound.play ("floweyVoiceCham");
                 }
