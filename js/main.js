@@ -27,6 +27,10 @@ document.addEventListener("touchstart", function(event){
 			case "title": intro(); break;
 			case "venture": floweyScriptVenture(); break;
 			case "battle": floweyScriptBattle(); break;
+			case "struggling":
+				if (struggleCtr < 5) struggleCtr++;
+				else floweyScriptBattle();
+				break;
 			default: break;
 		}
 	}
