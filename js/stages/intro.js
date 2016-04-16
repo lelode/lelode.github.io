@@ -272,5 +272,5 @@ function intro() {
 	setTimeout(function() { slider.play(10) }, 70 * k);
 	setTimeout(function() { slider.play(11) }, 76 * k);
 	setTimeout(function() { slider.fadeWhiteOut() }, 88 * k);
-	setTimeout(function() { venture(); }, 92 * k);
+	setTimeout(function() { venture(); }, 93 * k);
 }

@@ -77,7 +77,7 @@ function floweyScriptBattle(){
         case 4:
             battleInterface.flowey.talk({emote: "smile", s1:"하지만 LV를 올리면", s2:"더 강해질 수 있어!"}); break;
         case 5: battleInterface.flowey.talk({pauseInterval: 1.5 * k, s1:"LV가 뭔지는 알지?", s2:"바로 LOVE의 준말이야."}); break;
-        case 6: battleInterface.flowey.talk({s1:"네가 더 강해지고 싶다면,", s2:"LOVE를 많이 모으도록 해."}); break;
+        case 6: battleInterface.flowey.talk({s1:"네가 더 강해지고 싶다면,", s2:"LOVE를 많이 모으도록 해"}); break;
         case 7:
             battleInterface.flowey.talk({ableInput:false, pauseInterval: 100, s1:"널 위해서 내가 LOVE를", s2:"조금 나눠줄게."});
             setTimeout(function() {
@@ -130,7 +130,7 @@ function floweyScriptBattle(){
             }, 9 * k)
             setTimeout(function(){
                 createjs.Sound.play("dramatic");
-                battleInterface.flowey.talk({emote:"unpleasant", talkSpeed: 40, delay:1.5*k, s1:"이건 게임이 아니야!!"});
+                battleInterface.flowey.talk({emote:"unpleasant", talkSpeed: 40, delay:3*k, s1:"이건 게임이 아니야!!"});
             }, 11 * k);
             break;
         case 12: battleInterface.turnPage();
@@ -245,7 +245,8 @@ function floweyScriptBattle(){
         case 60: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({s1:"네가 포기하지 않고,", s2:"다시 도전하기로 한다면"})}, 1.5*k); break;
         case 61: battleInterface.turnPage();
-            setTimeout(function(){ battleInterface.flowey.talk({s1:"더 나은 방법을 찾겠다는", s2:"의지를 다진다면"})}, 1.5*k); break;
+            setTimeout(function(){ battleInterface.flowey.talk({pauseInterval: 1, 
+                s1:"더 나은 방법을 찾겠다는", s2:"의지를 다진다면"})}, 1.5*k); break;
         case 62: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({s1:"너는 반드시,", s2:"지난번보다 더 좋은 결과를 이끌어 낼 수 있어."})}, 1.5*k); break;
         case 63: battleInterface.turnPage();
@@ -253,11 +254,10 @@ function floweyScriptBattle(){
         case 64: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({delay:2*k,
                     s1:"네가 직접 게임에서 시행착오를 해보지 않으면 그 의미를 깨달을 수 없어."})}, 1.5*k); break;
-        case 65: battleInterface.turnPage();
-            //setTimeout(function(){ battleInterface.flowey.talk({s1:""})}, 1.5*k);
-            break;
+        //case 65: battleInterface.turnPage();
+            //setTimeout(function(){ battleInterface.flowey.talk({s1:""})}, 1.5*k); break;
         default:  battleInterface.turnPage();
-            setTimeout(function(){ battleInterface.flowey.talk({s1:"내가 지금 이 말을 하고 있다는건 어딘가에 문제가 있다는 소리야." })}, 1.5*k); break;
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"현재 여기까지 완성했단다." })}, 1.5*k); break;
     }
 }
 
