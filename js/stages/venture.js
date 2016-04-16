@@ -176,13 +176,21 @@ function FloweyProtrait(xVal, yVal) {
     self.frameIdx = 0;
 
     self.setEmotion = function(word){
-        var idx;
         switch (word){
-            case "smile": idx = 0; break;
-            case "calm": idx = 1; break;
+            case "smile": self.emotion = 0; break;
+            case "calm": self.emotion = 1; break;
+            case "doubtful": self.emotion = 2; break;
+            case "unpleasant": self.emotion = 3; break;
+            case "lookLeft": self.emotion = 4;  break;
+            case "lookFront": self.emotion = 5; break;
+            case "vain": self.emotion = 6; break;
+            case "uneasy": self.emotion = 7; break;
+            case "twisted": self.emotion = 8; break;
+            case "mock": self.emotion = 9; break;
+            case "sad": self.emotion = 10; break;
+            case "serious": self.emotion = 11; break;
             default: console.log("floweyTalk/setEmotion wrong emote value"); idx = 1; break;
         }
-        self.emotion = idx;
     };
 
     self.draw = function(word){

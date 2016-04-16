@@ -36,14 +36,17 @@ function battle(){
     */
 
     // codes for test
+
     battleInterface.box.draw();
     battleInterface.soul.draw();
     curStage = "battle";
-    scriptBattleCtr = 6;
+    scriptBattleCtr = 24;
     floweyScriptBattle();
+
 }
 
 var scriptBattleCtr = 0;
+var struggleCtr = 0;
 
 function floweyScriptBattle(){
     ableUserInput = false;
@@ -76,15 +79,112 @@ function floweyScriptBattle(){
             battleInterface.flowey.talk({emote: "smile", s1:"하지만 LV를 올리면", s2:"더 강해질 수 있어!"}); break;
         case 5: battleInterface.flowey.talk({pauseInterval: 1.5 * k, s1:"LV가 뭔지는 알지?", s2:"바로 LOVE의 준말이야."}); break;
         case 6: battleInterface.flowey.talk({s1:"네가 더 강해지고 싶다면,", s2:"LOVE를 많이 모으도록 해."}); break;
-        case 7: battleInterface.flowey.talk({pauseInterval: 200, s1:"널 위해서 내가 LOVE를", s2:"조금 나눠줄게."}); break;
-        case 8: // 7로 바꿔야함
-            setTimeout(function(){
+        case 7:
+            battleInterface.flowey.talk({ableInput:false, pauseInterval: 100, s1:"널 위해서 내가 LOVE를", s2:"조금 나눠줄게."});
+            setTimeout(function() {
+                battleInterface.flowey.speechBubble.clear();
                 battleInterface.drawPellets();
-            }, 500);
-            setTimeout(function () {
-                battleInterface.flowey.talk({s1:"이 하얀 조각들이", s2:"바로 LOVE야."});
-                }, 5 * k);
+            }, 3 * k);
+
+            setTimeout(function(){
+                battleInterface.flowey.talk({pauseInterval: 100, s1:"이 하얀 조각들이 바로", s2:"LOVE야."});
+            }, 6 * k);
             break;
+        case 8:
+            battleInterface.flowey.talk({ableInput:false, pauseInterval: 100, s1:"네 영혼을 움직여서 최대한", s2:"많이 모아봐!"});
+            setTimeout(function(){
+                battleInterface.flowey.talk({ableInput: false, s1:"자, 어서 움직여!"});
+                battleInterface.drawArrows();
+            }, 4 * k);
+            setTimeout(function(){
+                battleInterface.flowey.talk({s1: "뭐하고 있어?", s2:"어서 움직여보라니까?"});
+                curStage = "struggling";
+            }, 8 * k);
+            break;
+        case 9:
+            curStage = "battle";
+            battleInterface.flowey.talk({emote:"doubtful", pauseInterval:900,
+                s1:"...??", s2:"잠깐만.", s3:"뭔가 이상한데."});
+            break;
+        case 10:
+            battleInterface.flowey.talk({ableInput:false, emote:"unpleasant", talkSpeed:400, s1:"너..."});
+            setTimeout(function(){
+                battleInterface.flowey.talk({appending: true, s2:"움직이질 못하잖아?"});
+            }, 3.5 * k);
+            break;
+        case 11:
+            createjs.Sound.stop();
+            createjs.Sound.play("suspense");
+            battleInterface.flowey.talk({ableInput:false, s1:"그렇다는 건..."});
+            setTimeout(function(){
+                battleInterface.flowey.talk({ableInput:false, emote:"lookLeft", appending: true, s2:"여긴..."});
+            }, 2 * k);
+            setTimeout(function(){
+                battleInterface.flowey.talk({ableInput:false, emote:"lookFront", appending: true, s3:"이건..."});
+            }, 4 * k);
+            setTimeout(function(){
+                battleInterface.flowey.speechBubble.clear();
+                battleInterface.dropPellets();
+            }, 6 * k);
+            setTimeout(function(){
+                battleInterface.turnPage();
+            }, 9 * k)
+            setTimeout(function(){
+                createjs.Sound.play("dramatic");
+                battleInterface.flowey.talk({emote:"unpleasant", talkSpeed: 40, delay:1.5*k, s1:"이건 게임이 아니야!!"});
+            }, 11 * k);
+            break;
+        case 12: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"vain", s1:"......"}) },1.5*k); break;
+        case 13: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({pauseInterval:1, s1: "뭐가 어떻게 된 건지", s2:"모르겠다는 표정이네."}) },1.5*k); break;
+        case 14: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", s1:"내가 확실하게 말해줄게."}) },1.5*k); break;
+        case 15: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"vain", pauseInterval: 600,
+                s1:"너는 속았어.", s2:"지금 네가 하고 있는 이건", s3:"게임이 아니야."}) },1.5*k); break;
+        case 16: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({pauseInterval:1, s1:"그냥 클릭하기만 하면 다음", s2:"장면으로 넘어가는 그림의", s3:"모음집이야."}) },2*k);
+            break;
+        case 17: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"그래서 네 마음대로 움직일 수 없는거지."}) },1.5*k); break;
+        case 18: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", pauseInterval: 800,
+                s1:"더 알기 쉽게 말해줄까?", s2:"너 지금 그냥 만화 보고 있는 거야."}) },1.5*k); break;
+        case 19: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"twisted", s1:"게임 하는 줄 알고 기대 많이 했을 텐데, 아쉽게 됐네."}) },1.5*k); break;
+        case 20: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"그래도 뭐,", s2:"너도 뭔가 이상하다고 생각하긴 하지 않았어?"}) },1.5*k); break;
+        case 21: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"mock", delay:1*k,
+                s1:"원래 돈주고 사야하는 게임을 인터넷에서 공짜로 본다는 게 말이 되니?"}) },1.5*k); break;
+        case 22: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"smile", s1:"자, 이 만화는 얼른 꺼버려."}) },1.5*k); break;
+        case 23: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"twisted",
+                s1:"여기서는 이야기가 그냥 일직선으로 진행돼버릴텐데,", s2: "그런게 대체 뭐가 재미있겠어?"}) },1.5*k); break;
+        case 24: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"smile", s1:"가서 진짜 언더테일을 해봐.", s2:"알겠지?"}) },1.5*k); break;
+        case 25: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"그럼 잘 가!"}) },1.5*k); break;
+        case 26: battleInterface.turnPage(); ableUserInput = true; break;
+        case 27: case 28: case 29: ableUserInput = true; break;
+        case 30: battleInterface.flowey.talk({delay: 1*k, s1:"..."}); break;
+        case 31: battleInterface.flowey.talk({delay: 1*k, appending:true, emote:"calm", s2:"......"}); break;
+        case 32: battleInterface.flowey.talk({delay: 1*k, appending:true, emote:"doubtful", s3:"......?"}); break;
+        case 33: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"lookFront", s1:"안 끄고 뭐하는 거야?"}) },1.5*k); break;
+        case 34: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"내 말 안 들었어?", s2:"이건 진짜 게임이 아니라니까?"}) },1.5*k); break;
+        case 35: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"unpleasant",
+                s1:"...너 설마... "})},1.5*k); break;
+        case 36:battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"unpleasant", pauseInterval: 900,
+                s1:"언더테일을 이 만화로 보려고 하는 거야?", s2:"게임을 직접 해보는 게 아니라?"})},1.5*k); break;
+        case 37: battleInterface.turnPage();
+            battleInterface.flowey.talk({emote:"sad", talkSpeed:100, delay: 1*k, s1:"...난 네가 그러지 않았으면 좋겠어."}); break;
+        default: break;
     }
 }
 
@@ -105,9 +205,6 @@ function BattleBox(){
         ctx.fillStyle = "#000";
         ctx.fillRect(self.x+5, self.y+5, self.width-10, self.height-10);
         ctx.restore();
-    };
-
-    self.drawArrows = function(){
     };
 }
 
@@ -160,7 +257,7 @@ function SpeechBubble(){
 
     self.clear = function(){
         if (self.on){
-            ctx.clear(self.x + self.y, images.speechBubble.width, images.speechBubble.height);
+            ctx.clearRect(self.x, self.y, images.speechBubble.width, images.speechBubble.height);
             self.on = false;
         }
     };
@@ -173,6 +270,7 @@ function FloweyBattle(){
     self.talkSpeed = 55;
     self.pauseInterval = 10;
     self.delayInterval = 12;
+    self.yCumulation = 0;
 
     self.floweyPortrait = new FloweyProtrait(275, 100);
     self.speechBubble = new SpeechBubble();
@@ -185,6 +283,8 @@ function FloweyBattle(){
         var scriptArea = 250;
         var curStringIdx = 0;
         var yGap = 20;
+        var _ableUserInput = true;
+        var _appending = false;
 
         var _talkSpeed;
         var _pauseInterval;
@@ -202,6 +302,8 @@ function FloweyBattle(){
         if (args.s3) { scriptString[2] = args.s3; stringNum++; }
         if (args.s4) { scriptString[3] = args.s4; stringNum++; }
         if (args.emote) { self.floweyPortrait.setEmotion(args.emote); }
+        if (args.ableInput == false) { _ableUserInput = false }
+        if (args.appending == true) { _appending = true }
 
         var scriptStringSplit;
         var nlFlag = false;
@@ -211,21 +313,27 @@ function FloweyBattle(){
         var delay = false;
         var delayCounter = 0;
 
-        self.speechBubble.draw();
+        while (!scriptString[curStringIdx]){
+            curStringIdx++; stringNum++;
+        }
+
+        if (scriptString[0]) self.yCumulation = 0;
+        if (!_appending) self.speechBubble.draw();// if it's appending, don't draw bubble again
 
         var timer = setInterval(function(){
             if (delay){ // if print job is done, wait for a moment then able Users Input
                 if (delayCounter > _delayInterval){
                     clearInterval(timer);
                     delay = false;
-                    ableUserInput = true;
+                    if (_ableUserInput) ableUserInput = true;
                 }
                 else delayCounter++;
             }
             // pauses for about (talkspeed times 8) secs when there's comma or line changes
             else if (pause){
-                if (curStringIdx == stringNum) { // if all lines printed, end repeat
+                if (curStringIdx >= stringNum) { // if all lines printed, end repeat
                     delay = true;
+                    stringIdxChange = false;
                 }
                 pauseCounter++;
 
@@ -233,6 +341,8 @@ function FloweyBattle(){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line
                         stringIdxChange = false;
+
+                        _y = self.y + ( curStringIdx * yGap) + self.yCumulation;
                     }
                     pause = false;
                     pauseCounter = 0;
@@ -240,10 +350,10 @@ function FloweyBattle(){
             }
             else {
                 var char = scriptStringSplit.shift();
-
+                if (char == ".") _x += 3;
                 // change line if sentence gets long
                 if (_x > ( self.x + scriptArea-80)){
-                    _y += yGap;
+                    _y += yGap; self.yCumulation += yGap;
                     _x = self.x;
                     nlFlag = true;
                 }
@@ -256,17 +366,17 @@ function FloweyBattle(){
                 self.floweyPortrait.talk();
 
                 if (char == ",") pause = true;
-                else if (char == "." || (char == " " && !nlFlag)) _x += 11;
-                else if (char !== " ") {
-                    createjs.Sound.play("floweyVoiceCham");
-                    _x += 11;
+                else if (char == "!") _x += 8;
+                else if (char == " " && !nlFlag) _x += 8;
+                else if (char == "." || char !== " " ){
+                    _x += 12;
+                    createjs.Sound.play ("floweyVoiceCham");
                 }
                 if (nlFlag) nlFlag = false;
                 if (scriptStringSplit <= 0) {
                     curStringIdx++;
                     stringIdxChange = true;
                     pause = true;
-                    _y += yGap;
                     _x = self.x;
                 }
             }
@@ -276,6 +386,7 @@ function FloweyBattle(){
 
 function BattleInterface() {
     var self = this;
+    self.stopRotatePellets = false;
 
     self.flowey = new FloweyBattle();
     self.box = new BattleBox();
@@ -284,76 +395,133 @@ function BattleInterface() {
 
     self.pellets = new Array();
 
+
     self.initPellets = function(){
-        var p1 = new Pellet(self.soul.x - 70, self.soul.y - 5);
-        var p2 = new Pellet(self.soul.x - 30, self.soul.y - 30);
-        var p3 = new Pellet(self.soul.x + 15, self.soul.y - 50);
-        var p4 = new Pellet(self.soul.x + 60, self.soul.y - 30);
-        var p5 = new Pellet(self.soul.x + 90, self.soul.y - 5);
+        var p1 = new Pellet(self.soul.x - 70, self.soul.y - 10);
+        var p2 = new Pellet(self.soul.x - 40, self.soul.y - 35);
+        var p3 = new Pellet(self.soul.x + 10, self.soul.y - 50);
+        var p4 = new Pellet(self.soul.x + 55, self.soul.y - 35);
+        var p5 = new Pellet(self.soul.x + 80, self.soul.y - 10);
 
         self.pellets.push(p1,p2,p3,p4,p5);
     };
 
-
     self.drawPellets = function(){
         self.initPellets();
 
-        var idx = 0;
+        var counter = 0;
         var timer = setInterval(function(){
-            var p = self.pellets[idx];
-            p.draw();
-            if (self.pellets[idx+1]) idx++;
-            else clearInterval(timer);
-            }, 500);
+            if (counter < 25){
+                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                self.flowey.floweyPortrait.draw();
+                self.box.draw();
+                self.soul.draw();
+                self.statusBar.draw();
+                for (var p in self.pellets) {
+                    self.pellets[p].spreadOut();
+                    self.pellets[p].draw();
+                }
+                counter++;
+            }
+            else {
+                for (var p in self.pellets)
+                    self.pellets[p].rotating();
+            }
 
-
+            if (self.stopRotatePellets) clearInterval(timer);
+        }, 50);
     };
-}
 
-var tweenStage = new createjs.Stage(canvas);
-tweenStage.autoClear = true;
+    self.dropPellets = function(){
+        self.stopRotatePellets = true;
+        var counter = 0;
+        for (var p in self.pellets) self.pellets[p].accel = 2;
+
+        var timer = setInterval(function () {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            self.flowey.floweyPortrait.draw();
+            self.box.draw();
+            self.soul.draw();
+            self.statusBar.draw();
+            for (var p in self.pellets) self.pellets[p].fallDown();
+            counter++;
+            if (counter > 30) clearInterval(timer);
+        }, 50);
+    };
+
+    self.drawArrows = function(){
+        ctx.drawImage(images.arrows, self.soul.x-3, self.soul.y+40);
+    };
+
+    self.turnPage = function(){
+        var counter = 0;
+        createjs.Sound.play("pageTurning");
+        var timer = setInterval(function(){
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            self.flowey.floweyPortrait.draw();
+            self.box.draw();
+            self.soul.draw();
+            self.statusBar.draw();
+            ctx.drawImage(images.pageTurn,
+                0, counter * canvasHeight, canvasWidth, canvasHeight,
+                0, 0, canvasWidth, canvasHeight);
+            counter++;
+            if (counter > 5) clearInterval(timer);
+        }, 30);
+        self.flowey.speechBubble.clear();
+    }
+}
 
 function Pellet(_x, _y){
     var self = this;
-    self.x = _x;
-    self.y = _y;
-    self.width = 10;
-    self.height = 5;
-    //self.pellet.regX = self.width/2;
-    //self.pellet.regY = self.height/2;
+    self.xt = _x;
+    self.yt = _y;
+    self.x = 310;
+    self.y = 160;
+    self.size = 10;
+    self.angle = 0;
+    self.accel = 2;
 
-
-    self.draw = function(){
-        console.log("draw pellet");
-
-        var angle = 45;
-        var rotation = (angle * Math.PI) /180;
-
-        var timer = setInterval(function(){
-            ctx.clearRect(self.x-20, self.y-20, self.width+30, self.width+30);
-            ctx.save();
-            ctx.beginPath();
-            ctx.ellipse(self.x, self.y, self.width, self.height,
-            rotation,
-                0, 2 * Math.PI);
-            ctx.fillStyle = "#fff";
-            ctx.fill();
-            ctx.restore();
-
-            angle += 90;
-            rotation = (angle * Math.PI) /180;
-        }, 1000);
+    self.spreadOut = function(){
+        self.accel *= 1.1;
+        self.accelCtr++;
+        if (self.x < self.xt){
+            var diff = self.xt - self.x;
+            if (self.accel < diff) self.x += self.accel;
+            else self.x += self.accel % diff;
+        }
+        else if (self.x > self.xt){
+            var diff = self.xt - self.x;
+            if (self.accel < diff) self.x -= self.accel;
+            else self.x -= self.accel % diff;
+        }
+        if (self.y < self.yt){
+            var diff = self.yt - self.y;
+            if (self.accel < diff) self.y += self.accel+4;
+            else self.y += self.accel % diff;
+        }
     };
 
+    self.rotating = function(){
+        ctx.clearRect(self.x-self.size-2, self.y-self.size-2, self.size*2+5, self.size*2+5);
+        self.draw();
+    };
 
-    /*
+    self.draw = function(){
+        //var timer = setInterval(function(){
+        self.angle = (self.angle + 1.0) % 12.5;
+        ctx.save();
+        ctx.translate(self.x, self.y);
+        ctx.translate(self.size/2, self.size/2);
+        ctx.rotate(self.angle);
+        ctx.drawImage(images.pellet, -(self.size/2), -(self.size/2));
+        ctx.restore();
+        //}, 50);
+    };
+
     self.fallDown = function(){
-        createjs.Tween.get(ball, {override: true})
-            .to({rotation: 360}, 1)
-            .to({rotation: -360, guide: {path:
-                [self.pellet.x, self.pellet.y,
-                self.pellet.x, self.pellet.y+50,
-                self.pellet.x, self.pellet.y+100]}}, 3000, createjs.Ease.quartIn);
-    }
-    */
+        if (self.y < canvasHeight) self.y += self.accel;
+        self.draw();
+        self.accel *= 1.1;
+    };
 }

@@ -37,16 +37,19 @@ function initSounds(){
 	queue.installPlugin(createjs.Sound);
 	queue.addEventListener("complete", handleComplete);
 	queue.loadManifest([
-		{id:"intro", src:"sounds/BGM/01_OnceUponATime.ogg"},
-		{id:"flowey", src:"sounds/BGM/02_YourBestFriend.ogg"},
-		{id:"title", src: "sounds/SFX/title.ogg"},
-		{id:"typeWriting", src: "sounds/SFX/typeWriting.ogg"},
-		{id:"whiteout", src:"sounds/SFX/whiteout.ogg"},
-		{id:"pop", src:"sounds/SFX/pop.ogg"},
-		{id:"beep", src:"sounds/SFX/beep.ogg"},
-		{id:"heartBeat", src:"sounds/SFX/heartBeat.ogg"},
-		{id:"battleStart", src:"sounds/SFX/battleStart.ogg"},
-		{id:"floweyVoiceCham", src:"sounds/SFX/floweyVoiceCharm.ogg"}
+		{id:"intro", 			src:"sounds/BGM/OnceUponATime.ogg"},
+		{id:"flowey", 			src:"sounds/BGM/YourBestFriend.ogg"},
+		{id:"suspense", 		src:"sounds/BGM/suspense.ogg"},
+		{id:"title", 			src:"sounds/SFX/title.ogg"},
+		{id:"typeWriting", 		src:"sounds/SFX/typeWriting.ogg"},
+		{id:"whiteout", 		src:"sounds/SFX/whiteout.ogg"},
+		{id:"pop", 				src:"sounds/SFX/pop.ogg"},
+		{id:"beep", 			src:"sounds/SFX/beep.ogg"},
+		{id:"heartBeat", 		src:"sounds/SFX/heartBeat.ogg"},
+		{id:"battleStart", 		src:"sounds/SFX/battleStart.ogg"},
+		{id:"dramatic", 		src:"sounds/SFX/dramatic.ogg"},
+		{id:"pageTurning",		src:"sounds/SFX/pageTurning.ogg"},
+		{id:"floweyVoiceCham", 	src:"sounds/SFX/floweyVoiceCharm.ogg"}
 	]);
 }
 
@@ -82,12 +85,15 @@ function initIntroImages() {
 }
 
 function initIngameImages(){
-	addAsset("ruin", "img/background/ruin.png");
-	addAsset("speechBubble", "img/sprites/speechBubble.png");
-	addAsset("frisk", "img/sprites/frisk.png");
-	addAsset("friskSoul", "img/sprites/friskSoul.png");
-	addAsset("flowey_overworld", "img/sprites/flowey_overworld.png");
-	addAsset("flowey_portrait", "img/sprites/flowey_portrait.png");
-	addAsset("heartBeatEffect", "img/sprites/heartBeat.png");
+	addAsset("ruin", 				"img/background/ruin.png");
+	addAsset("pageTurn", 			"img/background/pageTurn.png");
+	addAsset("speechBubble", 		"img/sprites/speechBubble.png");
+	addAsset("frisk", 				"img/sprites/frisk.png");
+	addAsset("friskSoul", 			"img/sprites/friskSoul.png");
+	addAsset("flowey_overworld", 	"img/sprites/flowey_overworld.png");
+	addAsset("flowey_portrait", 	"img/sprites/flowey_portrait.png");
+	addAsset("heartBeatEffect", 	"img/sprites/heartBeat.png");
+	addAsset("pellet", 				"img/sprites/pellet.png");
+	addAsset("arrows",				"img/sprites/arrows.png");
 }
 

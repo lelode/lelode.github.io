@@ -6,8 +6,6 @@ window.onload = function(){
 	//initIntroImages();
 	initIngameImages();
 	initSounds();
-
-	createjs.MotionGuidePlugin.install(createjs.Tween);
 };
 
 var canvas = document.getElementById("game");
@@ -36,12 +34,19 @@ document.addEventListener("touchstart", function(event){
 document.addEventListener("keydown", function(event){
 	if (ableUserInput){
 		if (event.keyCode === 90){ // z key
-			if (curStage == "venture") 	floweyScriptVenture();
-			else if (curStage == "battle") floweyScriptBattle();
+			switch(curStage){
+				case "venture": floweyScriptVenture(); break;
+				case "battle": floweyScriptBattle(); break;
+				default: break;
+			}
 		}
-		//if (event.keyCode >= 37 && event.keyCode <= 40) // arrows
+		// arrows
+		else if (event.keyCode >= 37 && event.keyCode <= 40 && curStage == "struggling") {
+			if (struggleCtr < 5) struggleCtr++;
+			else floweyScriptBattle();
+		}
 	}
-});
+})
 
 var ableUserInput = false;
 canvas.addEventListener("click", processStage);
@@ -59,6 +64,7 @@ function processStage(){
 
 function title() {
 
+	//venture();
 	battle();
 
 	/*
