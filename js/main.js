@@ -17,11 +17,20 @@ function initCanvas(){
 	ctx.save();
 	ctx.fillStyle = "#fff";
 	ctx.font = "30px tbyt";
-	ctx.fillText("LOADING...", 230, 300);
+	ctx.fillText("LOADING...", 260, 300);
 	ctx.restore();
 }
 
-//document.addEventListener("touchstart", function(event){}})
+document.addEventListener("touchstart", function(event){
+	if (ableUserInput) {
+		switch (curStage) {
+			case "title": intro(); break;
+			case "venture": floweyScriptVenture(); break;
+			case "battle": floweyScriptBattle(); break;
+			default: break;
+		}
+	}
+})
 
 document.addEventListener("keydown", function(event){
 	if (ableUserInput){

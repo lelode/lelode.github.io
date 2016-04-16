@@ -130,7 +130,7 @@ function floweyScriptBattle(){
             }, 9 * k)
             setTimeout(function(){
                 createjs.Sound.play("dramatic");
-                battleInterface.flowey.talk({emote:"unpleasant", talkSpeed: 40, delay:3*k, s1:"이건 게임이 아니야!!"});
+                battleInterface.flowey.talk({emote:"unpleasant", talkSpeed: 40, delay:5*k, s1:"이건 게임이 아니야!!"});
             }, 11 * k);
             break;
         case 12: battleInterface.turnPage();

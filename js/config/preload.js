@@ -1,13 +1,28 @@
 var images = {};
 var assetsLeft = 0;
 
+var loadingBarX = 120, loadingBarY = 350;
+
+function drawLoadingBar(){
+	ctx.save();
+	ctx.fillStyle = "#fff";
+	ctx.fillRect(loadingBarX, loadingBarY, 10, 10);
+	ctx.restore();
+	loadingBarX += 8;
+}
+
 var soundLoaded = false;
 var assetLoaded = false;
 
 var queue = new createjs.LoadQueue();
 
+function soundloadHandler(event){
+	drawLoadingBar();
+};
+
 function handleComplete(){
 	soundLoaded = true;
+	drawLoadingBar();
 
 	if (assetLoaded && soundLoaded && curStage == "loading"){
 		title();
@@ -23,6 +38,7 @@ function addAsset(name,src){
 
 var onAssetLoaded = function(){
 	assetsLeft--;
+	drawLoadingBar();
 	if(assetsLeft==0){
 		assetLoaded = true;
 
@@ -35,6 +51,7 @@ var onAssetLoaded = function(){
 function initSounds(){
 	createjs.Sound.alternateExtensions = ["mp3"];
 	queue.installPlugin(createjs.Sound);
+	queue.addEventListener("fileload", soundloadHandler);
 	queue.addEventListener("complete", handleComplete);
 	queue.loadManifest([
 		{id:"intro", 			src:"sounds/BGM/OnceUponATime.ogg"},
