@@ -289,6 +289,10 @@ function TalkingFlowey() {
         var pause = true;
         var pauseInterval = 10;
         var pauseCounter = pauseInterval;
+        var delay = false;
+        var delayInterval = 15;
+        var delayCounter = 0;
+
         var stringIdxChange = true;
 
         // if conversation box is already drawn, don't draw it again
@@ -301,11 +305,17 @@ function TalkingFlowey() {
 
         var timer = setInterval(function(){
             // pauses for about (talkspeed times 8) secs when there's comma or line changes
-            if (pause){
-                if (curStringIdx >= stringNum) { // if all 3 lines printed, end repeat
+            if (delay){
+                if (delayCounter > delayInterval){
                     clearInterval(timer);
+                    delay = false;
                     ableUserInput = true;
                 }
+                else delayCounter++;
+            }
+
+            else if (pause){
+                if (curStringIdx >= stringNum) delay = true;
                 else if (pauseCounter > pauseInterval){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line

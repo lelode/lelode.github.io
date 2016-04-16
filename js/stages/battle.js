@@ -3,6 +3,7 @@ var battleInterface;
 function battle(){
     battleInterface = new BattleInterface();
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    /*
     createjs.Sound.stop();
 
     var beatCount = 1;
@@ -32,7 +33,7 @@ function battle(){
     }, 5 * k);
 
     setTimeout(function(){ floweyScriptBattle() }, 7 * k);
-
+    */
     //for test
     /*
     battleInterface.box.draw();
@@ -254,8 +255,29 @@ function floweyScriptBattle(){
         case 64: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({delay:2*k,
                     s1:"네가 직접 게임에서 시행착오를 해보지 않으면 그 의미를 깨달을 수 없어."})}, 1.5*k); break;
-        //case 65: battleInterface.turnPage();
-            //setTimeout(function(){ battleInterface.flowey.talk({s1:""})}, 1.5*k); break;
+        case 65: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"더 나은 방법을 찾을 때까지 시간이 많이 걸릴지도 모르지만"})}, 1.5*k); break;
+        case 66: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"네가 의지를 잃지 않는다면,", s2:"그 시간은 반드시 보상받을 거야."})}, 1.5*k); break;
+        case 67: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"내가 약속할게."})}, 1.5*k); break;
+        case 68: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"sad", pauseInterval:1.5*k,
+                s1:"그러니 실수하는걸 두려워하지마.", s2:"잘못된 선택을 내릴 까봐 겁내지마."})}, 1.5*k); break;
+        case 69: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"serious", s1:"네 의지가 어떤 결과를 가져올 수 있는지 지켜봐."})}, 1.5*k); break;
+        case 70: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"내 말을 이해해준다면, 지금이라도 이 만화를 끄고 게임을 직접 해보길 바래."})}, 1.5*k); break;
+        case 71: battleInterface.turnPage(); ableUserInput = true; break;
+        case 72: case 73: case 74: case 75: ableUserInput = true; break;
+        case 76: battleInterface.flowey.talk({delay: 2*k, s1:"..."}); break;
+        case 77: battleInterface.flowey.talk({delay: 2*k, appending:true, emote:"calm", s2:"......"}); break;
+        case 78: battleInterface.flowey.talk({delay: 2*k, appending:true, emote:"serious", s3:"........."}); break;
+        case 79: battleInterface.turnPage();
+            setTimeout(function(){ battleInterface.flowey.talk({
+                s1:"...아직도 이걸 보고 있네."})}, 1.5*k); break;
+        case 80: 
         default:  battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({s1:"현재 여기까지 완성했단다." })}, 1.5*k); break;
     }
@@ -404,13 +426,8 @@ function FloweyBattle(){
             }
             // pauses for about (talkspeed times 8) secs when there's comma or line changes
             else if (pause){
-                if (curStringIdx >= stringNum) { // if all lines printed, end repeat
-                    delay = true;
-                    stringIdxChange = false;
-                }
-                pauseCounter++;
-
-                if (pauseCounter > _pauseInterval){
+                if (curStringIdx >= stringNum) delay = true; // if all lines printed, end repeat
+                else if (pauseCounter > _pauseInterval){
                     if (stringIdxChange){
                         scriptStringSplit = scriptString[curStringIdx].split(""); // prepare for the next line
                         stringIdxChange = false;
@@ -420,6 +437,7 @@ function FloweyBattle(){
                     pause = false;
                     pauseCounter = 0;
                 }
+                else pauseCounter++;
             }
             else {
                 var char = scriptStringSplit.shift();
