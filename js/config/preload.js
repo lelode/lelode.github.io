@@ -70,7 +70,6 @@ function initSounds(){
 		{id:"beep", 				src:"sounds/SFX/beep.ogg"},
 		{id:"heartBeat", 			src:"sounds/SFX/heartBeat.ogg"},
 		{id:"battleStart", 			src:"sounds/SFX/battleStart.ogg"},
-		{id:"dramatic", 			src:"sounds/SFX/dramatic.ogg"},
 		{id:"pageTurning",			src:"sounds/SFX/pageTurning.ogg"},
 		{id:"floweyVoice", 			src:"sounds/SFX/floweyVoice.ogg"},
 		{id:"floweyDeepVoice", 		src:"sounds/SFX/floweyDeepVoice.ogg"},
