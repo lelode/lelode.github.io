@@ -177,9 +177,9 @@ function IntroSlider() {
 			case 3:
 				self.printScript("기나긴 싸움 끝에", "승기를 잡은 것은 인간들이었다.");
 				self.fadeBGIn(images.intro3_ground, 50);
-				setTimeout(function(){	self.fadeSpriteIn(images.intro3_monsters) }, 1.5 * k);
-				setTimeout(function(){	self.fadeSpriteIn(images.intro3_humans) }, 2 * k);
-				setTimeout(function(){	self.fadeSpriteIn(images.intro3_humanLeaders) }, 2.5 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro3_humans) }, 1.5 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro3_monsters) }, 2 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro3_humanLeaders) }, 2.5 * k);
 				setTimeout(function(){ ctx.clearRect(self.xScript, self.yScript, 600, 300) }, 6 * k);
 				break;
 			case 4:
@@ -203,25 +203,25 @@ function IntroSlider() {
 				self.xScript -= 150;
 				self.printScript("전설에 의하면,", "에봇 산에 한번 오르면", "다시는 돌아오지 못한다고 한다.");
 				self.fadeBGIn(images.intro7, 50);
-				setTimeout(function(){ self.fadeSpriteIn(images.intro7_chara1) }, 1.5 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro7_human1) }, 1.5 * k);
 				setTimeout(function(){ self.fadeBGIn(images.intro7, 10) }, 2 * k);
-				setTimeout(function(){ self.fadeSpriteIn(images.intro7_chara2) }, 3 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro7_human2) }, 3 * k);
 				setTimeout(function(){ self.fadeBGIn(images.intro7, 10) }, 3.5 * k);
-				setTimeout(function(){ self.fadeSpriteIn(images.intro7_chara3) }, 4.5 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro7_human3) }, 4.5 * k);
 				setTimeout(function(){ ctx.clearRect(0, 0, canvasWidth, canvasHeight) }, 8 * k);
 				break;
 			case 8:
 				self.fadeBGIn(images.intro8, 50);
-				setTimeout(function(){ self.fadeSpriteIn(images.intro8_chara1)}, 1.5 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro8_human1)}, 1.5 * k);
 				setTimeout(function(){
 					ctx.clearRect(self.xImage, self.yImage, self.widthImage, self.heightImage);
 					ctx.drawImage(images.intro8, self.xImage, self.yImage)
-					ctx.drawImage(images.intro8_chara2, self.xImage, self.yImage);
+					ctx.drawImage(images.intro8_human2, self.xImage, self.yImage);
 				}, 3 * k);
 				setTimeout(function(){
 					ctx.clearRect(self.xImage, self.yImage, self.widthImage, self.heightImage);
 					ctx.drawImage(images.intro8, self.xImage, self.yImage);
-					ctx.drawImage(images.intro8_chara1, self.xImage, self.yImage);
+					ctx.drawImage(images.intro8_human1, self.xImage, self.yImage);
 				}, 4.5 * k);
 				setTimeout(function() { ctx.clearRect(0, 0, canvasWidth, canvasHeight) }, 6 * k);
 				break;
@@ -234,9 +234,9 @@ function IntroSlider() {
 				break;
 			case 10:
 				self.fadeBGIn(images.intro10, 10);
-				setTimeout(function(){ self.fadeSpriteIn(images.intro10_chara1)}, 0.7 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro10_human1)}, 0.7 * k);
 				setTimeout(function(){ self.fadeBGIn(images.intro10, 10)}, 2 * k);
-				setTimeout(function(){ self.fadeSpriteIn(images.intro10_chara2)}, 2.7 * k);
+				setTimeout(function(){ self.fadeSpriteIn(images.intro10_human2)}, 2.7 * k);
 				setTimeout(function(){ self.fadeBGIn(images.intro10, 10)}, 4 * k);
 				setTimeout(function(){ ctx.clearRect(0, 0, canvasWidth, canvasHeight) }, 5 * k);
 				break;
@@ -259,7 +259,7 @@ function intro() {
 	ctx.restore();
 
 	var slider = new IntroSlider();
-	createjs.Sound.play("intro");
+	createjs.Sound.play("onceUponATime");
 	slider.play(1);
 	setTimeout(function() { slider.play(2) }, 9 * k);
 	setTimeout(function() { slider.play(3) }, 16 * k);
@@ -267,7 +267,7 @@ function intro() {
 	setTimeout(function() { slider.play(5) }, 31 * k);
 	setTimeout(function() { slider.play(6) }, 39 * k);
 	setTimeout(function() { slider.play(7) }, 46 * k);
-	setTimeout(function() { slider.play(8) }, 57 * k);
+	setTimeout(function() { slider.play(8) }, 56 * k);
 	setTimeout(function() { slider.play(9) }, 64 * k);
 	setTimeout(function() { slider.play(10) }, 70 * k);
 	setTimeout(function() { slider.play(11) }, 76 * k);

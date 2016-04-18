@@ -84,6 +84,6 @@ function title() {
 		ctx.font = "20px Lucida Console";
 		ctx.fillText("[TOUCH OR CLICK]", 230, 350);
 		ctx.restore();
-	 	//ableUserInput = true;
+	 	ableUserInput = true;
 	}, 8000);
 }
