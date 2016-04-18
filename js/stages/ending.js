@@ -231,8 +231,6 @@ function Ending(){
 }
 
 function setCookie(){
-    var now = new Date();
-    var expire = now.getTime() + 1000*36000;
-    document.cookie = "killed=true;path=/;expires="+expire+";";
-    console.log("setCookie");
+    var expires = "Fri, 31 Dec 9999 23:59:59 GMT";
+    document.cookie = "killed=true;path=/;expires="+expires+";";
 }

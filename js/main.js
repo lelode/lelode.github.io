@@ -16,7 +16,6 @@ function initCanvas(){
 
 window.onload = function(){
 	initCanvas();
-	setCookie();
 	getCookie();
 };
 
@@ -24,7 +23,6 @@ function getCookie(){
     var name = "kiiled";
 	var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
   	var result = regexp.exec(document.cookie);
-  	return  ? null : result[1];
 
   	if (result === null){
         initIntroImages();
@@ -33,8 +31,6 @@ function getCookie(){
   	}
   	else nothing();
 }
-
-
 
 var ableUserInput = false;
 
