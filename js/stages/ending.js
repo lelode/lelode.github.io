@@ -81,7 +81,7 @@ function NothingHappened(){
                     delay = false;
                     ableUserInput = true;
                 }
-                else { delayCounter++; console.log("dleayCounter"); }
+                else delayCounter++;
             }
             else {
                 var char = scriptStringSplit.shift();
