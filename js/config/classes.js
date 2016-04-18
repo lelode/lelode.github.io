@@ -4,14 +4,14 @@ function BackgroundImage(){
     self.draw = function(){ ctx.drawImage(images.ruin, self.x, self.y) };
 }
 
-function FloweyProtrait(xVal, yVal) {
+function FloweyPortrait(xVal, yVal) {
     var self = this;
     self.x = xVal;
     self.y = yVal;
     self.width = 90;
     self.height = 90;
     self.emotion = 0;
-    self.speakingRate = 5;
+    self.speakingRate = 3;
     self.frameCounter = 1;
     self.frameIdx = 0;
     self.opacity = 1;
@@ -44,7 +44,7 @@ function FloweyProtrait(xVal, yVal) {
             case "crying": self.emotion = 15; break;
             default: console.log("floweyTalk/setEmotion wrong emote value"); idx = 1; break;
         }
-        if (self.emotion < 14) self.opacity = 1; // for crying animation
+        self.opacity = 1;
     };
 
     self.draw = function(word, _x, _y){
@@ -74,29 +74,115 @@ function FloweyProtrait(xVal, yVal) {
         if (self.opacity = 1) self.opacity = 0.5;
         ctx.restore();
     };
+
+    self.cry = function(){
+        var counter = 0;
+        self.setEmotion("tearful");
+        var timer = setInterval(function(){
+            ctx.save();
+            ctx.globalAlpha = 0.5;
+            self.draw();
+            ctx.restore();
+            if (counter < 10) counter++;
+            else clearInterval(timer);
+        }, 300);
+
+        setTimeout(function(){
+            self.setEmotion("crying");
+            counter = 0;
+            var timer = setInterval(function(){
+                ctx.save();
+                ctx.globalAlpha = 0.5;
+                self.draw();
+                ctx.restore();
+                if (counter < 10) counter++;
+                else clearInterval(timer);
+            }, 300);
+        },5*k);
+    }
 }
 
+
+function SoulPiece(_dir, angle, _x, _y){
+    var self = this;
+    self.x = _x;
+    self.y = _y;
+    self.dir = _dir;
+    self.size = 10;
+
+    self.xVel = 3 + Math.cos(angle);
+    self.yVeL = -10 * Math.sin(angle);
+    self.rotation = 0;
+
+    self.update = function(){
+        self.yVeL += 0.5;
+        self.x += self.dir * self.xVel;
+        self.y += self.yVeL;
+        self.rotation = (self.rotation + 0.2) % 12.5;
+    };
+
+    self.draw = function(){
+        ctx.save();
+        ctx.translate(self.x, self.y);
+        ctx.translate(self.size/2, self.size/2);
+        ctx.rotate(self.rotation);
+        ctx.drawImage(images.soulPiece, -(self.size/2), -(self.size/2));
+        ctx.restore();
+        self.update();
+    }
+}
 
 function Soul(){
     var self = this;
     self.x = 310;
     self.y = 300;
     self.op = 1;
+    self.blinkCtr = 0;
+    self.pieces = new Array();
+
+    self.initPieces = function(){
+        var p1 = new SoulPiece(-1, 60, self.x-2, self.y);
+        var p2 = new SoulPiece(-1, 45, self.x-2, self.y+1);
+        var p3 = new SoulPiece(-1, 15, self.x-2, self.y+2);
+        var p4 = new SoulPiece(-1, 0, self.x-2, self.y);
+        var p5 = new SoulPiece(1, 15, self.x+2, self.y+1);
+        var p6 = new SoulPiece(1, 40, self.x+2, self.y+2);
+        self.pieces.push(p1, p2, p3, p4, p5, p6);
+    };
 
     self.hit = function(_x, _y){
         if (_x) _x = self.x + _x; else _x = self.x;
         if (_y) _y = self.y + _y; else _y = self.y;
-        self.op = (self.op == 1) ? 0.5 : 1;
+        if (self.blinkCtr % 2 == 0){
+            self.op = (self.op == 1) ? 0.5 : 1;
+            self.blinkCtr = 0;
+        }
         ctx.save();
         ctx.globalAlpha = self.op;
         ctx.drawImage(images.soul, _x, _y);
         ctx.restore();
+        self.blinkCtr++;
     };
 
     self.splited = function(){
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
         createjs.Sound.play("soulSplit");
-        ctx.drawImage(images.soulSplited, self.x-5, self.y);
+        ctx.drawImage(images.soulSplited, self.x, self.y);
     };
+
+    self.shatter = function(){
+        self.initPieces();
+        createjs.Sound.play("soulShatter");
+        var counter = 0;
+        var timer = setInterval(function () {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            for (var p in self.pieces){
+                self.pieces[p].draw();
+            }
+            if (counter < 60) counter++;
+            else clearInterval(timer);
+        },40);
+    }
 
     self.draw = function(_x, _y){
         if (_x === undefined) _x = self.x;
@@ -334,18 +420,48 @@ function FloweyOverworldAnim(){
     };
 }
 
+function TalkBox(_x, _y){
+    var self = this;
+    self.x = _x;
+    self.y = _y;
+    self.width = 580;
+    self.height = 154;
+    self.on = false;
+
+    self.draw = function(){
+        if (self.on){
+            ctx.clearRect(self.x+40, self.y+10, self.width-60, self.height-20);
+        }
+        else {
+            ctx.save();
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(self.x, self.y, self.width, self.height);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(self.x+5, self.y+5, self.width-10, self.height-10);
+            ctx.restore();
+            self.on = true;
+        }
+    }
+
+    self.clear = function(){
+        if (self.on){
+            ctx.clearRect(self.x, self.y, self.width, self.height);
+            self.on = false;
+        } 
+    }
+}
+
 function TalkingFlowey() {
     var self = this;
 
-    self.width = 580;
-    self.height = 154;
     self.x = 30;
     self.y = 10;
     self.xScript = self.x + 150;
     self.yScript = self.y + 50;
     self.talkboxOn = false;
 
-    self.floweyPortrait = new FloweyProtrait(self.x + 30, self.y + 25);
+    self.box = new TalkBox(self.x, self.y);
+    self.floweyPortrait = new FloweyPortrait(self.x + 30, self.y + 25);
     self.floweyOverworld = new FloweyOverworldTalk();
 
     self.setEmotion = function(word){
@@ -353,15 +469,7 @@ function TalkingFlowey() {
         self.floweyOverworld.setEmotion(word);
     };
 
-    self.drawBox = function(){
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(self.x, self.y, self.width, self.height);
-        ctx.fillStyle = "#000";
-        ctx.fillRect(self.x+5, self.y+5, self.width-10, self.height-10);
-    };
-
     self.talk = function(){
-        ableUserInput = false;
         var _x = self.xScript;
         var _y = self.yScript;
         var scriptString = {};
@@ -389,13 +497,8 @@ function TalkingFlowey() {
 
         var stringIdxChange = true;
 
-        // if conversation box is already drawn, don't draw it again
-        if (self.talkboxOn) ctx.clearRect( self.xScript, self.yScript-20, scriptArea, 110);
-        else {
-            self.drawBox();
-            self.talkboxOn = true;
-            self.floweyPortrait.draw();
-        }
+        self.box.draw();
+        self.floweyPortrait.draw();
 
         var timer = setInterval(function(){
             // pauses for about (talkspeed times 8) secs when there's comma or line changes
@@ -448,12 +551,13 @@ function TalkingFlowey() {
                 ctx.font = "25px tbyt";
                 ctx.fillText(char, _x, _y);
                 ctx.restore();
-                self.floweyPortrait.talk();
-                self.floweyOverworld.talk();
+
 
                 if (char == ",") { _x += 10; pause = true; }
                 else if (char == "." || (char == " " && !nlFlag)) _x += 10;
                 else if (char !== " ") {
+                    self.floweyPortrait.talk();
+                    self.floweyOverworld.talk();
                     self.floweyPortrait.playVoice();
                     _x += 23;
                 }
@@ -589,7 +693,6 @@ function Pellet(_x, _y){
     };
 
     self.draw = function(){
-        //var timer = setInterval(function(){
         self.angle = (self.angle + 1.0) % 12.5;
         ctx.save();
         ctx.translate(self.x, self.y);
@@ -597,7 +700,6 @@ function Pellet(_x, _y){
         ctx.rotate(self.angle);
         ctx.drawImage(images.pellet, -(self.size/2), -(self.size/2));
         ctx.restore();
-        //}, 50);
     };
 
     self.fallDown = function(){
@@ -616,7 +718,7 @@ function FloweyBattle(){
     self.delayInterval = 12;
     self.yCumulation = 0;
 
-    self.floweyPortrait = new FloweyProtrait(275, 100);
+    self.floweyPortrait = new FloweyPortrait(275, 100);
     self.speechBubble = new SpeechBubble();
 
     self.talk = function (args){
@@ -727,6 +829,7 @@ function FloweyBattle(){
                 }
                 if (nlFlag) nlFlag = false;
                 if (scriptStringSplit <= 0) {
+                    self.floweyPortrait.draw();
                     curStringIdx++;
                     stringIdxChange = true;
                     pause = true;

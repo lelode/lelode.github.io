@@ -60,6 +60,9 @@ function initSounds(){
 		{id:"dogsong",				src:"sounds/BGM/Dogsong.ogg"},
 		{id:"respite",				src:"sounds/BGM/Respite.ogg"},
 		{id:"raining",				src:"sounds/BGM/RainingSomewhereElse.ogg"},	
+		{id:"ending",				src:"sounds/BGM/AnEnding.ogg"},
+		{id:"wind",					src:"sounds/BGM/wind.ogg"},
+
 		{id:"title", 				src:"sounds/SFX/title.ogg"},
 		{id:"typeWriting", 			src:"sounds/SFX/typeWriting.ogg"},
 		{id:"whiteout", 			src:"sounds/SFX/whiteout.ogg"},
@@ -76,7 +79,8 @@ function initSounds(){
 		{id:"hit",					src:"sounds/SFX/hit.ogg"},
 		{id:"soulSplit",			src:"sounds/SFX/soulSplit.ogg"},
 		{id:"soulShatter",			src:"sounds/SFX/soulShatter.ogg"},				
-		{id:"hisVoice",				src:"sounds/SFX/voiceUnvrHeardB4.ogg"}
+		{id:"hisVoice",				src:"sounds/SFX/voiceUnvrHeardB4.ogg"},
+		{id:"text",					src:"sounds/SFX/text.ogg"},
 	]);
 }
 
@@ -118,6 +122,7 @@ function initIngameImages(){
 	addAsset("human", 				"img/sprites/human.png");
 	addAsset("soul", 				"img/sprites/soul.png");
 	addAsset("soulSplited",			"img/sprites/soulSplited.png");
+	addAsset("soulPiece",			"img/sprites/soulPiece.png");
 	addAsset("flowey_overworld", 	"img/sprites/flowey_overworld.png");
 	addAsset("flowey_portrait", 	"img/sprites/flowey_portrait.png");
 	addAsset("heartBeatEffect", 	"img/sprites/heartBeat.png");

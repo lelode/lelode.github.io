@@ -3,10 +3,31 @@ var scriptVentureCtr = 0;
 
 window.onload = function(){
 	initCanvas();
-	initIntroImages();
-	initIngameImages();
-	initSounds();
+	getCookie();
 };
+
+function getCookie(){
+    var name = "kiiled=";
+    var start, end;
+    var result;
+
+    var cookieData = document.cookie;
+    start = cookieData.indexOf(name);
+    if (start != -1){
+        start += name.length;
+        end = cookieData.indexOf(";",start);
+        if (end == -1) end = cookie.length;
+        result = cookieData.substring(start, end);
+        console.log("Get outta here, kid.");
+    }
+
+    if (result == "killed=true") { nothing(); }
+    else {
+        initIntroImages();
+        initIngameImages();
+        initSounds();
+    }
+}
 
 var canvas = document.getElementById("game");
 var ctx;
@@ -21,6 +42,8 @@ function initCanvas(){
 	ctx.restore();
 }
 
+var ableUserInput = false;
+
 document.addEventListener("touchstart", function(event){
 	if (ableUserInput) {
 		switch (curStage) {
@@ -32,16 +55,21 @@ document.addEventListener("touchstart", function(event){
 				else floweyScriptBattle();
 				break;
 			default: break;
+			case "ending": scriptEnding(); break;
+			case "nothing": none.message(); break;
 		}
 	}
 })
 
 document.addEventListener("keydown", function(event){
 	if (ableUserInput){
+		if (curStage == "title") intro();
 		if (event.keyCode === 90){ // z key
 			switch(curStage){
 				case "venture": floweyScriptVenture(); break;
 				case "battle": floweyScriptBattle(); break;
+				case "ending": scriptEnding(); break;
+				case "nothing": none.message(); break;
 				default: break;
 			}
 		}
@@ -53,23 +81,24 @@ document.addEventListener("keydown", function(event){
 	}
 })
 
-var ableUserInput = false;
-canvas.addEventListener("click", processStage);
-
-function processStage(){
-	if (ableUserInput) {
+canvas.addEventListener("click", function(event){
+		if (ableUserInput) {
 		switch (curStage) {
 			case "title": intro(); break;
 			case "venture": floweyScriptVenture(); break;
 			case "battle": floweyScriptBattle(); break;
+			case "ending": scriptEnding(); break;
+			case "nothing": none.message(); break;
 			default: break;
 		}
 	}
-}
+})
 
 function title() {
 	//venture();
 	//battle();
+	//ending();
+	//nothing();
 
 	curStage = "title";
 
@@ -82,7 +111,7 @@ function title() {
 		ctx.save();
 		ctx.fillStyle = "gray";
 		ctx.font = "20px Lucida Console";
-		ctx.fillText("[TOUCH OR CLICK]", 230, 350);
+		ctx.fillText("[PRESS KEY OR TOUCH OR CLICK]", 145, 350);
 		ctx.restore();
 	 	ableUserInput = true;
 	}, 8000);

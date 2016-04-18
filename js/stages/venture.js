@@ -103,7 +103,7 @@ function venture(){
         ventureManager.floweyTalk.talk("너, 지상에서 온 인간이구나!");
     }, 15 * k);
     setTimeout(function(){
-        ventureManager.floweyTalk.talkboxOn = false;
+        ventureManager.floweyTalk.box.on = false;
         ventureManager.humanTurnAround();
     }, 19 * k);
     setTimeout(function(){
@@ -112,12 +112,16 @@ function venture(){
         floweyScriptVenture();
     }, 22 * k);
 
-    // for test
-    //ventureManager.adjustOrigin()
-    //setTimeout(function(){ battle()}, 1 * k);
+    /*
+    curStage = "venture";
+    scriptVentureCtr = 6;
+    var instance = createjs.Sound.play("yourBestFriend", {loop:-1});
+    floweyScriptVenture();
+    */
 }
 
 function floweyScriptVenture(){
+    ableUserInput = false;
     scriptVentureCtr++;
 
     switch (scriptVentureCtr){
@@ -125,19 +129,19 @@ function floweyScriptVenture(){
         case 2: ventureManager.floweyTalk.talk("여기는 지하세계야.", "괴물들이 살고 있는 곳이지."); break;
         case 3:
             ventureManager.floweyTalk.setEmotion("calm");
-            ventureManager.floweyTalk.talk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만"); break;
-        case 4: ventureManager.floweyTalk.talk("여긴 아주 위험한 곳이니까 되도록이면 빨리 이곳에서 나가는 게 좋아."); break;
+            ventureManager.floweyTalk.talk("네가 어쩌다가 이런 곳으로 떨어지게 된 건진 모르겠지만..."); break;
+        case 4: ventureManager.floweyTalk.talk("여긴 아주 위험한 곳이니까,        빨리 이곳에서 나가는 게 좋아."); break;
         case 5: ventureManager.floweyTalk.talk("네가 출구를 찾으러 가기 전에"); break;
         case 6: ventureManager.floweyTalk.talk("아무 것도 모르는 채로 지하세계를 돌아다녔다간 위험한 일을 당할 수도 있으니까"); break;
         case 7:
             ventureManager.floweyTalk.setEmotion("smile");
-            ventureManager.floweyTalk.talk("여기선 어떻게 해야 하는지 내가    알려줄게."); break;
+            ventureManager.floweyTalk.talk("여기선 어떻게 해야 하는지          내가 알려줄게."); break;
         case 8:
             ventureManager.floweyTalk.talk("준비됐어?", "시작한다!");
             ableUserInput = false;
-            ventureManager.floweyTalk.talkboxOn = false;
+            ventureManager.floweyTalk.box.On = false;
             setTimeout(function(){ battle() }, 2.5 * k);
             break;
-        default: break;
+        default: console.log("Error: inappropriate ScriptVentureCtr value."); break;
     }
 }

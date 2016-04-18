@@ -3,7 +3,6 @@ var battleInterface;
 function battle(){
     battleInterface = new BattleInterface();
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
     createjs.Sound.stop();
 
     var beatCount = 1;
@@ -34,12 +33,12 @@ function battle(){
 
     setTimeout(function(){ floweyScriptBattle() }, 7 * k);
 
-    //for test
     /*
+    //for test
     battleInterface.box.draw();
     battleInterface.soul.draw();
     curStage = "battle";
-    scriptBattleCtr = 74;
+    scriptBattleCtr = 102;
     floweyScriptBattle();
     */
 }
@@ -50,7 +49,6 @@ var struggleCtr = 0;
 function floweyScriptBattle(){
     ableUserInput = false;
     scriptBattleCtr++;
-    console.log("scriptBattleCtr: "+ scriptBattleCtr);
     switch (scriptBattleCtr){
         case 1:
             curStage = "battle";
@@ -215,9 +213,9 @@ function floweyScriptBattle(){
             setTimeout(function(){ battleInterface.flowey.talk({s1:"게임이 별로 맘에 들지 않을 수도 있을 거고, 플레이하는 내내 실수도 많이 하게 될테니까." })}, 1.5*k); break;
         case 55: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({lingering:true, pauseInterval:120,
-                s1:"네가 잘못된 선택을 하는 바람에 원하지 않았던 결과가 나오게 된다면..."})}, 1.5*k); break;
+                s1:"네가 잘못된 선택을 하는 바람에 원하지 않았던 결과가 나오게  된다면..."})}, 1.5*k); break;
         case 56: battleInterface.turnPage();
-            setTimeout(function(){ battleInterface.flowey.talk({s1:"미리 알아보지 않은 바람에 괜히 시간낭비만 했다는 생각이 들지도 몰라."})}, 1.5*k); break;
+            setTimeout(function(){ battleInterface.flowey.talk({s1:"미리 알아보지 않은 바람에 괜히 시간낭비 했다는 생각이 들지도 몰라."})}, 1.5*k); break;
         case 57: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", s1:"하지만 게임의 가장 좋은 점이 뭔지 알아?" })}, 1.5*k); break;
         case 58: battleInterface.turnPage();
@@ -245,7 +243,7 @@ function floweyScriptBattle(){
                 s1:"그러니 실수하는걸", s2:"두려워하지마."})}, 1.5*k);
             setTimeout(function() {battleInterface.flowey.talk({appending:true, pauseInterval:1, s3:"잘못된 선택을 내릴까봐", s4:"겁내지마."})}, 3.6*k); break;
         case 67: battleInterface.turnPage();
-            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", delay:2*k, s1:"네 의지가 어떤 결과를 가져오는지 지켜봐."})}, 1.5*k); break;
+            setTimeout(function(){ battleInterface.flowey.talk({emote:"calm", delay:2*k, pauseInterval: 1, s1:"네 의지가 어떤 결과를", s2:"가져오는지 지켜봐."})}, 1.5*k); break;
         case 68: battleInterface.turnPage();
             setTimeout(function(){ battleInterface.flowey.talk({
                 s1:"내 말을 이해한다면,", s2:"지금이라도 이 만화를 끄고   게임을 직접 해보길 바래."})}, 1.5*k); break;
@@ -260,7 +258,7 @@ function floweyScriptBattle(){
             battleInterface.flowey.talk({pauseInterval:120, delay: 1.5 * k, lingering:true, s1:"...아직도 이걸 보고 있네."}); break;
         case 79: battleInterface.flowey.talk({emote:"vain", delay: 1.5 * k, s1:"그렇게나 힘 안들이고 게임을   해 본 기분을 내고 싶어?"}); break;
         case 80: battleInterface.flowey.talk({emote:"doubtful", delay: 1.5 * k, s1:"의지니 뭐니 그런건", s2:"알 바 아니란 거지?"}); break;
-        case 81: battleInterface.flowey.talk({emote:"twisted", s1:"하긴, 게임을 만화처럼 볼 수 있다는데, 그런 편리한걸 포기하고 싶겠어?"}); break;
+        case 81: battleInterface.flowey.talk({emote:"twisted", s1:"하긴, 게임을 만화처럼 볼 수  있다는데, 그런 편리한걸 그냥  포기하고 싶겠어?"}); break;
         case 82: battleInterface.flowey.talk({s1:"그냥 앉아서 보고만 있으면    저절로 진행이 되는데 말이야."}); break;
         case 83: battleInterface.flowey.talk({s1:"네가 게임을 잘 못한다고 해도 게임오버 당할 걱정 같은 거   안해도 되고.", s2:"돈도 안 들고."}); break;
         case 84: battleInterface.flowey.talk({emote:"serious",
@@ -270,19 +268,19 @@ function floweyScriptBattle(){
         case 86: battleInterface.flowey.talk({emote:"sad", lingering:true, pauseInterval:150, s1:"...여기에서의 너는..."}); break;
         case 87: battleInterface.flowey.talk({lingering:true, pauseInterval:150, s1:"네 스스로의 의지를 갖는 것을 포기한 너는..."}); break;
         case 88: battleInterface.flowey.talk({ableInput:false, talkSpeed: 70,
-                s1:"공격을 당해도 반격할 수 없고,",s2:"다른곳으로 도망칠 수 도 없고,"});
+                s1:"공격을 당해도 반격할 수 없고,",s2:"다른 곳으로 도망칠 수도 없고,"});
             setTimeout(function(){ battleInterface.flowey.talk({appending:true, talkSpeed: 70, lingering:true, pauseInterval: 200,
-                s3:"친구에게 도움을 요청할 수도   없어..."})}, 4.5*k); break;
-        case 89: battleInterface.flowey.talk({lingering:true, pauseInterval:200, s1:"저 괴물들이 있는 곳에 발을 내딛는 순간..."}); break;
+                s3:"친구에게 도움을 요청할 수도   없어..."})}, 4*k); break;
+        case 89: battleInterface.flowey.talk({lingering:true, pauseInterval:200, s1:"저 괴물들이 있는 곳에 발을  내딛는 순간..."}); break;
         case 90: battleInterface.flowey.talk({ableInput:false, lingering:true, pauseInterval:200, s1:"넌... "});
             setTimeout(function(){ battleInterface.flowey.talk({ableInput:false, appending:true, lingering:true, pauseInterval:200,
-                s2:"아무 것도 하지 못하고... "})},3*k);
+                s2:"아무 것도 하지 못하고... "})},2*k);
             setTimeout(function(){ battleInterface.flowey.talk({appending:true, lingering:true, pauseInterval:200,
-                s3:"죽을 거야... "})},6*k); break;
+                s3:"죽을 거야... "})},5*k); break;
         case 91: battleInterface.flowey.talk({ableInput:false, lingering:true, pauseInterval:200, s1:"그리고..."});
             setTimeout(function(){ battleInterface.flowey.talk(({emote:"sorrowful", appending: true, lingering:true, talkSpeed:80, pauseInterval:250, delay: 3*k,
-            s2:"다시는 돌아오지 못할거야..."}))}, 4.5*k); break;
-        case 92: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:250, s1:"........."}); break;
+            s2:"다시는 돌아오지 못할거야..."}))}, 3.5*k); break;
+        case 92: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:150, s1:"........."}); break;
         case 93: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:200, s1:"나는..."}); break;
         case 94: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:250, s1:"나는 너한테 그런 일이 일어나는 걸 보고 싶지 않아..."}); break;
         case 95: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:250, s1:"그러니 제발..."}); break;
@@ -291,12 +289,16 @@ function floweyScriptBattle(){
         case 98: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:250, s1:"차라리...", s2:"차라리 내가..."}); break;
         case 99: createjs.Sound.stop();
             battleInterface.flowey.talk({emote:"painful", lingering:true, talkSpeed:100, pauseInterval:250, s1:"내가 이 자리에서 너를..."}); break;
-        case 100: battleInterface.flowey.speechBubble.clear(); ableUserInput = true; break;
-        case 111: case 112: case 113: case 114: case 115: setTimeout(function(){ableUserInput = true;}, 500); break;
-        case 116: battleInterface.flowey.talk({lingering:true, talkSpeed:80, pauseInterval:250, s1:"........."}); break;
-        case 117: break;
-        default:  battleInterface.turnPage();
-            setTimeout(function(){ battleInterface.flowey.talk({s1:"현재 여기까지 완성했단다." })}, 1.5*k); break;
+        case 100: battleInterface.flowey.talk({delay: 2*k, lingering:true, pauseInterval: 100, s1:"......"}); break;
+        case 101: battleInterface.flowey.talk({delay: 2*k, lingering:true, pauseInterval: 100, appending:true, s2:"......"}); break;
+        case 102: battleInterface.flowey.talk({delay: 4*k, lingering:true, pauseInterval: 200, appending:true, s3:"........."}); break;
+        case 103:
+            ableUserInput = false;
+            battleInterface.flowey.speechBubble.clear();
+            setTimeout(function(){ battleInterface.flowey.floweyPortrait.cry()}, 2*k);
+            setTimeout(function(){ battleInterface.killed() }, 10*k);
+            setTimeout(function(){ ending() }, 23 * k); break;
+        default: break;
     }
 }
 
@@ -388,24 +390,27 @@ function BattleInterface() {
             self.soul.draw();
             ctx.drawImage(images.swiping,
                 counter * 40, 0, 40, 120,
-                self.soul.x, self.soul.y, 40, 120);
+                self.soul.x, self.soul.y-50, 40, 120);
             if (counter < 5) counter++;
-            else clearInterval(timer);
-        }, 200);
+            else{
+                self.box.draw();
+                self.soul.draw();
+                clearInterval(timer);
+            }
+        }, 180);
     };
 
     self.attacked = function(){
-        var counter = 0;
+        var shakeCtr = 0;
         var moveDis = 30;
-        var elasticity = 0;
-        var even = 0;
+        var elasticity = 10;
 
         createjs.Sound.play("hit");
         self.statusBar.damaged(20);
         var timer = setInterval(function(){
             ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-            if (even % 2 == 0){
+            if (shakeCtr % 2 == 0){
                 self.flowey.floweyPortrait.draw("crying", moveDis);
                 self.box.draw(1, moveDis);
                 self.statusBar.draw(1, moveDis);
@@ -417,15 +422,20 @@ function BattleInterface() {
                 self.statusBar.draw();
                 self.soul.hit();
             }
-            if (counter < 7) counter++;
+            if (shakeCtr < 15){
+                shakeCtr++;
+                elasticity = Math.pow(elasticity, 0.8);
+                moveDis -= elasticity;
+            }
             else clearInterval(timer);
-        }, 200);
+        }, 100);
     };
 
-    self.soulBreak = function(){
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-    };
+    self.killed = function(){
+        self.swipe();
+        setTimeout(function(){self.attacked()}, 1.7*k);
+        setTimeout(function(){self.soul.splited()}, 4*k);
+        setTimeout(function(){self.soul.shatter()}, 6*k);
+    }
 }
-
 

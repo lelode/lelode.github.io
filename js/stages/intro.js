@@ -223,7 +223,7 @@ function IntroSlider() {
 					ctx.drawImage(images.intro8, self.xImage, self.yImage);
 					ctx.drawImage(images.intro8_human1, self.xImage, self.yImage);
 				}, 4.5 * k);
-				setTimeout(function() { ctx.clearRect(0, 0, canvasWidth, canvasHeight) }, 6 * k);
+				setTimeout(function() { ctx.clearRect(0, 0, canvasWidth, canvasHeight) }, 6.5 * k);
 				break;
 			case 9:
 				self.fadeBGIn(images.intro9, 50);
@@ -268,7 +268,7 @@ function intro() {
 	setTimeout(function() { slider.play(6) }, 39 * k);
 	setTimeout(function() { slider.play(7) }, 46 * k);
 	setTimeout(function() { slider.play(8) }, 56 * k);
-	setTimeout(function() { slider.play(9) }, 64 * k);
+	setTimeout(function() { slider.play(9) }, 63.5 * k);
 	setTimeout(function() { slider.play(10) }, 70 * k);
 	setTimeout(function() { slider.play(11) }, 76 * k);
 	setTimeout(function() { slider.fadeWhiteOut() }, 88 * k);
