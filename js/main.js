@@ -1,6 +1,19 @@
 var curStage = "loading";
 var scriptVentureCtr = 0;
 
+var canvas = document.getElementById("game");
+var ctx;
+var canvasWidth = 640, canvasHeight = 480;
+
+function initCanvas(){
+	ctx = canvas.getContext("2d");
+	ctx.save();
+	ctx.fillStyle = "#fff";
+	ctx.font = "30px tbyt";
+	ctx.fillText("LOADING...", 260, 300);
+	ctx.restore();
+}
+
 window.onload = function(){
 	initCanvas();
 	getCookie();
@@ -29,18 +42,7 @@ function getCookie(){
     }
 }
 
-var canvas = document.getElementById("game");
-var ctx;
-var canvasWidth = 640, canvasHeight = 480;
 
-function initCanvas(){
-	ctx = canvas.getContext("2d");
-	ctx.save();
-	ctx.fillStyle = "#fff";
-	ctx.font = "30px tbyt";
-	ctx.fillText("LOADING...", 260, 300);
-	ctx.restore();
-}
 
 var ableUserInput = false;
 
