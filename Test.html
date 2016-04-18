@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Undertale</title>  
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+</body>
+
+<script>
+
+
+window.onload = function(){
+	initCanvas();
+	setCookie();
+};
+
+function setCookie(){
+    var now = new Date();
+    var expire = now.getTime() + 1000*36000;
+    document.cookie = "killed=true;path=/;expires="+expire+";";
+    console.log("setCookie");
+}
+
+
+function getCookie(){
+    var name = "kiiled";
+	var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+  	var result = regexp.exec(document.cookie);
+  	return  ? null : result[1];
+
+  	if (result === null){
+  		console.log("result null");
+  	}
+  	else console.log("I got the cookie. you have been killed.");
+}
+
+</script>
+</html>

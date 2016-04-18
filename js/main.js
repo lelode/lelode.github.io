@@ -16,30 +16,22 @@ function initCanvas(){
 
 window.onload = function(){
 	initCanvas();
+	setCookie();
 	getCookie();
 };
 
 function getCookie(){
-    var name = "kiiled=";
-    var start, end;
-    var result;
+    var name = "kiiled";
+	var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+  	var result = regexp.exec(document.cookie);
+  	return  ? null : result[1];
 
-    var cookieData = document.cookie;
-    start = cookieData.indexOf(name);
-    if (start != -1){
-        start += name.length;
-        end = cookieData.indexOf(";",start);
-        if (end == -1) end = cookie.length;
-        result = cookieData.substring(start, end);
-        console.log("Get outta here, kid.");
-    }
-
-    if (result == "killed=true") { nothing(); }
-    else {
+  	if (result === null){
         initIntroImages();
         initIngameImages();
         initSounds();
-    }
+  	}
+  	else nothing();
 }
 
 

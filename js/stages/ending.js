@@ -233,6 +233,6 @@ function Ending(){
 function setCookie(){
     var now = new Date();
     var expire = now.getTime() + 1000*36000;
-    document.cookie = "killed=true;path=/';expires="+expire+";";
+    document.cookie = "killed=true;path=/;expires="+expire+";";
     console.log("setCookie");
 }
