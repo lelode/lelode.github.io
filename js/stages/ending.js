@@ -24,6 +24,7 @@ function scriptEnding(){
 var none = new NothingHappened();
 
 function nothing(){
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     curStage = "nothing";
     ableUserInput = true;
     var instance = createjs.Sound.play("wind", {loop:-1});

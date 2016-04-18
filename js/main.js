@@ -29,7 +29,9 @@ function getCookie(){
         initIngameImages();
         initSounds();
   	}
-  	else nothing();
+  	else{
+  		initNothingSounds();
+  	} 
 }
 
 var ableUserInput = false;

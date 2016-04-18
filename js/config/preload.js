@@ -20,13 +20,15 @@ function soundloadHandler(event){
 	drawLoadingBar();
 };
 
-function handleComplete(){
+function handleComplete1(){
 	soundLoaded = true;
 	drawLoadingBar();
 
-	if (assetLoaded && soundLoaded && curStage == "loading"){
-		title();
-	}
+	if (assetLoaded && soundLoaded && curStage == "loading") title();
+}
+
+function handleComplete2(){
+	nothing();
 }
 
 function addAsset(name,src){
@@ -42,17 +44,25 @@ var onAssetLoaded = function(){
 	if(assetsLeft==0){
 		assetLoaded = true;
 
-		if (soundLoaded && curStage == "loading"){
-			title();
-		}
+		if (soundLoaded && curStage == "loading") title();
 	}
 };
+
+function initNothingSounds(){
+	createjs.Sound.alternateExtensions = ["mp3"];
+	queue.installPlugin(createjs.Sound);
+	queue.addEventListener("complete", handleComplete2);
+	queue.loadManifest([
+		{id:"wind",			src:"sounds/BGM/wind.ogg"},
+		{id:"text",			src:"sounds/SFX/text.ogg"}
+	]);
+}
 
 function initSounds(){
 	createjs.Sound.alternateExtensions = ["mp3"];
 	queue.installPlugin(createjs.Sound);
 	queue.addEventListener("fileload", soundloadHandler);
-	queue.addEventListener("complete", handleComplete);
+	queue.addEventListener("complete", handleComplete1);
 	queue.loadManifest([
 		{id:"onceUponATime", 		src:"sounds/BGM/OnceUponATime.ogg"},
 		{id:"yourBestFriend", 		src:"sounds/BGM/YourBestFriend.ogg"},
@@ -80,7 +90,7 @@ function initSounds(){
 		{id:"soulSplit",			src:"sounds/SFX/soulSplit.ogg"},
 		{id:"soulShatter",			src:"sounds/SFX/soulShatter.ogg"},				
 		{id:"hisVoice",				src:"sounds/SFX/voiceUnvrHeardB4.ogg"},
-		{id:"text",					src:"sounds/SFX/text.ogg"},
+		{id:"text",					src:"sounds/SFX/text.ogg"}
 	]);
 }
 
