@@ -20,7 +20,7 @@ window.onload = function(){
 };
 
 function getCookie(){
-    var name = "kiiled";
+    var name = "killed";
 	var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
   	var result = regexp.exec(document.cookie);
 
