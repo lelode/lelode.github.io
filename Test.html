@@ -14,7 +14,6 @@
 
 
 window.onload = function(){
-	initCanvas();
 	setCookie();
 };
 
@@ -25,12 +24,10 @@ function setCookie(){
     console.log("setCookie");
 }
 
-
 function getCookie(){
     var name = "kiiled";
 	var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
   	var result = regexp.exec(document.cookie);
-  	return  ? null : result[1];
 
   	if (result === null){
   		console.log("result null");
