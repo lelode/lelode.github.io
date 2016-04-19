@@ -73,6 +73,12 @@ document.addEventListener("keydown", function(event){
 	}
 })
 
+document.onmousedown=disableRightClick;
+function disableRightClick(event)
+{
+  if(event.button==2) return false;
+}
+
 canvas.addEventListener("click", function(event){
 		if (ableUserInput) {
 		switch (curStage) {
