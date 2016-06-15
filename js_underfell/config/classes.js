@@ -11,21 +11,70 @@ function BackgroundImage(_x, _y){
     };
 }
 
-function TypeWriter(_x, _y){
+function TalkBox(){
+    var self = this;
+
+    self.x = 30;
+    self.yUp = 10;
+    self.yDown = 250;
+
+    self.width = 580;
+    self.height = 154;
+    self.on = false;
+
+    // self.typeWriter = new TypeWriter();
+
+    self.draw = function(axisY){
+        var _y;
+
+        switch (axisY){
+            case "up": _y = self.yUp; break;
+            case "down": _y = self.yDown; break;
+            default: 
+            console.log("Error: TalkBox.draw() argument value is empty.");
+            _y = self.yUp;
+            break;
+        }
+
+        // If box is already drawn, just clear the black area
+        if (self.on){
+            ctx.clearRect(self.x+40, _y+10, self.width-60, self.height-20);
+        }
+        else {
+            ctx.save();
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(self.x, _y, self.width, self.height);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(self.x+5, _y+5, self.width-10, self.height-10);
+            ctx.restore();
+            self.on = true;
+        }
+    }
+
+    self.clear = function(){
+        if (self.on){
+            ctx.clearRect(self.x, self.y, self.width, self.height);
+            self.on = false;
+        } 
+    }
+}
+
+function TypeWriter(_font, _voice){
     var self = this;
     self.x = _x + 50;
     self.y = _y + 30;
     self.width = 480;
     self.height = 140;
 
-    self.font = "Ariel";
-    // self.voice = "NULL";
+    self.font = _font;
+    self.voice = _voice;
 
     //self.portrait
 
     self.type = function(scriptString){
         var _x = self.x;
         var _y = self.y;
+        var _font = self.font;
 
         var scriptStringSplit = scriptString.split("");
 
@@ -46,9 +95,7 @@ function TypeWriter(_x, _y){
         var delayCounter = 0;
 
         var stringIdxChange = true;
-
         //self.floweyPortrait.draw();
-
 
         var timer = setInterval(function(){
             
@@ -81,8 +128,7 @@ function TypeWriter(_x, _y){
                     _x = self.x + 25;
                     nlFlag = true;
                 }
-
-                ctx.font = "25px tbyt"; // need to change font
+                ctx.font = _font;
                 ctx.fillText(char, _x, _y);
                 ctx.restore();
 
@@ -104,54 +150,47 @@ function TypeWriter(_x, _y){
     }
 }
 
-function TalkBox(_x, _y){
-    var self = this;
-    self.x = _x;
-    self.y = _y;
-    self.width = 580;
-    self.height = 154;
-    self.on = false;
-
-    self.typeWriter = new TypeWriter(_x, _y);
-
-    self.draw = function(){
-        if (self.on){
-            ctx.clearRect(self.x+40, self.y+10, self.width-60, self.height-20);
-        }
-        else {
-            console.log("TalkBox draw called");
-            ctx.save();
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(self.x, self.y, self.width, self.height);
-            ctx.fillStyle = "#000";
-            ctx.fillRect(self.x+5, self.y+5, self.width-10, self.height-10);
-            ctx.restore();
-            self.on = true;
-        }
-    }
-
-    self.clear = function(){
-        if (self.on){
-            ctx.clearRect(self.x, self.y, self.width, self.height);
-            self.on = false;
-        } 
-    }
-}
-
-
-function Human(){
-}
-
-function Flowey(){
-    var self = this;
-
+function Portrait(){
     self.x = 300;
     self.y = 145;
     self.size = 48;
 
-    self.darw = function(){
-    	ctx.drawImage(image.flowey, 0, 0, self.x, self.y);
+    self.draw = function(){
+        //ctx.drawImage(image., 0, 0, self.x, self.y);
     }
+}
+
+function Unit(_width, _height, _font, _voice){
+    var self = this;
+
+    self.x = 0;
+    self.y = 0;
+    self.width = _width;
+    self.height = _height;
+
+    self.font = _font;
+    self.voice = _voice;
+    self.spriteFrame = 0;
+
+    self.draw = function(){
+        console.log("unit draw called");
+    }
+}
+
+Human.prototype = new Unit();
+
+
+
+function Human(){
+    const State = {
+        IDLE: 'IDLE',
+        WALK: 'WALK'
+    }
+}
+
+
+function Flowey(){
+
 }
 
 function Sans(){
