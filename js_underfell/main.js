@@ -8,24 +8,29 @@ var talkBox = new TalkBox();
 
 function initCanvas(){
 	ctx = canvas.getContext("2d");
-	ctx.save();
-	ctx.fillStyle = "#fff";
-	ctx.font = "30px tbyt";
+	//ctx.save();
+	//ctx.fillStyle = "#fff";
+	//ctx.font = "30px tbyt";
 	//ctx.fillText("LOADING...", 260, 300);
-	ctx.restore();
+	//ctx.restore();
 }
 
 window.onload = function(){
 	initCanvas();
-	talkboxTest();
+	initImages();
+	testDraw();
 };
 
+function testDraw()
+{
+	setTimeout(function(){
+		human.draw();	
+	}, 1000);
+}
 
 function talkboxTest(){
 	//talkBox.draw("up");
-
 	//var fontName = "30px Arial Black";
-	
 	//tb.draw();
 	//tb.typeWriter.type("test sentence");
 }

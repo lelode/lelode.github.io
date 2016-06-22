@@ -1,3 +1,25 @@
+function extend(base, sub) {
+  // Avoid instantiating the base class just to setup inheritance
+  // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+  // for a polyfill
+  // Also, do a recursive merge of two prototypes, so we don't overwrite 
+  // the existing prototype, but still maintain the inheritance chain
+  // Thanks to @ccnokes
+  var origProto = sub.prototype;
+  sub.prototype = Object.create(base.prototype);
+  for (var key in origProto)  {
+     sub.prototype[key] = origProto[key];
+  }
+  // Remember the constructor property was set wrong, let's fix it
+  sub.prototype.constructor = sub;
+  // In ECMAScript5+ (all modern browsers), you can make the constructor property
+  // non-enumerable if you define it like this instead
+  Object.defineProperty(sub.prototype, 'constructor', { 
+    enumerable: false, 
+    value: sub 
+  });
+}
+
 function BackgroundImage(_x, _y){
     var self = this;
 
@@ -161,36 +183,65 @@ function Portrait(){
 }
 
 function Unit(_width, _height, _font, _voice){
-    var self = this;
 
-    self.x = 0;
-    self.y = 0;
-    self.width = _width;
-    self.height = _height;
+var DIRECTION = {
+        "FRONT": 0, "LEFT": 1, "RIGHT": 2, "BACK": 3
+    };    
 
-    self.font = _font;
-    self.voice = _voice;
-    self.spriteFrame = 0;
+    this.x = 0;
+    this.y = 0;
+    this.width = _width;
+    this.height = _height;
 
-    self.draw = function(){
+    this.font = _font;
+    this.voice = _voice;
+    this.spriteFrame = 0;
+    this.dir = DIRECTION.FRONT; //
+}
+
+Unit.prototype = {
+    draw: function() {
         console.log("unit draw called");
+    },
+
+    placeHolder: function() {
+        // ...
     }
 }
 
-Human.prototype = new Unit();
+function Human(_width, _height, _font, _voice){
+    Unit.call(this, _width, _height, _font, _voice);
+    this.x = 300;
+    this.y = 300;
+    //var state = { "IDLE", "WALK" };
+}
 
+Human.prototype = {
+    draw: function(){
+        console.log("human draw called");
+        
+        ctx.drawImage(images.human, 0, 0,
+            this.width, this.height, 
+            this.x, this.y, 
+            this.width, this.height);
+            
+        /*
+        ctx.drawImage(images.human, DIRECTION * self.width, col * self.height, // idx = 0 (still), 1 (moving)
+                    self.width, self.height, self.x, self.y, self.width, self.height);
+                    */
+    }
 
-
-function Human(){
-    const State = {
-        IDLE: 'IDLE',
-        WALK: 'WALK'
+    update: function(){
+        if (key.up) console.log("key up");
     }
 }
 
+extend(Unit, Human);
 
-function Flowey(){
+var human = new Human(40, 62, "default", "Arial");
 
+function Flowey()
+{
 }
 
 function Sans(){
