@@ -1,3 +1,6 @@
+var gCanvasWidth = 640, gCanvasHeight = 480;
+var gMap;
+
 function extend(base, sub) {
   // Avoid instantiating the base class just to setup inheritance
   // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
@@ -20,18 +23,33 @@ function extend(base, sub) {
   });
 }
 
-function BackgroundImage(_x, _y){
-    var self = this;
 
-    if (_x === undefined) _x = 0;
-    if (_y === undefined) _y = 0;
+function Background(argName, argWidth, argHeight){
+    this.x = 0; 
+    this.y = 0;
 
-    self.x = 0; 
-    self.y = 0;
-    self.draw = function(){ 
-    	ctx.drawImage(images.ruin, self.x, self.y) 
-    };
+    this.name = argName;
+    this.width = argWidth;
+    this.height = argHeight;
+
+    this.mapArray = {};
+
+    this.update = function(){
+        // this.x =
+        // this.y = 
+    }
+
+    this.draw = function(){ 
+        ctx.drawImage(gImages.ruin, 
+            this.x, this.y,
+            gCanvasWidth, gCanvasHeight,
+            0,  0, gCanvasWidth, gCanvasHeight
+        );
+    }
 }
+
+var gBackgrounds = {};
+gBackgrounds["ruin"] = new Background("ruin", gCanvasWidth, gCanvasHeight);
 
 function TalkBox(){
     var self = this;
@@ -182,12 +200,11 @@ function Portrait(){
     }
 }
 
-function Unit(_width, _height, _font, _voice){
-
 var DIRECTION = {
-        "FRONT": 0, "LEFT": 1, "RIGHT": 2, "BACK": 3
-    };    
+    "FRONT": 0, "LEFT": 1, "RIGHT": 2, "BACK": 3
+}; 
 
+function Unit(_width, _height, _font, _voice){
     this.x = 0;
     this.y = 0;
     this.width = _width;
@@ -195,7 +212,7 @@ var DIRECTION = {
 
     this.font = _font;
     this.voice = _voice;
-    this.spriteFrame = 0;
+    this.frame = 0;
     this.dir = DIRECTION.FRONT; //
 }
 
@@ -211,8 +228,11 @@ Unit.prototype = {
 
 function Human(_width, _height, _font, _voice){
     Unit.call(this, _width, _height, _font, _voice);
-    this.x = 300;
-    this.y = 300;
+    this.ctxX = 300;
+    this.ctxY = 300;
+    this.mapX = this.ctxX;
+    this.mapY = this.ctxY;
+    this.speedWalk = 4;
     //var state = { "IDLE", "WALK" };
 }
 
@@ -220,25 +240,51 @@ Human.prototype = {
     draw: function(){
         console.log("human draw called");
         
-        ctx.drawImage(images.human, 0, 0,
+        ctx.drawImage(gImages.human, 
+            this.frame * this.width,
+            this.dir * this.height, // idx = 0 (still), 1 (moving)
             this.width, this.height, 
-            this.x, this.y, 
+            this.ctxX, this.ctxY, 
             this.width, this.height);
-            
-        /*
-        ctx.drawImage(images.human, DIRECTION * self.width, col * self.height, // idx = 0 (still), 1 (moving)
-                    self.width, self.height, self.x, self.y, self.width, self.height);
-                    */
-    }
+                    
+    },
 
+    /*
+    check: function(){
+        if gBackgrounds.ruin[this.mapX]
+    },
+*/
+    
     update: function(){
-        if (key.up) console.log("key up");
+        if (gKey.up){
+            this.dir = DIRECTION.BACK;
+            this.ctxY -= this.speedWalk;
+        }
+        if (gKey.right){
+            this.dir = DIRECTION.LEFT;
+            this.ctxX += this.speedWalk;
+        } 
+        if (gKey.down){
+            this.dir = DIRECTION.FRONT;
+            this.ctxY += this.speedWalk;
+        }  
+        if (gKey.left){
+            this.dir = DIRECTION.RIGHT;
+            this.ctxX -= this.speedWalk;
+        }
+
+        if (gKey.up || gKey.right || gKey.down || gKey.left){
+            if (this.frame > 3) this.frame = 0;
+            else this.frame++;
+        }
+        else {
+            this.frame = 0;
+        }
     }
 }
 
 extend(Unit, Human);
-
-var human = new Human(40, 62, "default", "Arial");
+var human = new Human(40, 61, "default", "Arial");
 
 function Flowey()
 {

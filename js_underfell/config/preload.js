@@ -1,4 +1,4 @@
-var images = {};
+var gImages = {};
 var assetsLeft = 0;
 
 var totalAssetNum = 8;
@@ -31,9 +31,9 @@ function handleComplete(){
 
 function addAsset(name,src){
 	assetsLeft++;
-	images[name] = new Image();
-	images[name].src = src;
-	images[name].onload = onAssetLoaded(name);
+	gImages[name] = new Image();
+	gImages[name].src = src;
+	gImages[name].onload = onAssetLoaded(name);
 }
 
 var onAssetLoaded = function(name){
