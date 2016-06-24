@@ -32,12 +32,22 @@ function draw(){
 	human.draw();
 }
 
+function displayTouchAxis()
+{
+	ctx.save();
+	ctx.font = "100px Arial";
+	ctx.fillStyle = "#fff";
+	ctx.fillText("X: " + gTouchX + " Y: " + gTouchY, 20, 300);
+	ctx.restore();
+}
+
 function main(){
 	gMap = gBackgrounds.ruin;
 
 	var updateLoop = function(){
-		update();
-		draw();
+		//update();
+		//draw();
+		displayTouchAxis();
 
 		window.requestAnimationFrame(updateLoop, ctx);
 	};

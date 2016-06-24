@@ -1,7 +1,13 @@
 (function(exports) {
 	// Make key as a singleton
 	var gKey = {};
+	var gTouchX = 0;
+	var gTouchY = 0;
+	var gTouching = false;
 	exports.gKey = gKey;
+	exports.gTouchX = gTouchX;
+	exports.gTouchY = gTouchY;
+	exports.gTouching = gTouching;
 
 	// Virtual Keycodes mapping
 	var KEY_CODES = {
@@ -24,6 +30,26 @@
 	    event.preventDefault();
 	}
 
-	window.addEventListener("keydown",onKeyDown,false);
-	window.addEventListener("keyup",onKeyUp,false);
+	function disableRightClick(event){
+	  if(event.button==2) return false;
+	}
+
+	var onTouchDown = function(event){
+		gTouching = true;
+		gTouchX = event.originalEvent.touches[0].pageX;
+		gTouchY = event.originalEvent.touches[0].pageY;
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+	var onTouchUp = function(event){
+		gTouching = false;
+	}
+
+	window.addEventListener("keydown", onKeyDown, false);
+	window.addEventListener("keyup", onKeyUp, false);
+	document.onmousedown = disableRightClick;
+	document.addEventListener("touchstart", onTouchDown);
+	document.addEventListener("touchcancel", onTouchUp);
+
 })(window);
