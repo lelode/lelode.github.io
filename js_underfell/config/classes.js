@@ -40,7 +40,7 @@ function Background(argName, argWidth, argHeight){
     }
 
     this.draw = function(){ 
-        ctx.drawImage(gImages.ruin, 
+        gCtx.drawImage(gImages.ruin, 
             this.x, this.y,
             gCanvasWidth, gCanvasHeight,
             0,  0, gCanvasWidth, gCanvasHeight
@@ -78,22 +78,22 @@ function TalkBox(){
 
         // If box is already drawn, just clear the black area
         if (self.on){
-            ctx.clearRect(self.x+40, _y+10, self.width-60, self.height-20);
+            gCtx.clearRect(self.x+40, _y+10, self.width-60, self.height-20);
         }
         else {
-            ctx.save();
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(self.x, _y, self.width, self.height);
-            ctx.fillStyle = "#000";
-            ctx.fillRect(self.x+5, _y+5, self.width-10, self.height-10);
-            ctx.restore();
+            gCtx.save();
+            gCtx.fillStyle = "#fff";
+            gCtx.fillRect(self.x, _y, self.width, self.height);
+            gCtx.fillStyle = "#000";
+            gCtx.fillRect(self.x+5, _y+5, self.width-10, self.height-10);
+            gCtx.restore();
             self.on = true;
         }
     }
 
     self.clear = function(){
         if (self.on){
-            ctx.clearRect(self.x, self.y, self.width, self.height);
+            gCtx.clearRect(self.x, self.y, self.width, self.height);
             self.on = false;
         } 
     }
@@ -159,8 +159,8 @@ function TypeWriter(_font, _voice){
 
             else {
                 var char = scriptStringSplit.shift();
-                ctx.save();
-                ctx.fillStyle = "#fff";
+                gCtx.save();
+                gCtx.fillStyle = "#fff";
 
                 // change line if sentence gets long
                 if (_x > ( self.x + scriptArea-30 )){
@@ -168,9 +168,9 @@ function TypeWriter(_font, _voice){
                     _x = self.x + 25;
                     nlFlag = true;
                 }
-                ctx.font = _font;
-                ctx.fillText(char, _x, _y);
-                ctx.restore();
+                gCtx.font = _font;
+                gCtx.fillText(char, _x, _y);
+                gCtx.restore();
 
                 if (char == ",") { _x += 10; pause = true; }    // if there's comma, pauses
                 // if line has not changed, don't make too much space
@@ -196,7 +196,7 @@ function Portrait(){
     self.size = 48;
 
     self.draw = function(){
-        //ctx.drawImage(image., 0, 0, self.x, self.y);
+        //gCtx.drawImage(image., 0, 0, self.x, self.y);
     }
 }
 
@@ -228,8 +228,8 @@ Unit.prototype = {
 
 function Human(_width, _height, _font, _voice){
     Unit.call(this, _width, _height, _font, _voice);
-    this.ctxX = 300;
-    this.ctxY = 300;
+    this.gCtxX = 300;
+    this.gCtxY = 300;
     this.mapX = this.ctxX;
     this.mapY = this.ctxY;
     this.speedWalk = 4;
@@ -240,7 +240,7 @@ Human.prototype = {
     draw: function(){
         console.log("human draw called");
         
-        ctx.drawImage(gImages.human, 
+        gCtx.drawImage(gImages.human, 
             this.frame * this.width,
             this.dir * this.height, // idx = 0 (still), 1 (moving)
             this.width, this.height, 

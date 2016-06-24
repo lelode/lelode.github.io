@@ -6,10 +6,10 @@ var totalAssetNum = 8;
 var loadingBarX = 120, loadingBarY = 350;
 
 function drawLoadingBar(){
-	ctx.save();
-	ctx.fillStyle = "#fff";
-	ctx.fillRect(loadingBarX, loadingBarY, 6, 10);
-	ctx.restore();
+	gCtx.save();
+	gCtx.fillStyle = "#fff";
+	gCtx.fillRect(loadingBarX, loadingBarY, 6, 10);
+	gCtx.restore();
 	loadingBarX += 6;
 }
 
@@ -38,8 +38,8 @@ function addAsset(name,src){
 
 var onAssetLoaded = function(name){
 	assetsLeft--;
-	console.log(name + " loaded");
-	//drawLoadingBar();
+	// console.log(name + " loaded");
+	// drawLoadingBar();
 	if(assetsLeft==0){
 		//assetLoaded = true;
 		//if (soundLoaded && curStage == "loading") title();

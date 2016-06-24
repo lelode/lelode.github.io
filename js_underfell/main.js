@@ -1,12 +1,12 @@
 var gStage = "loading";
 
-var canvas = document.getElementById("game");
-var ctx;
+var gCanvas = document.getElementById("game");
+var gCtx;
 
 var talkBox = new TalkBox();
 
 function initCanvas(){
-	ctx = canvas.getContext("2d");
+	gCtx = gCanvas.getContext("2d");
 	//ctx.save();
 	//ctx.fillStyle = "#fff";
 	//ctx.font = "30px tbyt";
@@ -23,18 +23,13 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
-var gTouchXClient;
-var gTouchXPage;
-
-document.addEventListener("touchstart", function(event){
+gCanvas.addEventListener("touchstart", function(event){
 	gTouching = true;
 	gTouchX = event.changedTouches[0].screenX;
-	gTouchXClient = event.changedTouches[0].clientX;
-	gTouchXPage = event.changedTouches[0].pageX;
 	gTouchY = event.changedTouches[0].screenY;
 })
 
-document.addEventListener("touchend", function(event){
+gCanvas.addEventListener("touchend", function(event){
 	gTouching = false;
 })
 
@@ -49,20 +44,19 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.16;
-	ctx.save();
-	ctx.fillStyle = "gray";
-	ctx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
-	ctx.fillStyle = "#fff";
-	ctx.font = "60px Arial";
-	ctx.fillText("ver: " + ver, 20, 100);
-	ctx.fillText("touch: " + gTouching, 20, 150);
-	ctx.fillText("screenX: " + gTouchX, 20, 250);
-	ctx.fillText("clientX: " + gTouchXClient, 20, 300);
-	ctx.fillText("pageX: " + gTouchXPage, 20, 350);
-	ctx.font = "10px Arial";
-	ctx.fillText("600,480", 600, 480);
-	ctx.restore();
+	var ver = 0.17;
+	gCtx.save();
+	gCtx.fillStyle = "gray";
+	gCtx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
+	gCtx.fillStyle = "#fff";
+	gCtx.font = "60px Arial";
+	gCtx.fillText("ver: " + ver, 20, 100);
+	gCtx.fillText("touch: " + gTouching, 20, 150);
+	gCtx.fillText("X: " + gTouchX, 20, 250);
+	gCtx.fillText("Y: " + gTouchY, 20, 300);
+	gCtx.font = "10px Arial";
+	gCtx.fillText("600,480", 600, 480);
+	gCtx.restore();
 }
 
 function main(){
@@ -74,12 +68,12 @@ function main(){
 	var updateLoop = function(){
 		//update();
 		//draw();
-		ctx.clearRect(0, 0, gCanvasWidth, gCanvasHeight);
+		gCtx.clearRect(0, 0, gCanvasWidth, gCanvasHeight);
 		displayTouchAxis();
 
-		window.requestAnimationFrame(updateLoop, ctx);
+		window.requestAnimationFrame(updateLoop, gCtx);
 	};
-	window.requestAnimationFrame(updateLoop, ctx);
+	window.requestAnimationFrame(updateLoop, gCtx);
 }
 
 window.onload = function(){
