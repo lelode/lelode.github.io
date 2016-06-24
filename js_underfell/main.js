@@ -45,7 +45,7 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.11;
+	var ver = 0.12;
 	ctx.save();
 	ctx.fillStyle = "#fff";
 	ctx.font = "80px Arial";
@@ -64,7 +64,7 @@ function main(){
 	var updateLoop = function(){
 		//update();
 		//draw();
-		ctx.clearRect(gCanvasWidth, gCanvasHeight, 0, 0);
+		ctx.clearRect(0, 0, gCanvasWidth, gCanvasHeight);
 		displayTouchAxis();
 
 		window.requestAnimationFrame(updateLoop, ctx);
