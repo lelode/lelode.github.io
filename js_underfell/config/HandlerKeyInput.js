@@ -30,20 +30,8 @@
 	    event.preventDefault();
 	}
 
-	function disableRightClick(event){
+	var disableRightClick = function(event){
 	  if(event.button==2) return false;
-	}
-
-	var onTouchDown = function(event){
-		gTouching = true;
-		gTouchX = event.originalEvent.touches[0].pageX;
-		gTouchY = event.originalEvent.touches[0].pageY;
-		event.stopPropagation();
-		event.preventDefault();
-	}
-
-	var onTouchUp = function(event){
-		gTouching = false;
 	}
 
 	window.addEventListener("keydown", onKeyDown, false);

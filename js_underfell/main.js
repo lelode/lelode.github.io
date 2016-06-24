@@ -23,6 +23,22 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
+var onTouchDown = function(event){
+	gTouching = true;
+	gTouchX = event.changedTouches[0].screenX;
+	gTouchY = event.changedTouches[0].screenY;
+	//event.stopPropagation();
+	//event.preventDefault();
+}
+
+var onTouchUp = function(event){
+	gTouching = false;
+}
+
+gCanvas.addEventListener("touchstart", onTouchDown, false);
+gCanvas.addEventListener("touchend", onTouchUp, false);
+
+/*
 gCanvas.addEventListener("touchstart", function(event){
 	gTouching = true;
 	gTouchX = event.changedTouches[0].screenX;
@@ -32,6 +48,7 @@ gCanvas.addEventListener("touchstart", function(event){
 gCanvas.addEventListener("touchend", function(event){
 	gTouching = false;
 })
+*/
 
 function update(){
 	human.update();
@@ -44,7 +61,7 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.17;
+	var ver = 0.18;
 	gCtx.save();
 	gCtx.fillStyle = "gray";
 	gCtx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
