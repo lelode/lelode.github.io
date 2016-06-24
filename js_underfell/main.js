@@ -42,8 +42,8 @@ var onTouchUp = function(event){
 	gTouchY = 0;
 }
 
-gCtx.addEventListener("touchstart", onTouchDown, false);
-gCtx.addEventListener("touchend", onTouchUp, false);
+gCanvas.addEventListener("touchstart", onTouchDown, false);
+gCanvas.addEventListener("touchend", onTouchUp, false);
 
 function update(){
 	human.update();
