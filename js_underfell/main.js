@@ -30,7 +30,7 @@ document.addEventListener("touchstart", function(event){
 	gTouchY = event.originalEvent.touches[0].pageY;
 })
 
-document.addEventListener("touchcancel", function(event){
+document.addEventListener("touchend", function(event){
 	gTouching = false;
 })
 
@@ -45,7 +45,7 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.12;
+	var ver = 0.13;
 	ctx.save();
 	ctx.fillStyle = "#fff";
 	ctx.font = "80px Arial";
