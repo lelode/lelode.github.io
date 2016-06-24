@@ -26,8 +26,8 @@ function initCanvas(){
 
 document.addEventListener("touchstart", function(event){
 	gTouching = true;
-	gTouchX = event.originalEvent.touches[0].pageX;
-	gTouchY = event.originalEvent.touches[0].pageY;
+	gTouchX = event.changedTouches[0].screenX;
+	gTouchY = event.changedTouches[0].screenY;
 })
 
 document.addEventListener("touchend", function(event){
@@ -45,7 +45,7 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.13;
+	var ver = 0.14;
 	ctx.save();
 	ctx.fillStyle = "#fff";
 	ctx.font = "80px Arial";
