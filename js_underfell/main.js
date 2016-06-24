@@ -35,8 +35,9 @@ function draw(){
 function displayTouchAxis()
 {
 	ctx.save();
-	ctx.font = "100px Arial";
 	ctx.fillStyle = "#fff";
+	ctx.font = "100px Arial";
+	ctx.fillText(gTouching, 20, 200);
 	ctx.fillText("X: " + gTouchX + " Y: " + gTouchY, 20, 300);
 	ctx.restore();
 }
