@@ -1,9 +1,9 @@
 (function(exports) {
 	// Make key as a singleton
 	var gKey = {};
-	var gTouchX = 0;
-	var gTouchY = 0;
-	var gTouching = false;
+	var gTouchX;
+	var gTouchY;
+	var gTouching;
 	exports.gKey = gKey;
 	exports.gTouchX = gTouchX;
 	exports.gTouchY = gTouchY;

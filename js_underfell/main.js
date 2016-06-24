@@ -45,15 +45,20 @@ function draw(){
 
 function displayTouchAxis()
 {
+	var ver = 0.1;
 	ctx.save();
 	ctx.fillStyle = "#fff";
-	ctx.font = "100px Arial";
-	ctx.fillText(gTouching, 20, 200);
+	ctx.font = "80px Arial";
+	ctx.fillText("ver: " + ver, 20, 100);
+	ctx.fillText("touch: " + gTouching, 20, 200);
 	ctx.fillText("X: " + gTouchX + " Y: " + gTouchY, 20, 300);
 	ctx.restore();
 }
 
 function main(){
+	gTouchX = 0;
+	gTouchY = 0;
+	gTouching = false;
 	gMap = gBackgrounds.ruin;
 
 	var updateLoop = function(){
