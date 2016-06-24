@@ -26,7 +26,7 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
-
+var gCanvasY;
 var gTouchYclinet;
 var gTouchYpage;
 
@@ -73,27 +73,30 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.19;
+	var ver = 0.22;
 	gCtx.save();
 	gCtx.fillStyle = "gray";
 	gCtx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
 	gCtx.fillStyle = "#fff";
-	gCtx.font = "20px Arial";	
-	gCtx.fillText("screen Width: " + clientWidth, 350, 100);
-	gCtx.fillText("screen Height: " + clientHeight, 350, 130);
-	gCtx.font = "50px Arial";
+	gCtx.font = "30px Arial";	
+	gCtx.fillText("screen Width: " + clientWidth, 320, 250);
+	gCtx.fillText("screen Height: " + clientHeight, 320, 290);
+	gCtx.fillText("Screen Y: " + gCanvasY, 320, 340);
+	gCtx.font = "30px Arial";
 	gCtx.fillText("ver: " + ver, 20, 100);
-	gCtx.fillText("touch: " + gTouching, 20, 150);
+	gCtx.fillText("touch: " + gTouching, 320, 100);
 	gCtx.fillText("screen X: " + gTouchX, 20, 250);
-	gCtx.fillText("screen Y: " + gTouchY, 20, 300);
-	gCtx.fillText("client Y: " + gTouchYclinet, 20, 340);
-	gCtx.fillText("page Y: " + gTouchYpage, 20, 380);
+	gCtx.fillText("screen Y: " + (gTouchY - gCanvasY), 20, 290);
+	gCtx.fillText("client Y: " + (gTouchYclinet - gCanvasY), 20, 340);
+	gCtx.fillText("page Y: " + (gTouchYpage - gCanvasY), 20, 380);
 	gCtx.restore();
 }
 
 function main(){
 	gTouchX = 0;
 	gTouchY = 0;
+	gTouchYclinet = 0;
+	gTouchYpage = 0;
 	gTouching = false;
 	screenWidth = gCanvas.width;
 	screenHeight = gCanvas.height;
@@ -111,6 +114,7 @@ function main(){
 }
 
 function getClientSize(){
+	gCanvasY = gCanvas.offsetTop;
 	clientWidth = Math.max(window.innerWidth, gCanvas.clientWidth);
 	clientHeight = Math.max(window.innerHeight, gCanvas.clientHeight);
 }
