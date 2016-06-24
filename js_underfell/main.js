@@ -1,5 +1,8 @@
 var gStage = "loading";
 
+var clientWidth;
+var clientHeight
+
 var gCanvas = document.getElementById("game");
 var gCtx;
 
@@ -23,10 +26,19 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
+
+var gTouchYclinet;
+var gTouchYpage;
+
+// getScreen size
+// if gTouchY > canvasHieght/2 = goes down
+
 var onTouchDown = function(event){
 	gTouching = true;
 	gTouchX = event.changedTouches[0].screenX;
 	gTouchY = event.changedTouches[0].screenY;
+	gTouchYclinet = event.changedTouches[0].clientY;
+	gTouchYpage = event.changedTouches[0].pageY;
 	//event.stopPropagation();
 	//event.preventDefault();
 }
@@ -61,18 +73,21 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.18;
+	var ver = 0.19;
 	gCtx.save();
 	gCtx.fillStyle = "gray";
 	gCtx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
 	gCtx.fillStyle = "#fff";
-	gCtx.font = "60px Arial";
+	gCtx.font = "20px Arial";	
+	gCtx.fillText("screen Width: " + clientWidth, 350, 100);
+	gCtx.fillText("screen Height: " + clientHeight, 350, 130);
+	gCtx.font = "50px Arial";
 	gCtx.fillText("ver: " + ver, 20, 100);
 	gCtx.fillText("touch: " + gTouching, 20, 150);
-	gCtx.fillText("X: " + gTouchX, 20, 250);
-	gCtx.fillText("Y: " + gTouchY, 20, 300);
-	gCtx.font = "10px Arial";
-	gCtx.fillText("600,480", 600, 480);
+	gCtx.fillText("screen X: " + gTouchX, 20, 250);
+	gCtx.fillText("screen Y: " + gTouchY, 20, 300);
+	gCtx.fillText("client Y: " + gTouchYclinet, 20, 340);
+	gCtx.fillText("page Y: " + gTouchYpage, 20, 380);
 	gCtx.restore();
 }
 
@@ -80,17 +95,24 @@ function main(){
 	gTouchX = 0;
 	gTouchY = 0;
 	gTouching = false;
-	gMap = gBackgrounds.ruin;
+	screenWidth = gCanvas.width;
+	screenHeight = gCanvas.height;
+	gMap = gBackgrounds.ruin;1
 
 	var updateLoop = function(){
 		//update();
 		//draw();
 		gCtx.clearRect(0, 0, gCanvasWidth, gCanvasHeight);
+		getClientSize();
 		displayTouchAxis();
-
 		window.requestAnimationFrame(updateLoop, gCtx);
 	};
 	window.requestAnimationFrame(updateLoop, gCtx);
+}
+
+function getClientSize(){
+	clientWidth = Math.max(window.innerWidth, gCanvas.clientWidth);
+	clientHeight = Math.max(window.innerHeight, gCanvas.clientHeight);
 }
 
 window.onload = function(){
@@ -98,6 +120,11 @@ window.onload = function(){
 	initImages();
 	main();
 };
+
+function getTouchedDir(){
+	return DIRECTION.RIGHT;
+	return DIRECTION.LEFT;
+}
 
 function talkboxTest(){
 	//talkBox.draw("up");
