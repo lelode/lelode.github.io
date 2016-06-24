@@ -23,10 +23,14 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
+var gTouchXClient;
+var gTouchXPage;
 
 document.addEventListener("touchstart", function(event){
 	gTouching = true;
 	gTouchX = event.changedTouches[0].screenX;
+	gTouchXClient = event.changedTouches[0].clientX;
+	gTouchXPage = event.changedTouches[0].pageX;
 	gTouchY = event.changedTouches[0].screenY;
 })
 
@@ -45,13 +49,19 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.14;
+	var ver = 0.16;
 	ctx.save();
+	ctx.fillStyle = "gray";
+	ctx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
 	ctx.fillStyle = "#fff";
-	ctx.font = "80px Arial";
+	ctx.font = "60px Arial";
 	ctx.fillText("ver: " + ver, 20, 100);
-	ctx.fillText("touch: " + gTouching, 20, 200);
-	ctx.fillText("X: " + gTouchX + " Y: " + gTouchY, 20, 300);
+	ctx.fillText("touch: " + gTouching, 20, 150);
+	ctx.fillText("screenX: " + gTouchX, 20, 250);
+	ctx.fillText("clientX: " + gTouchXClient, 20, 300);
+	ctx.fillText("pageX: " + gTouchXPage, 20, 350);
+	ctx.font = "10px Arial";
+	ctx.fillText("600,480", 600, 480);
 	ctx.restore();
 }
 
