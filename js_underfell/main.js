@@ -1,12 +1,14 @@
+var gCanvas = document.getElementById("game");
+var gCtx;
+
 var gStage = "loading";
 
 var clientWidth;
 var clientHeight
 
-var gCanvas = document.getElementById("game");
-var gCtx;
-
-var talkBox = new TalkBox();
+var gTouchX;
+var gTouchY;
+var gCanvasY;
 
 function initCanvas(){
 	gCtx = gCanvas.getContext("2d");
@@ -17,7 +19,6 @@ function initCanvas(){
 	//ctx.restore();
 }
 
-
 // x: 0 - 9  ...  arry[0]
 // x: 10 - 19 ...  arry[1]
 // x: 200 - 219 ... arry[20]
@@ -26,41 +27,23 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
-var gCanvasY;
-var gTouchYclinet;
-var gTouchYpage;
-
 // getScreen size
 // if gTouchY > canvasHieght/2 = goes down
 
 var onTouchDown = function(event){
-	gTouching = true;
-	gTouchX = event.changedTouches[0].screenX;
-	gTouchY = event.changedTouches[0].screenY;
-	gTouchYclinet = event.changedTouches[0].clientY;
-	gTouchYpage = event.changedTouches[0].pageY;
-	//event.stopPropagation();
-	//event.preventDefault();
+	gTouchX = event.changedTouches[0].clientX;
+	gTouchY = event.changedTouches[0].clientY;
+	event.stopPropagation();
+	event.preventDefault();
 }
 
 var onTouchUp = function(event){
-	gTouching = false;
+	gTouchX = 0;
+	gTouchY = 0;
 }
 
-gCanvas.addEventListener("touchstart", onTouchDown, false);
-gCanvas.addEventListener("touchend", onTouchUp, false);
-
-/*
-gCanvas.addEventListener("touchstart", function(event){
-	gTouching = true;
-	gTouchX = event.changedTouches[0].screenX;
-	gTouchY = event.changedTouches[0].screenY;
-})
-
-gCanvas.addEventListener("touchend", function(event){
-	gTouching = false;
-})
-*/
+gCtx.addEventListener("touchstart", onTouchDown, false);
+gCtx.addEventListener("touchend", onTouchUp, false);
 
 function update(){
 	human.update();
@@ -73,7 +56,7 @@ function draw(){
 
 function displayTouchAxis()
 {
-	var ver = 0.22;
+	var ver = 0.25;
 	gCtx.save();
 	gCtx.fillStyle = "gray";
 	gCtx.fillRect(0, 0, gCanvasWidth, gCanvasHeight);
@@ -81,23 +64,15 @@ function displayTouchAxis()
 	gCtx.font = "30px Arial";	
 	gCtx.fillText("screen Width: " + clientWidth, 320, 250);
 	gCtx.fillText("screen Height: " + clientHeight, 320, 290);
-	gCtx.fillText("Screen Y: " + gCanvasY, 320, 340);
+	gCtx.fillText("offset Y: " + gCanvasY, 320, 340);
 	gCtx.font = "30px Arial";
 	gCtx.fillText("ver: " + ver, 20, 100);
-	gCtx.fillText("touch: " + gTouching, 320, 100);
-	gCtx.fillText("screen X: " + gTouchX, 20, 250);
-	gCtx.fillText("screen Y: " + (gTouchY - gCanvasY), 20, 290);
-	gCtx.fillText("client Y: " + (gTouchYclinet - gCanvasY), 20, 340);
-	gCtx.fillText("page Y: " + (gTouchYpage - gCanvasY), 20, 380);
+	gCtx.fillText("X: " + gTouchX, 20, 250);
+	gCtx.fillText("Y: " + (gTouchY - gCanvasY), 20, 300);
 	gCtx.restore();
 }
 
 function main(){
-	gTouchX = 0;
-	gTouchY = 0;
-	gTouchYclinet = 0;
-	gTouchYpage = 0;
-	gTouching = false;
 	screenWidth = gCanvas.width;
 	screenHeight = gCanvas.height;
 	gMap = gBackgrounds.ruin;1
@@ -128,13 +103,6 @@ window.onload = function(){
 function getTouchedDir(){
 	return DIRECTION.RIGHT;
 	return DIRECTION.LEFT;
-}
-
-function talkboxTest(){
-	//talkBox.draw("up");
-	//var fontName = "30px Arial Black";
-	//tb.draw();
-	//tb.typeWriter.type("test sentence");
 }
 
 // Required Map: ruin1, ruin2, Snowdin

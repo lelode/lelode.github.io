@@ -1,13 +1,7 @@
 (function(exports) {
 	// Make key as a singleton
 	var gKey = {};
-	var gTouchX;
-	var gTouchY;
-	var gTouching;
 	exports.gKey = gKey;
-	exports.gTouchX = gTouchX;
-	exports.gTouchY = gTouchY;
-	exports.gTouching = gTouching;
 
 	// Virtual Keycodes mapping
 	var KEY_CODES = {
@@ -37,7 +31,4 @@
 	window.addEventListener("keydown", onKeyDown, false);
 	window.addEventListener("keyup", onKeyUp, false);
 	document.onmousedown = disableRightClick;
-	//document.addEventListener("touchstart", onTouchDown, false);
-	//document.addEventListener("touchcancel", onTouchUp, false);
-
 })(window);
