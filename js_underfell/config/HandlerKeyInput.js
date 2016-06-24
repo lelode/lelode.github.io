@@ -42,16 +42,6 @@
 		event.preventDefault();
 	}
 
-	document.addEventListener("touchstart", function(event){
-		gTouching = true;
-		gTouchX = event.originalEvent.touches[0].pageX;
-		gTouchY = event.originalEvent.touches[0].pageY;
-	})
-
-	document.addEventListener("touchcancel", function(event){
-		gTouching = false;
-	})
-
 	var onTouchUp = function(event){
 		gTouching = false;
 	}
@@ -59,7 +49,7 @@
 	window.addEventListener("keydown", onKeyDown, false);
 	window.addEventListener("keyup", onKeyUp, false);
 	document.onmousedown = disableRightClick;
-	document.addEventListener("touchstart", onTouchDown, false);
-	document.addEventListener("touchcancel", onTouchUp, false);
+	//document.addEventListener("touchstart", onTouchDown, false);
+	//document.addEventListener("touchcancel", onTouchUp, false);
 
 })(window);

@@ -23,6 +23,17 @@ function initCanvas(){
 // else axix ++; 
 // human. other characters
 
+
+document.addEventListener("touchstart", function(event){
+	gTouching = true;
+	gTouchX = event.originalEvent.touches[0].pageX;
+	gTouchY = event.originalEvent.touches[0].pageY;
+})
+
+document.addEventListener("touchcancel", function(event){
+	gTouching = false;
+})
+
 function update(){
 	human.update();
 }
