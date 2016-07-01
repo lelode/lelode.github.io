@@ -49,7 +49,7 @@ function draw(){
 }
 
 function displayTouchAxis(){
-	var ver = 0.28;
+	var ver = 0.29;
 	gCtx.save();
 	gCtx.fillStyle = "gray";
 	gCtx.fillRect(0, 0, gCtxWidth, gCtxHeight);
@@ -86,7 +86,7 @@ function main(){
 function getTouchPosCtx(){
 	var ratio = gCtxWidth / gCanvasWidth;
 	gTouchXCtx = ratio * gTouchXScreen;
-	gTouchYCtx = ratio * (gTouchYScreen - gCanvas.offsetTop);
+	gTouchYCtx = ratio * gTouchYScreen;
 }
 
 function getCanvasSize(){
