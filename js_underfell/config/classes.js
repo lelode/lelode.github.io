@@ -1,4 +1,4 @@
-var gCanvasWidth = 640, gCanvasHeight = 480;
+var gCtxWidth = 640, gCtxHeight = 480;
 var gMap;
 
 function extend(base, sub) {
@@ -42,14 +42,14 @@ function Background(argName, argWidth, argHeight){
     this.draw = function(){ 
         gCtx.drawImage(gImages.ruin, 
             this.x, this.y,
-            gCanvasWidth, gCanvasHeight,
-            0,  0, gCanvasWidth, gCanvasHeight
+            gCtxWidth, gCtxHeight,
+            0,  0, gCtxWidth, gCtxHeight
         );
     }
 }
 
 var gBackgrounds = {};
-gBackgrounds["ruin"] = new Background("ruin", gCanvasWidth, gCanvasHeight);
+gBackgrounds["ruin"] = new Background("ruin", gCtxWidth, gCtxHeight);
 
 function TalkBox(){
     var self = this;
