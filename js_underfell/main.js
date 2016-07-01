@@ -11,6 +11,8 @@ var gTouchYCtx;
 var gTouchXScreen;
 var gTouchYScreen;
 
+var gTouchDown = false;
+
 function initCanvas(){
 	gCtx = gCanvas.getContext("2d");
 	//ctx.save();
@@ -26,6 +28,8 @@ var onTouchDown = function(event){
 	event.stopPropagation();
 	event.preventDefault();
 	getTouchPosCtx();
+
+	gTouchDown = true;
 }
 
 var onTouchUp = function(event){
@@ -33,6 +37,7 @@ var onTouchUp = function(event){
 	gTouchYScreen = 0;
 	gTouchXCtx = 0;
 	gTouchYCtx = 0;
+	gTouchDown = false;
 }
 
 gCanvas.addEventListener("touchstart", onTouchDown, false);
@@ -73,11 +78,9 @@ function main(){
 	gMap = gBackgrounds.ruin;
 
 	var updateLoop = function(){
-		//update();
-		//draw();
-		gCtx.clearRect(0, 0, gCtxWidth, gCtxHeight);
 		getCanvasSize();
-		displayTouchAxis();
+		update();
+		draw();
 		window.requestAnimationFrame(updateLoop, gCtx);
 	};
 	window.requestAnimationFrame(updateLoop, gCtx);

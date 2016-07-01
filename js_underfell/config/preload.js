@@ -84,8 +84,8 @@ function initSounds(){
 
 function initImages(){
 	addAsset("ruin", 				"img/background/ruin.png");
+	addAsset("human", 				"img/sprites/human2.png");
 	addAsset("speechBubble", 		"img/sprites/speechBubble.png");
-	addAsset("human", 				"img/sprites/human.png");
 	addAsset("soul", 				"img/sprites/soul.png");
 	addAsset("soulSplited",			"img/sprites/soulSplited.png");
 	addAsset("soulPiece",			"img/sprites/soulPiece.png");

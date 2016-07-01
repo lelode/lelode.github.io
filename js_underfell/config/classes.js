@@ -228,8 +228,8 @@ Unit.prototype = {
 
 function Human(_width, _height, _font, _voice){
     Unit.call(this, _width, _height, _font, _voice);
-    this.gCtxX = 300;
-    this.gCtxY = 300;
+    this.x = 300;
+    this.y = 300;
     this.mapX = this.ctxX;
     this.mapY = this.ctxY;
     this.speedWalk = 4;
@@ -239,14 +239,12 @@ function Human(_width, _height, _font, _voice){
 Human.prototype = {
     draw: function(){
         console.log("human draw called");
-        
         gCtx.drawImage(gImages.human, 
             this.frame * this.width,
             this.dir * this.height, // idx = 0 (still), 1 (moving)
             this.width, this.height, 
-            this.ctxX, this.ctxY, 
+            this.x, this.y, 
             this.width, this.height);
-                    
     },
 
     /*
@@ -256,21 +254,22 @@ Human.prototype = {
 */
     
     update: function(){
-        if (gKey.up){
+
+        if ( gKey.up || (gTouchYCtx < this.y && gTouchDown) ) {
             this.dir = DIRECTION.BACK;
-            this.ctxY -= this.speedWalk;
+            this.y -= this.speedWalk;
         }
-        if (gKey.right){
+        if ( gKey.right || (gTouchXCtx > this.x && gTouchDown) ){
             this.dir = DIRECTION.LEFT;
-            this.ctxX += this.speedWalk;
+            this.x += this.speedWalk;
         } 
-        if (gKey.down){
+        if ( gKey.down || (gTouchYCtx > this.y && gTouchDown) ){
             this.dir = DIRECTION.FRONT;
-            this.ctxY += this.speedWalk;
+            this.y += this.speedWalk;
         }  
-        if (gKey.left){
+        if ( gKey.left || (gTouchXCtx < this.x && gTouchDown) ){
             this.dir = DIRECTION.RIGHT;
-            this.ctxX -= this.speedWalk;
+            this.x -= this.speedWalk;
         }
 
         if (gKey.up || gKey.right || gKey.down || gKey.left){
