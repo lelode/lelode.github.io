@@ -22,7 +22,7 @@ function initCanvas(){
 
 var onTouchDown = function(event){
 	gTouchXScreen = event.changedTouches[0].clientX;
-	gTouchYScreen = event.changedTouches[0].clientY;
+	gTouchYScreen = event.changedTouches[0].clientY - gCanvas.offsetTop;
 	event.stopPropagation();
 	event.preventDefault();
 	getTouchPosCtx();
@@ -36,6 +36,7 @@ var onTouchUp = function(event){
 }
 
 gCanvas.addEventListener("touchstart", onTouchDown, false);
+gCanvas.addEventListener("touchmove", onTouchDown, false);
 gCanvas.addEventListener("touchend", onTouchUp, false);
 
 function update(){
@@ -48,7 +49,7 @@ function draw(){
 }
 
 function displayTouchAxis(){
-	var ver = 0.27;
+	var ver = 0.28;
 	gCtx.save();
 	gCtx.fillStyle = "gray";
 	gCtx.fillRect(0, 0, gCtxWidth, gCtxHeight);
@@ -60,16 +61,16 @@ function displayTouchAxis(){
 	gCtx.font = "30px Arial";
 	gCtx.fillText("ver: " + ver, 20, 100);
 	gCtx.fillText("Canvas X: " + gTouchXScreen, 20, 250);
-	gCtx.fillText("Canvas Y: " + (gTouchYScreen - gCanvas.offsetTop), 20, 300);
+	gCtx.fillText("Canvas Y: " + gTouchYScreen, 20, 300);
 	gCtx.fillText("Ctx X: " + gTouchXCtx, 20, 350);
-	gCtx.fillText("Ctx Y: " + (gTouchYCtx - gCanvas.offsetTop), 20, 400);
+	gCtx.fillText("Ctx Y: " + gTouchYCtx, 20, 400);
 	gCtx.restore();
 }
 
 function main(){
 	screenWidth = gCanvas.width;
 	screenHeight = gCanvas.height;
-	gMap = gBackgrounds.ruin;1
+	gMap = gBackgrounds.ruin;
 
 	var updateLoop = function(){
 		//update();
@@ -85,12 +86,8 @@ function main(){
 function getTouchPosCtx(){
 	var ratio = gCtxWidth / gCanvasWidth;
 	gTouchXCtx = ratio * gTouchXScreen;
-	gTouchYCtx = ratio * gTouchYScreen;
+	gTouchYCtx = ratio * (gTouchYScreen - gCanvas.offsetTop);
 }
-
-// ctx 635
-// canvas 400
-// getRatioDiff = ctx / canvas
 
 function getCanvasSize(){
 	gCanvasWidth = Math.min(window.innerWidth, gCanvas.clientWidth);
