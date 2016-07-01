@@ -4,6 +4,4 @@ var gCtx;
 var gStage = "loading";
 
 var gCanvasWidth;
-var gCanvasHeight
-
-var gTouchDown = false;
+var gCanvasHeight;

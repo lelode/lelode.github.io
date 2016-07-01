@@ -19,7 +19,7 @@ function draw(){
 }
 
 function displayVersion(){
-	var ver = 0.02;
+	var ver = 0.03;
 	gCtx.save();
 	gCtx.fillStyle = "#fff";
 	gCtx.font = "28px Arial";
