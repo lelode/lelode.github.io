@@ -205,8 +205,10 @@ var DIRECTION = {
 }; 
 
 function Unit(_width, _height, _font, _voice){
-    this.x = 0;
-    this.y = 0;
+    this.xScreen = 0;
+    this.yScreen = 0;
+    this.xMap = 0;
+    this.yMap = 0;
     this.width = _width;
     this.height = _height;
 
@@ -228,10 +230,10 @@ Unit.prototype = {
 
 function Human(_width, _height, _font, _voice){
     Unit.call(this, _width, _height, _font, _voice);
-    this.x = 300;
-    this.y = 300;
-    this.mapX = this.ctxX;
-    this.mapY = this.ctxY;
+    this.xMap = 300;
+    this.yMap = 300;
+
+
     this.speedWalk = 4;
     //var state = { "IDLE", "WALK" };
 }
